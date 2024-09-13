@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;900&display=swap" rel="stylesheet">
+    <link href="/css/master.css" rel="stylesheet" type="text/css">
+    <link href="/css/index.css" rel="stylesheet" type="text/css">
+    <link href="/css/studySearch.css" rel="stylesheet" type="text/css">
+    <link href="/css/progress.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/2.11.0/bundled.js"></script>
+    <script src="/scripts/studySearch.js"></script>
+    <script src="/scripts/registerClicks.js"></script>
+    <script src="/scripts/registries.js"></script>
+    <script src="/scripts/checkLanguage.js"></script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <title>ALEX</title>
+</head>
+<body>
+    <div id="load">
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>
+    </div>
+    <header>
+        <%- include('../../partials/header'); %>
+    </header>
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="step visted">
+                    <div class="bullet visited"><span>✓</span></div>
+                    <p>Role</p>
+                </div>
+                <div class="step visited">
+                    <div class="bullet visited"><span>✓</span></div>
+                    <p>Background</p>
+                </div>
+                <div class="step visited">
+                    <div class="bullet visited"><span>✓</span></div>
+                    <p>Preferences</p>
+                </div>
+                <div class="step visited">
+                    <div class="bullet visited"><span>✓</span></div>
+                    <p>Generating Results</p>
+                </div>
+                <div class="step active">
+                    <div class="bullet active"><span>★</span></div>
+                    <p>Studies</p>
+                </div>
+            </div>
+        </div>
+        <h1 class="title" id="loaded-title">Research Registries</h1>       
+        <p>Here you have the opportunity to join research registries, or special lists gathering information from people interested in research participation! Don't forget to complete the post-survey after you finish viewing this page.</p>
+        <button class="green" onclick="sendToDatabase(`ResultsCompleteSurvey`, `clicked`)">📝 Complete Survey</button>
+        <br/>
+        <a id="link-text" href="/<%=id%>/<%=interventionType%>/<%=vh%>/StudySearch/Results">Return to Research Study Results</a>
+        <div class="registry-card">
+            <h3>JAX-ASCENT Registry</h3>
+            <h4>Official Title:</h4>
+            <p>JAX-ASCENT Registry</p>
+            <hr/>
+            <h4>Brief Summary*:</h4>
+            <p>The JAX-ASCENT Registry is looking for adults 60 and older to join and help the University of Florida College of Medicine – Jacksonville explore aging and independence. Participants can take part in various studies, from assessing risk factors to prevention therapies, and will receive information about the latest research. There is no cost to join and compensation may be provided for time and transportation if you choose to participate in a study</p>
+            <hr/>
+            <h4>Keywords(s):</h4>
+            <p>Older Adult, Aging</p>
+            <hr/>
+            <h4>How to Join:</h4>
+            <p>Complete the enrollment form at UFJaxAgingStudy.com. If you have questions, call (866) 386-7730.</p>
+            <a class="center" target="_blank" rel="noopener noreferrer" onclick="sendToDatabase(`RegistriesCompleteEnrollmentForm`, `clicked`)" href="http://ufjaxagingstudy.com/">
+                <button>Complete Enrollment Form</button>
+            </a>
+            
+        </div>
+
+        <p>* This summary was prepared by the ALEX Research Team. See the full study description at: <a href="https://med.jax.ufl.edu/institute-population-health/projects-and-initiatives/jaxascent-registry/">https://med.jax.ufl.edu/institute-population-health/projects-and-initiatives/jaxascent-registry/</a></p>
+        
+    </div>
+</body>
+</html>

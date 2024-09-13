@@ -1,0 +1,189 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Add a thumb */
+::-webkit-scrollbar-thumb {
+  background-image: linear-gradient(#002657, #0021a5);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #d8d4d7;
+}
+
+h1 {
+    font-weight: 900;
+    color: #002657;
+}
+
+p {
+    font-weight: 500;
+    font-size: 25px;
+}
+
+a {
+    text-decoration: none;
+}
+
+button {
+    background-color: #002657;
+    padding: 15px 19px;
+    border: 0px;
+    border-radius: 21px;
+    color: white;
+    font-size: 21px;
+    transition: .2s ease-in-out;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+button:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    background-image: linear-gradient(90deg, rgba(0,33,165,1) 0%, rgba(0,38,87,1) 100%);
+}
+
+/* -- Comments on August Release -- 
+    Creating a separate set of css in index.css for August Release
+    Separate css files created as well, but this felt appropriate for index.css
+    Main Reasons:
+    - Text version has a nav pane on left for "buttons" (a hrefs).
+*/
+
+.nav-link-text-area {
+  display: flex;
+  justify-content: center;
+  width: 55%;
+  padding-top: 15px;
+}
+
+#link-text {
+  color:#002657;
+  text-decoration: underline;
+  font-size: 17px;
+}
+
+#link-text:hover {
+  cursor: pointer;
+  color: #fa4616;
+}
+
+.next-back-button-area {
+  display: flex;
+  justify-content: space-between;
+  width: 55%;
+  border-top: 1px solid #002657;
+  padding-top: 15px
+}
+
+.green {
+    background-color: #22884C !important;
+    transition: .2s ease-in-out;
+}
+
+.green:hover {
+  background-image: linear-gradient(25deg, rgba(34,136,76,1) 0%, rgba(44,167,94,1) 100%)
+}
+
+
+.red {
+  background-color: #C85250 !important;
+  transition: .2s ease-in-out;
+}
+
+.blue {
+  background-color: #002657 !important;
+  transition: .2s ease-in-out;
+}
+
+.red:hover {
+background-image: linear-gradient(25deg, rgba(#C85250) 0%, rgb(231, 104, 104) 100%)
+}
+
+
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+  } 
+body {
+  top: 0px !important; 
+  }
+
+  body > .skiptranslate {
+    display: none;
+}
+
+/* Load screen */
+#load {
+    background-color: white;
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-ellipsis div {
+    position: absolute;
+    top: 33px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #002657;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  }
+  .lds-ellipsis div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+  }
+  @keyframes lds-ellipsis1 {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes lds-ellipsis3 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+  @keyframes lds-ellipsis2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(24px, 0);
+    }
+  }

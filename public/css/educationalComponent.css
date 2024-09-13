@@ -1,0 +1,96 @@
+video {
+    width: 75%;
+}
+
+.navigation-area {
+    display: flex;
+    flex-direction: row;
+}
+
+.education-navigation {
+    color: white;
+    border: 0px;
+    border-radius: 15px;
+    padding: 9px 11px;
+    margin: 7px 15px;
+    font-size: 19px;
+    width: 175px;
+    height: 105px;
+    transition: .2s ease-in-out;
+}
+
+.selected {
+    background-color: #FA4616 !important;
+}
+
+.selected:hover {
+    background-image: linear-gradient(25deg, rgba(250,70,22,1) 0%, rgba(242,169,0,1) 100%);
+}
+
+.education-navigation:hover {
+    transform: none;
+    animation: pulse-animation 2s infinite;
+}
+
+.character-selection-area {
+    width: 85%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: 15px;
+}
+
+.discover-button-area {
+    width: 85%;
+    display: flex;
+    justify-content: flex-end;
+    margin: 15px;
+}
+
+.discover {
+    font-size: 17px !important;
+    margin-top: 5px;
+}
+
+.discover:hover {
+    animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+    0% {
+      box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+      box-shadow: 0 0 0 15px rgba(0, 0, 0, 0);
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    video {
+        width: 100%;
+    }
+
+    .navigation-area {
+        flex-direction: column;
+    }
+
+    .education-navigation {
+        font-size: 15px;
+        height: 55px;
+    }
+
+    .text-container .education-navigation {
+        height: 105px;
+    }
+
+    .discover-button-area {
+       position: relative;
+       bottom: 11px;
+       justify-content: center;
+    }
+
+    .discover {
+        font-size: 13px !important;
+        margin-top: 5px;
+    }
+}

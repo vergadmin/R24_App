@@ -1,0 +1,175 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+    justify-content: center;
+}
+
+.alex-logo {
+    height: 105px !important;
+}
+
+.title {
+    font-size: 39px !important;
+    margin-top: 15px;
+    margin-bottom: 0;
+}
+
+.selection-area {
+    display: flex;
+    flex-direction: column;
+    padding: 35px 25px;
+    position: relative;
+    background-color: white;
+    background-clip: padding-box;
+    border: 5px solid transparent;
+    border-radius: 1.75rem;
+    margin: 35px;
+    width: 75%;
+}
+
+.selection-area::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    bottom: -5px;
+    left: -5px;
+    z-index: -1;
+    background-image: linear-gradient(
+      45deg,
+      #fa4616,#002657
+    );
+    border-radius: 1.75rem;
+  }
+
+.character-select {
+    height: 250px;
+    border-radius: 50%;
+    margin: 25px;
+    transition: .1s ease-in-out;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+.character-select:hover {
+    transform: scale(1.1);
+    animation: pulse-animation 2s infinite;
+    cursor: pointer;
+}
+
+.selected-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: none;
+}
+
+/* -- Comments on August Release -- 
+    Creating a separate set of css in index.css for August Release
+    Separate css files created as well, but this felt appropriate for index.css
+    Main Reasons:
+    - I think button for discovery on same line as title makes sense? So title-container is that. 
+    - August Release text is left-aligned
+    - August Release has a navigation pane on the left
+*/
+.title-container-2 {
+    display: flex;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0px;
+}
+
+.title-container {  display: grid;
+    grid-template-columns: 1fr max-content;
+    grid-template-rows: max-content;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "main-title-container discover-container";
+  }
+  
+  .main-title-container { grid-area: main-title-container; }
+  
+  .discover-container { grid-area: discover-container; }
+  
+  .goog-te-combo   {
+    font-size: 25px !important;
+    padding: 10px;
+    border-radius: 15px;
+    border: 0px;
+    background-color: #002657;
+    color: white;
+ }
+
+ #google_translate_element > div > span > a > img {
+    height: 15px !important;
+ }
+
+ .goog-te-combo:hover {
+    cursor: pointer;
+ }
+
+  .language-container {
+    padding: 35px 25px;
+    position: relative;
+    background-color: white;
+    background-clip: padding-box;
+    border: 5px solid transparent;
+    border-radius: 1.75rem;
+    margin: 35px;
+  }
+  
+  .language-container::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    bottom: -5px;
+    left: -5px;
+    z-index: -1;
+    background-image: linear-gradient(
+      45deg,
+      #fa4616,#002657
+    );
+    border-radius: 1.75rem;
+  }
+
+  #begin-intervention {
+    opacity: 0;
+    transition: .2s ease-in-out;
+  }
+
+  .pulse {
+    animation: pulse-animation 2s infinite;
+  }
+
+  @keyframes pulse-animation {
+    0% {
+      box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+      box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+    }
+  }
+
+ @media only screen and (max-width: 600px) {
+    .title {
+        font-size: 29px !important;
+        margin-top: 0;
+    }
+    .character-select {
+        height: 125px;
+        margin: 5px 9px;
+    }
+    .selection-area {
+        padding: 15px;
+        margin: 5px;
+        width: 85%;
+    }
+}

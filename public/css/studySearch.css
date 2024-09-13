@@ -1,0 +1,543 @@
+fieldset {
+    margin: 15px;
+    padding: 25px;
+    border-radius: 25px;
+    border-color: #002657;
+}
+
+video {
+    width: 75%;
+}
+
+legend {
+    background-image: linear-gradient(
+      45deg,
+      #0021a5,#002657
+    );
+    color: white;
+    font-weight: 500;
+    border-radius: 15px;
+    font-size: 21px;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+}
+
+#background-description, #preferences-description {
+    width: 65%;
+    font-size: 21px;
+}
+
+.search-subtitle {
+    font-size: 17px !important;
+    margin-top: 0px !important;
+    font-style: italic !important;
+}
+
+.search-subtext {
+    margin-bottom: 5px;
+    font-size: 25px;
+}
+
+label, input, select {
+    font-size: 21px;
+    border-radius: 5px;
+}
+
+.study-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.row {
+    width: 45%;
+}
+
+.gap {
+    width: 10%
+}
+
+.center {
+    text-align: center;
+}
+
+h3 {
+    color:#002657;
+    font-size: 33px;
+}
+
+h4 {
+    font-size: 25px;
+    margin-bottom: 0px;
+}
+
+hr {
+    width: 100%;
+}
+
+.info {
+    font-size: 17px;
+}
+
+.information {
+    width: 75%;
+    font-size: 19px !important;
+    text-align: left;
+}
+
+.information p {
+    font-size: 21px !important;
+    text-align: center;
+}
+
+li {
+    padding: 3px;
+}
+
+.heading {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.sponsored {
+    background-color: #FA4616;
+    color: white;
+    margin-left: 9px;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 19px;
+}
+
+.condition-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.card, .browse-card, .single-select-button {
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.card input[type="checkbox"], .browse-card input[type="checkbox"] {
+    display: none;
+}
+
+.single-select-button input[type="radio"] {
+    display: none;
+}
+
+.card label {
+    display: block;
+    cursor: pointer;
+    border: 3px solid #002657;
+    border-radius: 35px;
+    margin: 11px;
+    padding: 15px;
+    width: 300px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .2s ease-in-out
+}
+
+.browse-card label, .single-select-button label {
+    display: block;
+    cursor: pointer;
+    border: 3px solid #002657;
+    border-radius: 35px;
+    margin: 11px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .2s ease-in-out;
+}
+
+.browse-card label:hover, .single-select-button label:hover, .card label:hover {
+    background-color: #002657;
+    color: white;
+}
+
+.card input[type="checkbox"]:checked + label, .browse-card input[type="checkbox"]:checked + label, .single-select-button input[type="radio"]:checked + label {
+    color: white;
+    background-color: #002657;
+}
+
+.card input[type="checkbox"]:checked + label::before, .browse-card input[type="checkbox"]:checked + label::before, .single-select-button input[type="radio"]:checked + label::before {
+    content: '✔';
+    font-size: 19px;
+    height: 25px;
+    width: 25px;
+    background-color: green;
+    border-radius: 50%;
+    color: white;
+    margin-right: 7px;
+}
+
+.groupings-cards, .browse-cards {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 75%;
+}
+
+#groupings-info, #browse-info {
+    display: flex;
+    justify-content: center;
+}
+
+#diagnosis2, #diagnosis3 {
+    display: none;
+}
+
+#diagnosis1, #diagnosis2, #diagnosis3 {
+    flex-direction: column;
+    align-items: center;
+    margin: 15px;
+}
+
+ul#cities-list {
+    padding-inline-start: 0px
+}
+
+.cities-list , .conditions-list {
+    list-style: none;
+    font-size: 21px;
+}
+
+.cities-list, .conditions-list  li {
+    list-style: none;
+}
+
+.cities-list li:hover, .conditions-list  li:hover {
+    background-color: #002657;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.disabled {
+    background-color: grey;
+}
+.disabled:hover {
+    cursor: none;
+    transform: scale(1.0);
+    background-color: grey;
+    background-image: none;
+}
+
+.enabled {
+    background-color: #002657;
+    padding: 15px;
+    border: 0px;
+    border-radius: 11px;
+    color: white;
+    font-size: 21px;
+    transition: .2s ease-in-out;   
+}
+
+.enabled:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.small-text-red {
+    font-size: 13px;
+    font-style: italic;
+    font-weight: 600;
+    color: #d32737;
+    padding: 0;
+    margin: 0 0 9px 0;
+}
+
+.red-validator {
+    color: #fa4616;
+    font-size: 15px;
+    font-style: italic;
+}
+
+#conditions-list-1 {
+    list-style: none;
+    font-size: 21px;
+}
+
+#conditions-list-1 li {
+    list-style: none;
+    transition: .2s ease-in-out;
+}
+
+#conditions-list-1 li:hover {
+    background-color: #002657;
+    color: white;
+    cursor: pointer;
+    font-size: 23px;
+}
+
+#conditions-list-2 {
+    list-style: none;
+    font-size: 21px;
+}
+
+#conditions-list-2 li {
+    list-style: none;
+    transition: .2s ease-in-out;
+}
+
+#conditions-list-2 li:hover {
+    background-color: #002657;
+    color: white;
+    cursor: pointer;
+    font-size: 23px;
+}
+
+#conditions-list-3 {
+    list-style: none;
+    font-size: 21px;
+}
+
+#conditions-list-3 li {
+    list-style: none;
+    transition: .2s ease-in-out;
+}
+
+#conditions-list-3 li:hover {
+    background-color: #002657;
+    color: white;
+    cursor: pointer;
+    font-size: 23px;
+}
+
+#conditions-box {
+    display: block;
+}
+
+.more-conditions-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .more-condition-button::before {
+    content: '+';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+
+  .fieldset-container {  display: grid;
+    grid-template-columns: 32.5% 35% 2% 2% 2% 2% 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 5% 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "g1 i1 bg1 r1 bg11 a1 x1"
+      "g2 i2 bg2 r2 bg21 a2 x2"
+      "g3 i3 bg3 r3 bg31 a3 x3";
+  }
+  
+  .g1 { grid-area: g1; }
+  
+  .g2 { grid-area: g2; }
+  
+  .g3 { grid-area: g3; }
+  
+  .i1 { grid-area: i1; }
+  
+  .i2 { grid-area: i2; }
+  
+  .i3 { grid-area: i3; }
+  
+  .bg1 { grid-area: bg1; }
+  
+  .bg2 { grid-area: bg2; }
+  
+  .bg3 { grid-area: bg3; }
+  
+  .bg11 { grid-area: bg11; }
+  
+  .bg21 { grid-area: bg21; }
+  
+  .bg31 { grid-area: bg31; }
+  
+
+  .a1 { grid-area: a1; }
+  
+  .a2 { grid-area: a2; }
+  
+  .a3 { grid-area: a3; }
+  
+  .r1 { grid-area: r1; }
+  
+  .r2 { grid-area: r2; }
+  
+  .r3 { grid-area: r3; }
+  
+  .x1 { grid-area: x1; }
+  
+  .x2 { grid-area: x2; }
+  
+  .x3 { grid-area: x3; }
+  
+  
+  .fieldset-container button {
+    width: 100%;
+    height: 5%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 16px;
+  }
+
+  .remove-button {
+    background-color: #B50000;
+    color: white;
+  }
+
+  .add-button {
+    background-color: #002657;
+    color: white;
+  }
+
+  .add-button.disabled {
+    background-color: grey;
+    color: white;
+    pointer-events: none;
+  }
+
+  .add-button, .remove-button {
+    padding: 5px !important;
+    width: 35px;
+    border-radius: 50%;
+    margin: 0px 5px;
+  }
+
+  .add-button, .remove-button {
+    height: 35px;
+  }
+
+  .fieldset-container input[type="text"] {
+    width: 100%;
+    text-align:center;
+  }
+
+  input[type="text"]  {
+    max-width: 405px;
+    padding: 9px;
+    border-radius: 15px;
+  }
+
+  input[type="number"]  {
+    max-width: 205px;
+    padding: 9px;
+    border-radius: 15px;
+  }
+
+  select {
+    max-width: 405px;
+    padding: 9px;
+    border-radius: 15px;
+  }
+
+  .pulse {
+    animation: pulse-animation 2s infinite;
+  }
+
+  .registry-card {
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    border: 1px solid #002657;
+    border-radius: 7px;
+    padding: 35px;
+    text-align: left;
+    margin: 55px;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    position: relative;
+    background-color: white;
+    background-clip: padding-box;
+    border: 5px solid transparent;
+    border-radius: 1.75rem;
+  }
+  
+  .registry-card::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    bottom: -5px;
+    left: -5px;
+    z-index: -1;
+    background-image: linear-gradient(
+      45deg,
+      #fa4616,#002657
+    );
+    border-radius: 1.75rem;
+  }
+
+@keyframes pulse-animation {
+    0% {
+      box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+      box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+    }
+  }
+
+  a #link {
+    color: white !important;
+  }
+
+
+#role-type {
+    display: flex;
+    flex-direction: column;
+}
+@media only screen and (max-width: 600px)  {
+    #background-description, #preferences-description {
+        width: 91%;
+    }
+    legend {
+        font-size: 17px;
+    }
+
+    .information {
+        width: 95%;
+    }
+
+    .study-row {
+        flex-direction: column;
+    }
+    video {
+        width: 100%;
+    }
+    .browse-card label:hover, .single-select-button label:hover, .card label:hover {
+        background-color: white;
+        color: #002657;
+    }
+   .add-button, .remove-button {
+        height: 25px;
+        width: 25px;
+        font-size: 13px;
+      }
+    
+      input[type="text"] {
+        width: 205px;
+        height: 25px;
+        font-size: 17px;
+      }
+}

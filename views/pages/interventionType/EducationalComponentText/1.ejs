@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;900&display=swap" rel="stylesheet">
+    <link href="/css/master.css" rel="stylesheet" type="text/css">
+    <link href="/css/index.css" rel="stylesheet" type="text/css">
+    <link href="/css/educationalComponentText.css" rel="stylesheet" type="text/css">
+    <link href="/css/educationalComponent.css" rel="stylesheet" type="text/css">
+    <script src="/scripts/checkLanguage.js"></script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <title>ALEX</title>
+</head>
+<!-- Text Variables for Clarity :) -->
+<% var mainTitle = `What are Research Studies?` %>
+
+<% var text1 = `A research study uses a carefully designed protocol, or plan, that allows researchers to learn about a person’s health, behavior, or response to a specific treatment or program. There are many different types of research studies. Some research studies are used to test or improve medical, surgical, or behavioral treatments. This could involve testing how well a new medication works for different types of people or whether a mobile app can help people quit smoking. Other research studies don’t involve any treatment, and may only ask a person to complete a survey or be observed in their typical settings to help researchers learn more about their experiences with things like chronic pain, sleep issues, or mental health.` %>
+
+<% var text2 = `The most important thing to remember is that research studies are the way we discover new treatments and tools we will use to take care of people in the future. In fact, research studies done in the past have given us most of the treatments and tools we use to take care of people today. For example, we learned that mammograms are a good way to screen for breast cancer through a research study to improve screening and diagnosis. We also recently learned of a new drug that can delay the onset of Type 1 diabetes and a virtual reality system that can relieve chronic back pain. In each of these examples, it was only through research studies that we now know how best to screen, diagnose, treat, and help people.` %>
+
+<body>
+    <div id="load">
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>
+    </div>
+    <header>
+        <%- include('../../../partials/header'); %>
+    </header>
+
+    <!-- Main Content -->
+    <div class="text-container">
+
+        <!-- Main Text Content -->
+        <div class ="content-container">
+            <div class = "title-container">
+                <text-h1 class = "main-title-container title"><%=mainTitle%></text-h1>
+            </div>
+            <text-p><%-text1%></text-p>
+            <text-p><%-text2%></text-p>
+            <br><br>
+        </div>
+
+        <div class="navigation-area">
+            <% for (var i = 0; i < buttons.length; i++) { %>
+                <% if (buttons[i].url === url) { %>
+                    <a href="/<%=id%>/<%=interventionType%>/t/EducationalComponentText/<%=buttons[i].url%>">
+                        <button class="education-navigation selected" >
+                            <%= buttons[i].text %>
+                        </button>
+                    </a>
+                <% } else { %>
+                    <a href="/<%=id%>/<%=interventionType%>/t/EducationalComponentText/<%=buttons[i].url%>">
+                        <button class="education-navigation" >
+                            <%= buttons[i].text %>
+                        </button>
+                    </a>
+                <% } %>
+            <% } %>
+        </div>
+        <div class="discover-button-area">
+            <a href="/<%=id%>/<%=interventionType%>/t/Discover">
+                <button class="green discover">Discover Research Opportunities</button>
+            </a>
+        </div>
+        
+    </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;900&display=swap" rel="stylesheet">
+    <link href="/css/master.css" rel="stylesheet" type="text/css">
+    <link href="/css/index.css" rel="stylesheet" type="text/css">
+    <link href="/css/discover.css" rel="stylesheet" type="text/css">
+    <script src="/scripts/discover.js"></script>
+    <script src="/scripts/registerClicks.js"></script>
+    <script src="/scripts/checkLanguage.js"></script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <title>ALEX</title>
+</head>
+<body>
+    <div id="load">
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>
+    </div>
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+    <div class="container">
+        <h1 class="title">Discover Research Opportunities</h1>
+        <p style="font-size:23px;">Now that you’ve learned more about research studies from Alex, here are a few things you can do!</p>
+        <div class="areas">
+            <div class="area">
+                <h3 style="margin: 0;">Download Question Guide</h3>
+                <p class="minor">To download questions to <b>ask healthcare providers, study teams, and loved ones</b> about research studies, click the button below. It will open a new tab where you can easily download a PDF version.</p>
+                <button style="font-size: 17px;" onclick="download()">⬇️ Download Question Guide</button>
+            </div>
+            <div class="area">
+                <h3 style="margin: 0;">Share ALEX with Friends and Family</h3>
+                <p class="minor">To <b>share this information with friends and family</b>, click the button below to copy the link to this website.</p>
+                <button style="font-size: 17px;" id = "copyLink" onclick="copyLink()">&#x1F517; Copy Link</button>
+            </div>
+        </div>
+
+                <h2>Search for Research Studies and Registries</h2>
+                <p style="font-size:23px;">Now you're ready to search for a research study! To <b>find suitable research studies</b>, click the button below. It will take you to a search page. </p>
+                <a onclick="sendToDatabase(`SearchStudies`, `clicked`)" href="/<%=id%>/<%=interventionType%>/<%=vh%>/StudySearch/Role"><button class="green discover">🔍 Start Searching for Clinical Trials</button>
+    
+        
+    </div>
+</body>
+</html>
