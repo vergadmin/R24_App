@@ -90,9 +90,11 @@ window.addEventListener("load", async () => {
     let deviceType = detectDeviceType()
     let os = detectOS()
     var type = document.URL.split('/').reverse()[0]
-    var id = document.URL.split('/').reverse()[1]
+    var vCHE = document.URL.split('/').reverse()[1]
+    var id = document.URL.split('/').reverse()[2]
     sessionStorage.setItem("id", id)
     sessionStorage.setItem("type", type)
+    sessionStorage.setItem("vCHE", vCHE)
 
     // console.log("TIME")
     dateTime = new Date().toLocaleString() + " " + Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -162,6 +164,15 @@ async function sendGeneralData(browserInfo, deviceType, os, dateTime) {
 
 async function logLanguage() {
     // console.log("IN SEND TO SERVER GENERAL DATA")
+    console.log(sessionStorage)
+    let type = sessionStorage.getItem("type")
+    let vCHE = sessionStorage.getItem("vCHE")
+    if (sessionStorage.getItem("language") === 'en') {
+        type = type + "e"
+    } else {
+        type = type + "s"
+    }
+    console.log(vCHE)
     let url = '/updateDatabase';
     let data = {
         'Language': sessionStorage.getItem("language")
@@ -176,8 +187,7 @@ async function logLanguage() {
     });
     if (res.ok) {
         let ret = await res.json();
-        return JSON.parse(ret.data);
-
+        window.location.href=`/${sessionStorage.getItem('id')}/${type}/${vCHE}/EducationalComponent/Introduction`
     } else {
         return `HTTP error: ${res.status}`;
     }

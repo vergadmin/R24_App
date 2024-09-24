@@ -52,9 +52,18 @@ app.use(session({
 
 app.post('/updateDatabase', storeSessionParameters, (req, res) => {
     let setList = ''
+    console.log(req.body)
     for (const [key, value] of Object.entries(req.body)) {
         if (key !== FLAG)
             setList += key + `='` + value + `', `
+        if (key === 'Language') {
+            if (value === 'en') {
+                req.session.params.vCHE = req.session.params.vCHE + 'e'
+            } else {
+                req.session.params.vCHE = req.session.params.vCHE + 's'
+            }
+            
+        }
     }
     setList = setList.slice(0, -2); 
 
@@ -77,7 +86,7 @@ app.post('/updateDatabase', storeSessionParameters, (req, res) => {
         var request = new sql.Request();
 
         let queryString = `
-        UPDATE R24U01
+        UPDATE R24
         SET ${setList} 
         WHERE ID = '${req.session.params.id}' 
         AND VisitNum = ${req.session.params.visitNum}`
@@ -88,6 +97,7 @@ app.post('/updateDatabase', storeSessionParameters, (req, res) => {
                 errorProtocol(err, req, res);
                 console.log(err);
             }
+            console.log(vCHE)
             res.json({ id: id, type: type, vCHE: vCHE});
         }); 
     
@@ -103,8 +113,8 @@ app.post('/SendError', (req, res) => {
 
 app.post('/storeCharacterInfoInServer', async (req, res) => {
     // console.log("IN STORE CHARACTER INFO")
-    req.session.params.vCHE = req.body.vCHE
-    req.session.params.vhType = req.body.VHType
+    req.session.params.vCHE = req.body.vh
+    req.session.params.vhType = req.body.vh
     // console.log(req.session.params)
     var id = req.session.params.id;
     var vh = req.session.params.vCHE;
@@ -178,15 +188,18 @@ app.post("/:id/:interventionType/RetrieveConditions", (req, res) => {
 
 // Root route that redirects to valid route
 app.get('/', (req, res) => {
-    res.redirect('/test-id/vh');
+    res.redirect('/test-id/vh/bf');
   });
 
 // ID is userID from qualtrics, interventionType is vh or text from Qualtrics
-app.get('/:id/:interventionType', checkPreviousVisit, addVisitToDatabase, (req, res) => {
+app.get('/:id/:interventionType/:vh', checkPreviousVisit, addVisitToDatabase, (req, res) => {
+    console.log(req.params)
     if (!req.session.params) {
         req.session.params = {};
         req.session.params.id = req.params.id
         req.session.params.interventionType = req.params.interventionType
+        req.session.params.vhType = req.params.vh
+        req.session.params.vCHE = req.params.vh
     }
 
     var id = req.session.params.id;
@@ -201,13 +214,6 @@ app.get('/:id/:interventionType', checkPreviousVisit, addVisitToDatabase, (req, 
     else {
         res.render('pages/index', {id: id, interventionType: interventionType})
     }
-})
-
-// TO DO: ADD DATABASE CONNECTION
-app.get('/:id/:interventionType/characters', (req, res) => {
-    var id = req.session.params.id;
-    var interventionType = req.session.params.interventionType;
-    res.render("pages/selectCharacter", {id: id, interventionType: interventionType})
 })
 
 
@@ -227,7 +233,7 @@ app.get('/:id/:interventionType/:vh/Discover', (req, res) => {
         var request = new sql.Request();
 
         let queryString = `
-        UPDATE R24U01
+        UPDATE R24
         SET Discover = 'clicked'
         WHERE ID = '` + id + `' 
         AND VisitNum = '` + visitNum + `'`;
@@ -303,12 +309,12 @@ function checkPreviousVisit(req, res, next) {
         req.session.params = {};
         req.session.params.id = id;
         req.session.params.interventionType = interventionType;
+        req.session.params.vhType = req.params.vh
+        req.session.params.vCHE = req.params.vh
     }
     if ( req.session.params.interventionType !== req.params.interventionType) {
         req.session.params.interventionType = interventionType;
     }
-
-    
 
     var visitN = -1;
     // 
@@ -324,12 +330,12 @@ function checkPreviousVisit(req, res, next) {
 
         // Query Check for Existing Entry In Table
         let checkString = `
-        SELECT * FROM R24U01
+        SELECT * FROM R24
         WHERE ID = '` + id + `'
         AND InterventionType = '` + interventionType + `'
         AND VisitNum = (
             SELECT max(VisitNum)
-            FROM R24U01
+            FROM R24
             WHERE ID = '` + id + `'
             AND InterventionType = '` + interventionType + `'
         )`
@@ -368,6 +374,8 @@ function addVisitToDatabase(req, res, next) {
     }
     var id = req.params.id;
     var interventionType = req.params.interventionType;
+    var vCHE = req.params.vCHE;
+    var vhType = req.params.vhType;
     req.session.params.id = id;
     req.session.params.interventionType = interventionType;
 
@@ -382,15 +390,17 @@ function addVisitToDatabase(req, res, next) {
         }
 
         const request = new sql.Request();
-        // let queryString = `INSERT INTO R24U01 (ID, VisitNum, InterventionType) VALUES ('` + id  + `',` + visitNum + `,'` + interventionType + `')`;
+        // let queryString = `INSERT INTO R24 (ID, VisitNum, InterventionType) VALUES ('` + id  + `',` + visitNum + `,'` + interventionType + `')`;
         let queryString = `
-        INSERT INTO R24U01 (ID, VisitNum, InterventionType)
-        VALUES (@id, @visitNum, @interventionType)`
+        INSERT INTO R24 (ID, VisitNum, InterventionType, vCHE, vhType)
+        VALUES (@id, @visitNum, @interventionType, @vCHE, @vhType)`
   
         // Add input parameters
         request.input('id', sql.VarChar(50), id);
         request.input('visitNum', sql.Int, visitNum);
         request.input('interventionType', sql.VarChar(50), interventionType);
+        request.input('vCHE', sql.VarChar(50), vCHE);
+        request.input('vhType', sql.VarChar(50), vhType);
  
         request.query(queryString, function (err, recordset) {
             if (err) {

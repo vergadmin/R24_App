@@ -30,14 +30,18 @@ const buttons = [
     },
     {
         url: '2',
-        text: "Why consider participating?"
+        text: "What are research registries?"
     },
     {
         url: '3',
-        text: "Are research studies safe?"
+        text: "Why consider participating?"
     },
     {
         url: '4',
+        text: "Are research studies safe?"
+    },
+    {
+        url: '5',
         text: "How to participate and where to start?"
     }
 ]
@@ -82,6 +86,14 @@ router.get('/4', updateDatabase, (req, res) => {
     res.render("pages/interventionType/EducationalComponent/4", {id: id, vh: vh, vhType: vhType, interventionType: interventionType, buttons: buttons, url: '4'})
 })
 
+router.get('/5', updateDatabase, (req, res) => {
+    var id = req.session.params.id;
+    var vh = req.session.params.vCHE;
+    var interventionType = req.session.params.interventionType;
+    var vhType = req.session.params.vhType;
+    res.render("pages/interventionType/EducationalComponent/5", {id: id, vh: vh, vhType: vhType, interventionType: interventionType, buttons: buttons, url: '5'})
+})
+
 function updateDatabase(req, res, next) {
     let dbEntry = req.url.slice(1)
     // BEGIN DATABSAE STUFF:SENDING VERSION (R24 OR U01) AND ID TO DATABASE
@@ -93,7 +105,7 @@ function updateDatabase(req, res, next) {
         var request = new sql.Request();
 
         let queryString = `
-        UPDATE R24U01
+        UPDATE R24
         SET Educational_` + dbEntry + `= 'clicked'
         WHERE ID = '` + req.id + `' 
         AND VisitNum = '` + req.visitNum + `'`;
