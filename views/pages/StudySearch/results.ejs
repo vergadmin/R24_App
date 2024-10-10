@@ -278,6 +278,10 @@
             </div>
         <% } %>
 
+        <div>
+             <%- include('../../partials/registries.ejs'); %>
+        </div>
+
         <button onclick="sendToDatabase(`ResultsDownloadStudiesList`, `clicked`);window.print()">Download Studies List</button>
         <br/>
         <button class="green" onclick="openSurvey(); sendToDatabase(`ResultsCompleteSurvey`, `clicked`)">Complete Survey</button>
