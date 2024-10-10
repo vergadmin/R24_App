@@ -172,6 +172,7 @@ async function logLanguage() {
     } else {
         type = type + "s"
     }
+    console.log(type)
     console.log(vCHE)
     let url = '/updateDatabase';
     let data = {
@@ -187,7 +188,13 @@ async function logLanguage() {
     });
     if (res.ok) {
         let ret = await res.json();
-        window.location.href=`/${sessionStorage.getItem('id')}/${type}/${vCHE}/EducationalComponent/Introduction`
+        console.log(type)
+        console.log(vCHE)
+        if (type === 'vh') {
+            window.location.href=`/${sessionStorage.getItem('id')}/${type}/${vCHE}/EducationalComponent/Introduction`
+        } else {
+            window.location.href=`/${sessionStorage.getItem('id')}/${type}/${vCHE}/EducationalComponentText/Introduction`
+        }
     } else {
         return `HTTP error: ${res.status}`;
     }
