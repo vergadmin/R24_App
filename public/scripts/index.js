@@ -95,6 +95,7 @@ window.addEventListener("load", async () => {
     sessionStorage.setItem("id", id)
     sessionStorage.setItem("type", type)
     sessionStorage.setItem("vCHE", vCHE)
+    console.log("LOADED HERE IS SESSION STORAGE", sessionStorage)
 
     // console.log("TIME")
     dateTime = new Date().toLocaleString() + " " + Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -176,7 +177,8 @@ async function logLanguage() {
     console.log(vCHE)
     let url = '/updateDatabase';
     let data = {
-        'Language': sessionStorage.getItem("language")
+        'Language': sessionStorage.getItem("language"),
+        'vCHE': type
     };
 
     let res = await fetch(url, {
@@ -190,7 +192,7 @@ async function logLanguage() {
         let ret = await res.json();
         console.log(type)
         console.log(vCHE)
-        if (type === 'vh') {
+        if (vCHE === 'vh') {
             window.location.href=`/${sessionStorage.getItem('id')}/${type}/${vCHE}/EducationalComponent/Introduction`
         } else {
             window.location.href=`/${sessionStorage.getItem('id')}/${type}/${vCHE}/EducationalComponentText/Introduction`

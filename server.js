@@ -56,13 +56,8 @@ app.post('/updateDatabase', storeSessionParameters, (req, res) => {
     for (const [key, value] of Object.entries(req.body)) {
         if (key !== FLAG)
             setList += key + `='` + value + `', `
-        if (key === 'Language') {
-            if (value === 'en') {
-                req.session.params.vCHE = req.session.params.vCHE + 'e'
-            } else {
-                req.session.params.vCHE = req.session.params.vCHE + 's'
-            }
-            
+        if (key === 'vCHE') {
+            req.session.params.vCHE = req.body.vCHE
         }
     }
     setList = setList.slice(0, -2); 
