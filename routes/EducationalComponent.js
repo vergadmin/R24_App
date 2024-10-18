@@ -29,10 +29,6 @@ const buttons = [
         text: "What are research studies?"
     },
     {
-        url: '2',
-        text: "What are research registries?"
-    },
-    {
         url: '3',
         text: "Why consider participating?"
     },
