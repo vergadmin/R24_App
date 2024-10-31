@@ -54,7 +54,7 @@ app.use(session({
     },
 }))
 
-app.post('/updateDatabase', storeSessionParameters, (req, res) => {
+app.post('/updateDatabase', (req, res) => {
     let setList = ''
     console.log(req.body)
     for (const [key, value] of Object.entries(req.body)) {
@@ -515,31 +515,6 @@ app.post('/storeParameters', (req, res) => {
     });
     // END DATABASE STUFF
 })
-
-function storeSessionParameters(req, res, next) {
-
-    if (req.body.ConditionText1 || req.body.ConditionText2 || req.body.ConditionText3) {
-        delete req.session.params.searchCriteria.ConditionText1;
-        delete req.session.params.searchCriteria.ConditionText2;
-        delete req.session.params.searchCriteria.ConditionText3;
-    }
-
-    if (req.body.HealthyLiving || req.body.PreventionScreening || req.body.Treatment || req.body.Survivorship || req.body.Other) {
-        req.session.params.searchCriteria.groupings = [];
-    }
-
-    for (const [key, value] of Object.entries(req.body)) {
-        if (formData.includes(key)) {
-            req.session.params.searchCriteria[key] = value;
-        } else if (groupingsData.includes(key) && !req.session.params.searchCriteria.groupings.includes(key)) {
-            let index = groupingsData.indexOf(key);
-            let category = groupingsNames[index];
-            req.session.params.searchCriteria.groupings.push(category);
-        }
-    }
-    next();
-
-}
 
 function checkPreviousVisit(req, res, next) {
     if (req.session.visitedIndex && req.session.params.interventionType === req.params.interventionType) {
