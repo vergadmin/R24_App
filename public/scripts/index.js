@@ -65,21 +65,29 @@ function detectOS() {
     const platform = navigator.platform;
     let osName = "Unknown";
 
-    // Detect operating system
-    if (/Windows/i.test(platform)) {
+    // Standard platform checks for various OS
+    if (platform.indexOf('Win') !== -1) {
         osName = "Windows";
-    } else if (/Mac/i.test(platform)) {
+    } else if (platform.indexOf('Mac') !== -1) {
         osName = "Mac";
+    } else if (platform.indexOf('Linux') !== -1) {
+        osName = "Linux";
     } else if (/Android/i.test(userAgent)) {
         osName = "Android";
     } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
         osName = "iOS";
+    } else if (/CrOS/.test(userAgent)) {
+        osName = "Chrome OS"; // Detect Chrome OS
+    } else if (/Win64|WOW64/.test(userAgent)) {
+        osName = "Windows 64-bit";
+    } else if (/Win32/.test(userAgent)) {
+        osName = "Windows 32-bit";
+    } else if (/X11/.test(platform) || /Linux/.test(platform)) {
+        osName = "Unix-based";
     }
 
     return osName;
 }
-
-
 
 window.addEventListener("load", async () => {
     // console.log("SAVING SESSION INFO LOCALLY")
