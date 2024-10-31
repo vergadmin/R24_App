@@ -10,7 +10,8 @@ async function validateAndSendFormData(id) {
         if (roleSelected) {
             sessionStorage.setItem("role-type", roleSelected.value);
             var ret = await sendFormData(id);
-            window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Background`
+            return;
+            // window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Background`
         }
         else {
             if (!roleSelected) {
@@ -26,22 +27,15 @@ async function validateAndSendFormData(id) {
             }
             else {
                 if (document.getElementById('role-info')) document.getElementById('role-info').remove();
-            }        
+            }
         }
-    } else if (id==='preferences') {
+    } else if (id === 'preferences') {
         const preferencesInput = form.querySelectorAll('input[type="radio"][name="Preferences"]');
         const preferencesSelected = Array.from(preferencesInput).find(button => button.checked);
         if (preferencesSelected) {
-            var ret = await sendFormData(id);
-            var htmlForm = document.getElementById(id)
-            var formData = new FormData(htmlForm)
             sessionStorage.setItem("preferences", preferencesSelected.value);
-            let data = Object.fromEntries(formData)
-            if (data['Preferences'] === 'Search') {
-                window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Diagnosis`
-            } else {
-                window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Groupings`
-            }
+            var ret = await sendFormData(id);
+            return;
         }
         else {
             if (!preferencesSelected) {
@@ -57,7 +51,7 @@ async function validateAndSendFormData(id) {
             }
             else {
                 if (document.getElementById('preferences-info')) document.getElementById('preferences-info').remove();
-            }        
+            }
         }
     }
     else {
@@ -78,8 +72,8 @@ async function validateAndSendFormData(id) {
         if (ageValid && genderSelected && stateSelected && citySelected) {
             // Redirect the user if inputs are valid
             var ret = await sendFormData(id);
-            console.log("The ID IS : ", id);
-            window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Preferences`
+            return;
+
         }
         else {
             if (!ageValid) {
@@ -112,7 +106,7 @@ async function validateAndSendFormData(id) {
             }
             else {
                 if (document.getElementById('gender-info')) document.getElementById('gender-info').remove();
-            }        
+            }
             if (!stateSelected) {
                 if (!document.getElementById('state-info')) {
                     const stateLegend = document.querySelector('.state-legend');
@@ -126,7 +120,7 @@ async function validateAndSendFormData(id) {
             }
             else {
                 if (document.getElementById('state-info')) document.getElementById('state-info').remove();
-            }        
+            }
             if (!citySelected) {
                 if (!document.getElementById('city-info')) {
                     const cityLegend = document.querySelector('.city-legend');
@@ -140,7 +134,7 @@ async function validateAndSendFormData(id) {
             }
             else {
                 if (document.getElementById('city-info')) document.getElementById('city-info').remove();
-            }        
+            }
         }
     }
 }
@@ -151,47 +145,28 @@ async function sendFormData(id) {
     var formData;
     if (id !== "no-info") {
         formData = new FormData(htmlForm);
-    } 
-    let data;
+    }
+    var data;
 
     console.log(formData);
-
-    if(id==='groupings-info') {
-        const selectedCards = [];
-        formData.forEach((value, key) => {
-            selectedCards.push(value);
-        });
-        data = selectedCards.reduce((acc, cur) => ({ ...acc, [cur]: 'yes' }), {});
-        const pref = sessionStorage.getItem('preferences');
-        if (pref === 'Search') {
-            console.log("User is Searching");
+    if (id === 'role-type') {
+        data = {
+            "Role": Object.fromEntries(formData)
         }
-        if (pref === 'Browse') {
-            console.log("User is browsing");
-            let id = sessionStorage.getItem("id") || "tempId";
-            let type = sessionStorage.getItem("type") || "tempType";
-            let vCHE = sessionStorage.getItem("vCHE") || "tempvCHE";
-            window.location.href = `/${id}/${type}/${vCHE}/StudySearch/Browse`
-        }
-    } 
-    else if (id === 'browse-info') {
-        const selectedConditions = [];
-        const conditionText = ['ConditionText1', 'ConditionText2', 'ConditionText3'];
-        const conditions = {};
-
-        formData.forEach((value, key) => {
-            const index = selectedConditions.length;
-            if (index < conditionText.length) {
-                conditions[conditionText[index]] = value;
-            }
-            selectedConditions.push(value);
-        })
-        data = conditions;
     }
-
     else if (id === 'background-info') {
-        data = Object.fromEntries(formData)
+        data = {
+            "Background": Object.fromEntries(formData)
+        }
         // data['FLAG'] = 'FLAG';
+    }
+    else if (id === "preferences") {
+        var htmlForm = document.getElementById(id)
+        var formData = new FormData(htmlForm)
+        let pref = Object.fromEntries(formData)
+        data = {
+            "Preferences": pref
+        }
 
     }
     else if (id === "no-info") {
@@ -214,19 +189,48 @@ async function sendFormData(id) {
             }
         })
         data = conditions;
+        data = {
+            "Conditions": conditions
+        }
+
     }
-    else if (id === 'role-type') {
-        data = Object.fromEntries(formData)
-        data['FLAG'] = 'FLAG';
+    else if (id === 'groupings-info') {
+        const selectedCards = [];
+        formData.forEach((value, key) => {
+            selectedCards.push(value);
+        });
+        dataCards = selectedCards.reduce((acc, cur) => ({ ...acc, [cur]: 'yes' }), {});
+        data = {
+            "Groupings": dataCards
+        }
     }
+    else if (id === 'browse-info') {
+        const selectedConditions = [];
+        const conditionText = ['ConditionText1', 'ConditionText2', 'ConditionText3'];
+        const conditions = {};
+
+        formData.forEach((value, key) => {
+            const index = selectedConditions.length;
+            if (index < conditionText.length) {
+                conditions[conditionText[index]] = value;
+            }
+            selectedConditions.push(value);
+        })
+        data = conditions;
+        data = {
+            "Conditions": conditions
+        }
+    }
+
+
     else {
         console.log(Object.fromEntries(formData))
         data = Object.fromEntries(formData)
     }
 
 
-    
-    let url = '/updateDatabase';
+
+    let url = '/storeParameters';
 
     let res = await fetch(url, {
         method: 'POST',
@@ -235,28 +239,46 @@ async function sendFormData(id) {
         },
         body: JSON.stringify(data),
     });
+
+    // The Great Re-Router. Please Take Us Where We Must Go!
     if (res.ok) {
         let ret = await res.json();
-        var userId = ret.id;
-        var type = ret.type;
-        var vCHE = ret.vCHE;
-        if (id === "browse-info" || id == "no-info") {
-            window.location.href = `/${userId}/${type}/${vCHE}/StudySearch/GeneratingResults`
+        console.log(ret);
+        if (id === "role-type") {
+            window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Background`
         }
-        else if (id === "diagnosis-info") {
-            window.location.href = `/${userId}/${type}/${vCHE}/StudySearch/Groupings`
+        else if (id === "background-info") {
+            window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Preferences`
+        }
+        else if (id === "preferences") {
+            const pref = sessionStorage.getItem('preferences') || "Search";
+            if (pref === 'Search') {
+                window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Diagnosis`
+            }
+            else if (pref === 'Browse') {
+                window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Groupings`
+            }
+            else {
+                window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Diagnosis`
+            }
         }
         else if (id === "groupings-info") {
-            if (sessionStorage.getItem("preferences")) {
-                const pref = sessionStorage.getItem('preferences');
-                if (pref === 'Search') {
-                    console.log("User is Searching");
-                    let id = sessionStorage.getItem("id") || "tempId";
-                    let type = sessionStorage.getItem("type") || "tempType";
-                    let vCHE = sessionStorage.getItem("vCHE") || "tempvCHE";
-                    window.location.href = `/${id}/${type}/${vCHE}/StudySearch/GeneratingResults`
-                }
+            const pref = sessionStorage.getItem('preferences') || "Search";
+            if (pref === 'Search') {
+                window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/GeneratingResults`
             }
+            else if (pref === 'Browse') {
+                window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Browse`
+            }
+            else {
+                window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Diagnosis`
+            }
+        }
+        else if (id === "browse-info" || id == "no-info") {
+            window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/GeneratingResults`
+        }
+        else if (id === "diagnosis-info") {
+            window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Groupings`
         }
         else {
 
@@ -269,10 +291,10 @@ async function sendFormData(id) {
 
 async function search() {
     // Because we've stored all of the variables in session we can send a flag here.
-    
+
 }
 
-if(window.location.toString().indexOf("Results") != -1){
+if (window.location.toString().indexOf("Results") != -1) {
     // console.log("WE ARE IN RESULTS PAGE")
     // console.log("SESSION STORAGE")
     // console.log(sessionStorage)
@@ -285,7 +307,7 @@ function copyEmailText(contactName, studyTitle, briefSummary) {
     // console.log(contactName)
     // console.log(briefSummary)
 
-    let text= `Hi ${contactName},
+    let text = `Hi ${contactName},
 
     My name is [YOUR NAME HERE]. I saw your study ${studyTitle} through the Research Studies section on the ALEX site. I’m interested in participating and would like more information. Here’s the description of your study that I read:
     
@@ -302,19 +324,19 @@ function copyEmailText(contactName, studyTitle, briefSummary) {
 
     // alert("The following text was successfully copied!\n\n" + text)
 
-    navigator.clipboard.writeText(text).then(function() {
+    navigator.clipboard.writeText(text).then(function () {
         // alert("Copied the text: " + link);
         var button = document.getElementById("copyLink");
         button.innerHTML = "&#x2713; Email Text Copied!";
         button.style.backgroundColor = "green";
-    }).catch(function(error) {
+    }).catch(function (error) {
         const url = "/SendError";
         let res = fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({error}),
+            body: JSON.stringify({ error }),
         });
         console.error('An error occurred while copying to clipboard:', error);
     });

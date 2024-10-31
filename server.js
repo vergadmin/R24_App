@@ -11,7 +11,7 @@ const CryptoJS = require("crypto-js");
 const OpenAI = require('openai');
 const client = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY // This is the default and can be omitted
-  });
+});
 
 app.set('view engine', 'ejs')
 app.use(express.static(__dirname + '/public'));
@@ -20,6 +20,10 @@ var sql = require("mssql");
 
 const columnNames = ['diseases', 'synonym1', 'synonym2', 'synonym3', 'synonym4', 'synonym5', 'synonym6', 'synonym7', 'synonym8', 'synonym9', 'synonym10', 'synonym11', 'synonym12', 'synonym13', 'synonym14', 'synonym15', 'synonym16', 'synonym17', 'synonym18', 'synonym19', 'synonym20', 'synonym21', 'synonym22', 'synonym23', 'synonym24', 'synonym25', 'synonym26', 'synonym27', 'synonym28', 'synonym29', 'synonym30', 'synonym31', 'synonym32', 'synonym33', 'synonym34', 'synonym35', 'synonym36', 'synonym37', 'synonym38', 'synonym39', 'synonym40', 'synonym41', 'synonym42', 'synonym43', 'synonym44', 'synonym45', 'synonym46', 'synonym47', 'synonym48', 'synonym49', 'synonym50', 'synonym51'];
 
+const formData = ['ConditionText1', 'ConditionText2', 'ConditionText3', 'Age', 'Gender', 'LocationState', 'LocationCity', 'Conditions'];
+const groupingsData = ['HealthyLiving', 'PreventionScreening', 'Treatment', 'Survivorship', 'Other'];
+const groupingsNames = ['Healthy Living', 'Cancer Prevention & Screening', 'Treatment', 'Survivorship', 'Other'];
+
 const FLAG = 'FLAG';
 
 
@@ -27,16 +31,16 @@ const config = {
     user: 'VergAdmin',
     password: process.env.PASSWORD,
     server: process.env.SERVER,
-    port: parseInt(process.env.DBPORT, 10), 
+    port: parseInt(process.env.DBPORT, 10),
     database: process.env.DATABASE,
     pool: {
-      max: 10,
-      min: 0,
-      idleTimeoutMillis: 30000
+        max: 10,
+        min: 0,
+        idleTimeoutMillis: 30000
     },
     options: {
-      encrypt: true, // for azure
-      trustServerCertificate: true // change to true for local dev / self-signed certs
+        encrypt: true, // for azure
+        trustServerCertificate: true // change to true for local dev / self-signed certs
     }
 }
 
@@ -60,7 +64,7 @@ app.post('/updateDatabase', storeSessionParameters, (req, res) => {
             req.session.params.vCHE = req.body.vCHE
         }
     }
-    setList = setList.slice(0, -2); 
+    setList = setList.slice(0, -2);
 
 
     // BEGIN DATABSAE STUFF:SENDING VERSION (R24 OR U01) AND ID TO DATABASE
@@ -68,7 +72,7 @@ app.post('/updateDatabase', storeSessionParameters, (req, res) => {
     var type = req.session.params.interventionType;
     var vCHE = req.session.params.vCHE;
     if (setList === '') {
-        res.json({ id: id, type: type, vCHE: vCHE});
+        res.json({ id: id, type: type, vCHE: vCHE });
         return;
     }
     sql.connect(config, function (err) {
@@ -93,9 +97,9 @@ app.post('/updateDatabase', storeSessionParameters, (req, res) => {
                 console.log(err);
             }
             console.log(vCHE)
-            res.json({ id: id, type: type, vCHE: vCHE});
-        }); 
-    
+            res.json({ id: id, type: type, vCHE: vCHE });
+        });
+
     });
     // END DATABASE STUFF
 })
@@ -103,8 +107,8 @@ app.post('/updateDatabase', storeSessionParameters, (req, res) => {
 app.post('/SendError', (req, res) => {
     errorProtocol(req.body.error, req, res);
     res.send("Error recorded successfully");
-  })
-  
+})
+
 
 app.post('/storeCharacterInfoInServer', async (req, res) => {
     // console.log("IN STORE CHARACTER INFO")
@@ -114,7 +118,7 @@ app.post('/storeCharacterInfoInServer', async (req, res) => {
     var id = req.session.params.id;
     var vh = req.session.params.vCHE;
     var interventionType = req.session.params.interventionType;
-    res.json({id: id, vhType: interventionType, vh: vh});
+    res.json({ id: id, vhType: interventionType, vh: vh });
 });
 
 app.post("/:id/:interventionType/RetrieveConditions", (req, res) => {
@@ -122,7 +126,7 @@ app.post("/:id/:interventionType/RetrieveConditions", (req, res) => {
 
     // List all synonym columns to be selected
     const synonymColumns = Array.from({ length: 51 }, (_, i) => `synonym${i + 1}`).join(", ");
-    
+
     // Construct the query to select the disease and all synonym columns
     let queryString = `
     SELECT TOP 300 diseases, ${synonymColumns} FROM Diseases
@@ -164,7 +168,7 @@ app.post("/:id/:interventionType/RetrieveConditions", (req, res) => {
                     const similarity = stringSimilarity.compareTwoStrings(searchValue, synonym);
                     return (similarity > best.similarity) ? { synonym, similarity } : best;
                 }, { synonym: '', similarity: 0 });
-                
+
                 return {
                     disease: condition.diseases,
                     bestMatch: bestMatch.synonym,
@@ -184,7 +188,7 @@ app.post("/:id/:interventionType/RetrieveConditions", (req, res) => {
 // Root route that redirects to valid route
 app.get('/', (req, res) => {
     res.redirect('/test-id/vh/bf');
-  });
+});
 
 // ID is userID from qualtrics, interventionType is vh or text from Qualtrics
 app.get('/:id/:interventionType/:vh', checkPreviousVisit, addVisitToDatabase, (req, res) => {
@@ -202,10 +206,10 @@ app.get('/:id/:interventionType/:vh', checkPreviousVisit, addVisitToDatabase, (r
     // console.log("INTERVENTION TYPE IS", interventionType)
 
     if (interventionType === "text") {
-        res.render('pages/indexText', {id: id, interventionType: interventionType})
-    } 
+        res.render('pages/indexText', { id: id, interventionType: interventionType })
+    }
     else {
-        res.render('pages/index', {id: id, interventionType: interventionType})
+        res.render('pages/index', { id: id, interventionType: interventionType })
     }
 })
 
@@ -236,37 +240,283 @@ app.get('/:id/:interventionType/:vh/Discover', (req, res) => {
             if (err) {
                 errorProtocol(err, req, res);
                 console.log(err);
-            }        
-        }); 
-    
+            }
+        });
+
     });
 
-    res.render('pages/discover', {id: id, vh: vh, interventionType: interventionType})
+    res.render('pages/discover', { id: id, vh: vh, interventionType: interventionType })
 })
 
-function storeSessionParameters(req, res, next) {
 
-    const formData = ['ConditionText1', 'ConditionText2', 'ConditionText3', 'Age', 'Gender', 'LocationState', 'LocationCity', 'Role'];
+app.post('/storeParameters', (req, res) => {
 
-    const groupingsData = ['HealthyLiving', 'PreventionScreening', 'Treatment', 'Survivorship', 'Other'];
 
-    const groupingsNames = ['Healthy Living', 'Cancer Prevention & Screening', 'Treatment', 'Survivorship', 'Other'];
+    var background = false;
+    var conditions = false;
+    var groupings = false;
+    var role = false;
+    var preferences = false;
 
     if (!req.session.params) {
         req.session.params = {};
     }
+    // =============================================
+    // Initialize Search Criteria Variables if Needed
+    // =============================================
+    // This is information that is used to inform the CURRENT search
     if (!req.session.params.searchCriteria) {
         req.session.params.searchCriteria = {};
     }
-    if (!req.session.params.searchCriteria.groupings) {
-        req.session.params.searchCriteria.groupings = [];
+    if (!req.session.params.searchCriteria.Groupings) {
+        req.session.params.searchCriteria.Groupings = [];
     }
 
-    if (req.body.FLAG) {
-        if (req.body.FLAG === FLAG) {
-            req.session.params.searchCriteria = {};
-        }
+    // =============================================
+    // Initialize Past Search Criteria Variables if Needed
+    // =============================================
+    // This is information that holds the PAST searches (i.e., multiple in one session)
+    if (!req.session.params.searches) {
+        req.session.params.searches = {};
     }
+    if (!req.session.params.searches.Preferences) {
+        req.session.params.searches.Preferences = []
+    }
+    if (!req.session.params.searches.Role) {
+        req.session.params.searches.Role = []
+    }
+    if (!req.session.params.searches.Groupings) {
+        req.session.params.searches.Groupings = []
+    }
+    if (!req.session.params.searches.Conditions) {
+        req.session.params.searches.Conditions = []
+    }
+    if (!req.session.params.searches.Age) {
+        req.session.params.searches.Age = [];
+    }
+    if (!req.session.params.searches.Gender) {
+        req.session.params.searches.Gender = [];
+    }
+    if (!req.session.params.searches.LocationState) {
+        req.session.params.searches.LocationState = [];
+    }
+    if (!req.session.params.searches.LocationCity) {
+        req.session.params.searches.LocationCity = [];
+    }
+
+    // =============================================
+    // Store Information Sent from User
+    // =============================================
+    if (req.body.Background) {
+        req.session.params.searchCriteria = {
+            "Age": parseInt(req.body.Background.Age),
+            "Gender": req.body.Background.Gender,
+            "LocationState": req.body.Background.LocationState,
+            "LocationCity": req.body.Background.LocationCity
+        }
+        req.session.params.searches.Age.push({
+            "Age": parseInt(req.body.Background.Age),
+        })
+        req.session.params.searches.Gender.push({
+            "Gender": req.body.Background.Gender
+        })
+        req.session.params.searches.LocationState.push({
+            "LocationState": req.body.Background.LocationState
+        })
+        req.session.params.searches.LocationCity.push({
+            "LocationCity": req.body.Background.LocationCity
+        })
+        background = true;
+    } else if (req.body.Conditions) {
+        if (req.body.Conditions.ConditionText1)
+            req.session.params.searchCriteria.ConditionText1 = req.body.Conditions.ConditionText1;
+        if (req.body.Conditions.ConditionText2)
+            req.session.params.searchCriteria.ConditionText2 = req.body.Conditions.ConditionText2;
+        if (req.body.Conditions.ConditionText3)
+            req.session.params.searchCriteria.ConditionText3 = req.body.Conditions.ConditionText3;
+        req.session.params.searches.Conditions.push({
+            "Conditions": req.body.Conditions
+        })
+        conditions = true;
+    } else if (req.body.Groupings) {
+        // console.log(req.body.Groupings);
+        // We need to conver the Groupings into the Clean Text Form in groupingsNames
+        var cleanGroupings = [];
+        for (const [key, value] of Object.entries(req.body.Groupings)) {
+            if (groupingsData.includes(key)) {
+                let index = groupingsData.indexOf(key);
+                let category = groupingsNames[index];
+                cleanGroupings.push(category);
+                // console.log(category);
+            }
+        }
+        req.session.params.searchCriteria.Groupings = cleanGroupings;
+        req.session.params.searches.Groupings.push({
+            "Groupings": cleanGroupings
+        })
+        groupings = true;
+    }
+    else if (req.body.Role) {
+        console.log(req.body.Role);
+        req.session.params.searchCriteria.Role = req.body.Role;
+        req.session.params.searches.Role.push({
+            "Role": req.body.Role
+        })
+        role = true;
+    }
+    else if (req.body.Preferences) {
+        req.session.params.searchCriteria.Preferences = req.body.Preferences;
+        req.session.params.searches.Preferences.push({
+            "Preferences": req.body.Preferences
+        })
+        preferences = true;
+    }
+    console.log(req.session.params.searches);
+    console.log(req.session.params.searchCriteria);
+
+    // =============================================
+    // Log Search Criterias
+    // =============================================
+    sql.connect(config, function (err) {
+        var id = req.session.params.id;
+        var type = req.session.params.interventionType;
+        var vCHE = req.session.params.vCHE;
+
+        if (err) {
+            errorProtocol(err, req, res);
+            console.log(err);
+        }
+
+        if (background) {
+            // create Request object
+            var request = new sql.Request();
+
+            let queryString = `
+            UPDATE R24
+            SET Age = @age, Gender = @gender, LocationState = @locationState, LocationCity = @locationCity 
+            WHERE ID = @id
+            AND VisitNum = @visitNum`
+
+
+            request.input('age', sql.VarChar, JSON.stringify(req.session.params.searches.Age));
+            request.input('gender', sql.VarChar, JSON.stringify(req.session.params.searches.Gender));
+            request.input('locationState', sql.VarChar, JSON.stringify(req.session.params.searches.LocationState));
+            request.input('locationCity', sql.VarChar, JSON.stringify(req.session.params.searches.LocationCity));
+            request.input('id', sql.VarChar, req.session.params.id);
+            request.input('visitNum', sql.Int, req.session.params.visitNum);
+            // console.log(queryString);
+            req.session.params.queryString = queryString;
+            request.query(queryString, function (err, recordset) {
+                if (err) {
+                    errorProtocol(err, req, res);
+                    console.log(err);
+                }
+                res.json({ id: id, type: type, vCHE: vCHE });
+            });
+        }
+        if (conditions) {
+            // create Request object
+            var request = new sql.Request();
+
+            let queryString = `
+            UPDATE R24
+            SET Conditions = @conditions 
+            WHERE ID = @id
+            AND VisitNum = @visitNum`
+
+            request.input('conditions', sql.VarChar, JSON.stringify(req.session.params.searches.Conditions));
+            request.input('id', sql.VarChar, req.session.params.id);
+            request.input('visitNum', sql.Int, req.session.params.visitNum);
+            // console.log(queryString);
+            req.session.params.queryString = queryString;
+            request.query(queryString, function (err, recordset) {
+                if (err) {
+                    errorProtocol(err, req, res);
+                    console.log(err);
+                }
+                res.json({ id: id, type: type, vCHE: vCHE });
+            });
+        }
+        if (groupings) {
+            // create Request object
+            var request = new sql.Request();
+
+            let queryString = `
+            UPDATE R24
+            SET Groupings = @groupings 
+            WHERE ID = @id
+            AND VisitNum = @visitNum`
+
+
+            request.input('groupings', sql.VarChar, JSON.stringify(req.session.params.searches.Groupings));
+            request.input('id', sql.VarChar, req.session.params.id);
+            request.input('visitNum', sql.Int, req.session.params.visitNum);
+            // console.log(queryString);
+            req.session.params.queryString = queryString;
+            request.query(queryString, function (err, recordset) {
+                if (err) {
+                    errorProtocol(err, req, res);
+                    console.log(err);
+                }
+                res.json({ id: id, type: type, vCHE: vCHE });
+            });
+        }
+        if (role) {
+            // create Request object
+            var request = new sql.Request();
+
+            let queryString = `
+            UPDATE R24
+            SET Role = @role 
+            WHERE ID = @id
+            AND VisitNum = @visitNum`
+
+            request.input('role', sql.VarChar, JSON.stringify(req.session.params.searches.Role));
+            request.input('id', sql.VarChar, req.session.params.id);
+            request.input('visitNum', sql.Int, req.session.params.visitNum);
+        
+            // console.log(queryString);
+            req.session.params.queryString = queryString;
+            request.query(queryString, function (err, recordset) {
+                if (err) {
+                    errorProtocol(err, req, res);
+                    console.log(err);
+                }
+                res.json({ id: id, type: type, vCHE: vCHE });
+            });
+        }
+        if (preferences) {
+            // create Request object
+            var request = new sql.Request();
+
+            let queryString = `
+            UPDATE R24
+            SET Preferences = @preferences 
+            WHERE ID = @id
+            AND VisitNum = @visitNum`
+
+            request.input('preferences', sql.VarChar, JSON.stringify(req.session.params.searches.Preferences));
+            request.input('id', sql.VarChar, req.session.params.id);
+            request.input('visitNum', sql.Int, req.session.params.visitNum);
+            // console.log(queryString);
+            req.session.params.queryString = queryString;
+            request.query(queryString, function (err, recordset) {
+                if (err) {
+                    errorProtocol(err, req, res);
+                    console.log(err);
+                }
+                res.json({ id: id, type: type, vCHE: vCHE });
+            });
+        }
+
+
+
+
+    });
+    // END DATABASE STUFF
+})
+
+function storeSessionParameters(req, res, next) {
 
     if (req.body.ConditionText1 || req.body.ConditionText2 || req.body.ConditionText3) {
         delete req.session.params.searchCriteria.ConditionText1;
@@ -305,7 +555,7 @@ function checkPreviousVisit(req, res, next) {
         req.session.params.vhType = req.params.vh
         req.session.params.vCHE = req.params.vh
     }
-    if ( req.session.params.interventionType !== req.params.interventionType) {
+    if (req.session.params.interventionType !== req.params.interventionType) {
         req.session.params.interventionType = interventionType;
     }
 
@@ -387,14 +637,14 @@ function addVisitToDatabase(req, res, next) {
         let queryString = `
         INSERT INTO R24 (ID, VisitNum, InterventionType, vCHE, vhType)
         VALUES (@id, @visitNum, @interventionType, @vCHE, @vhType)`
-  
+
         // Add input parameters
         request.input('id', sql.VarChar(50), id);
         request.input('visitNum', sql.Int, visitNum);
         request.input('interventionType', sql.VarChar(50), interventionType);
         request.input('vCHE', sql.VarChar(50), vCHE);
         request.input('vhType', sql.VarChar(50), vhType);
- 
+
         request.query(queryString, function (err, recordset) {
             if (err) {
                 errorProtocol(err, req, res);
@@ -411,7 +661,7 @@ app.post('/:id/:interventionType/RetrieveCities', (req, res) => {
     var id = req.params.id
     var interventionType = req.params.interventionType
     let stateVal = (Object.entries(req.body)[0][1])
-    let cityVal =(Object.entries(req.body)[1][1])
+    let cityVal = (Object.entries(req.body)[1][1])
     const code = cityVal.charCodeAt(0)
     let database = "StatesAndCitiesAG"
     if ((code >= 97 && code <= 103) || (code >= 65 && code <= 71)) {
@@ -423,7 +673,7 @@ app.post('/:id/:interventionType/RetrieveCities', (req, res) => {
     else {
         database = "StatesAndCitiesPZ"
     }
-    
+
     const queryString = `
     SELECT * FROM ${database}
     WHERE State = '${stateVal}' 
@@ -441,15 +691,15 @@ app.post('/:id/:interventionType/RetrieveCities', (req, res) => {
             if (err) {
                 errorProtocol(err, req, res);
                 console.log(err);
-            }            
-            res.json(recordset.recordset);    
-        }); 
+            }
+            res.json(recordset.recordset);
+        });
     })
 });
 
 // Virtual Human Types
 const EducationalComponentRouter = require('./routes/EducationalComponent');
-app.use('/:id/:interventionType/:vh/EducationalComponent', function(req,res,next) {
+app.use('/:id/:interventionType/:vh/EducationalComponent', function (req, res, next) {
     req.id = req.session.params.id;
     req.vh = req.session.params.vCHE;
     req.vhType = req.session.params.vhType;
@@ -461,7 +711,7 @@ app.use('/:id/:interventionType/:vh/EducationalComponent', function(req,res,next
 
 // Text Types
 const EducationalComponentTextRouter = require('./routes/EducationalComponentText')
-app.use('/:id/:interventionType/:vh/EducationalComponentText', function(req,res,next){
+app.use('/:id/:interventionType/:vh/EducationalComponentText', function (req, res, next) {
     req.id = req.session.params.id;
     req.vh = req.session.params.vCHE;
     req.vhType = req.session.params.vhType;
@@ -472,7 +722,7 @@ app.use('/:id/:interventionType/:vh/EducationalComponentText', function(req,res,
 
 // Clinical Trials/study search router
 const { json } = require('body-parser');
-app.use('/:id/:interventionType/:vh/StudySearch', function(req,res,next){
+app.use('/:id/:interventionType/:vh/StudySearch', function (req, res, next) {
     req.id = req.session.params.id;
     req.vh = req.session.params.vCHE;
     req.vhType = req.session.params.vhType;

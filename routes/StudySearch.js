@@ -22,7 +22,14 @@ const SUMMARY_PROMPT = process.env.SUMMARY_PROMPT;
 const TITLE_PROMPT = process.env.TITLE_PROMPT;
 const MAX_TOKENS = 300
 const MAX_TITLE_TOKENS = 50
-const TEMPERATURE = 0
+const TEMPERATURE = 0;
+const studySearchRequestURL = "http://studysearch.us-east-1.elasticbeanstalk.com/Patient/Results";
+const emailPatientURL = "http://studysearch.us-east-1.elasticbeanstalk.com/PatientEmail/SendEmailPatient";
+const emailCaregiverURL = "http://studysearch.us-east-1.elasticbeanstalk.com/PatientEmail/SendEmailCaregiver";
+const emailFriendsAndFamilyURL = "http://studysearch.us-east-1.elasticbeanstalk.com/PatientEmail/SendEmailFFLaunch";
+// const studySearchRequestURL = "http://localhost:3000/Patient/Results";
+// const emailFriendsAndFamilyURL = "http://localhost:3000/PatientEmail/SendEmailFFLaunch";
+
 // open ai constants --->
 
 
@@ -34,76 +41,6 @@ AWS.config.update({
 
 const ses = new AWS.SES({ apiVersion: '2010-12-01' });
 const maxInt = Number.MAX_SAFE_INTEGER;
-const usStates = [
-  "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida",
-  "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
-  "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada",
-  "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma",
-  "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah",
-  "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
-];
-
-const usStatesWithBorders = [
-  { state: "Alabama", borders: ["Florida", "Georgia", "Mississippi", "Tennessee"] },
-  { state: "Alaska", borders: [] }, // Alaska doesn't border any US state
-  { state: "Arizona", borders: ["California", "Nevada", "Utah", "Colorado", "New Mexico"] },
-  { state: "Arkansas", borders: ["Louisiana", "Mississippi", "Missouri", "Oklahoma", "Tennessee", "Texas"] },
-  { state: "California", borders: ["Arizona", "Nevada", "Oregon"] },
-  { state: "Colorado", borders: ["Arizona", "Kansas", "Nebraska", "New Mexico", "Oklahoma", "Utah", "Wyoming"] },
-  { state: "Connecticut", borders: ["Massachusetts", "New York", "Rhode Island"] },
-  { state: "Delaware", borders: ["Maryland", "New Jersey", "Pennsylvania"] },
-  { state: "Florida", borders: ["Alabama", "Georgia"] },
-  { state: "Georgia", borders: ["Alabama", "Florida", "North Carolina", "South Carolina", "Tennessee"] },
-  { state: "Hawaii", borders: [] }, // Hawaii doesn't border any US state
-  { state: "Idaho", borders: ["Montana", "Nevada", "Oregon", "Utah", "Washington", "Wyoming"] },
-  { state: "Illinois", borders: ["Indiana", "Iowa", "Kentucky", "Missouri", "Wisconsin"] },
-  { state: "Indiana", borders: ["Illinois", "Kentucky", "Michigan", "Ohio"] },
-  { state: "Iowa", borders: ["Illinois", "Minnesota", "Missouri", "Nebraska", "South Dakota", "Wisconsin"] },
-  { state: "Kansas", borders: ["Colorado", "Missouri", "Nebraska", "Oklahoma"] },
-  { state: "Kentucky", borders: ["Illinois", "Indiana", "Missouri", "Ohio", "Tennessee", "Virginia", "West Virginia"] },
-  { state: "Louisiana", borders: ["Arkansas", "Mississippi", "Texas"] },
-  { state: "Maine", borders: ["New Hampshire"] },
-  { state: "Maryland", borders: ["Delaware", "Pennsylvania", "Virginia", "West Virginia"] },
-  { state: "Massachusetts", borders: ["Connecticut", "New Hampshire", "New York", "Rhode Island", "Vermont"] },
-  { state: "Michigan", borders: ["Indiana", "Ohio", "Wisconsin"] }, // Note: Michigan has water borders with Illinois and Minnesota, but no land border
-  { state: "Minnesota", borders: ["Iowa", "North Dakota", "South Dakota", "Wisconsin"] },
-  { state: "Mississippi", borders: ["Alabama", "Arkansas", "Louisiana", "Tennessee"] },
-  { state: "Missouri", borders: ["Arkansas", "Illinois", "Iowa", "Kansas", "Kentucky", "Nebraska", "Oklahoma", "Tennessee"] },
-  { state: "Montana", borders: ["Idaho", "North Dakota", "South Dakota", "Wyoming"] },
-  { state: "Nebraska", borders: ["Colorado", "Iowa", "Kansas", "Missouri", "South Dakota", "Wyoming"] },
-  { state: "Nevada", borders: ["Arizona", "California", "Idaho", "Oregon", "Utah"] },
-  { state: "New Hampshire", borders: ["Maine", "Massachusetts", "Vermont"] },
-  { state: "New Jersey", borders: ["Delaware", "New York", "Pennsylvania"] },
-  { state: "New Mexico", borders: ["Arizona", "Colorado", "Oklahoma", "Texas", "Utah"] },
-  { state: "New York", borders: ["Connecticut", "Massachusetts", "New Jersey", "Pennsylvania", "Vermont"] },
-  { state: "North Carolina", borders: ["Georgia", "South Carolina", "Tennessee", "Virginia"] },
-  { state: "North Dakota", borders: ["Minnesota", "Montana", "South Dakota"] },
-  { state: "Ohio", borders: ["Indiana", "Kentucky", "Michigan", "Pennsylvania", "West Virginia"] },
-  { state: "Oklahoma", borders: ["Arkansas", "Colorado", "Kansas", "Missouri", "New Mexico", "Texas"] },
-  { state: "Oregon", borders: ["California", "Idaho", "Nevada", "Washington"] },
-  { state: "Pennsylvania", borders: ["Delaware", "Maryland", "New Jersey", "New York", "Ohio", "West Virginia"] },
-  { state: "Rhode Island", borders: ["Connecticut", "Massachusetts"] },
-  { state: "South Carolina", borders: ["Georgia", "North Carolina"] },
-  { state: "South Dakota", borders: ["Iowa", "Minnesota", "Montana", "Nebraska", "North Dakota", "Wyoming"] },
-  { state: "Tennessee", borders: ["Alabama", "Arkansas", "Georgia", "Kentucky", "Mississippi", "Missouri", "North Carolina", "Virginia"] },
-  { state: "Texas", borders: ["Arkansas", "Louisiana", "New Mexico", "Oklahoma"] },
-  { state: "Utah", borders: ["Arizona", "Colorado", "Idaho", "Nevada", "New Mexico", "Wyoming"] },
-  { state: "Vermont", borders: ["Massachusetts", "New Hampshire", "New York"] },
-  { state: "Virginia", borders: ["Kentucky", "Maryland", "North Carolina", "Tennessee", "West Virginia"] },
-  { state: "Washington", borders: ["Idaho", "Oregon"] },
-  { state: "West Virginia", borders: ["Kentucky", "Maryland", "Ohio", "Pennsylvania", "Virginia"] },
-  { state: "Wisconsin", borders: ["Illinois", "Iowa", "Michigan", "Minnesota"] },
-  { state: "Wyoming", borders: ["Colorado", "Idaho", "Montana", "Nebraska", "South Dakota", "Utah"] }
-];
-
-// Array of corresponding state abbreviations
-const stateAbbreviations = [
-  "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
-  "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
-  "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
-  "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
-  "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
-];
 
 const sponsoredList = [
   {
@@ -201,14 +138,26 @@ router.get('/Registries', (req, res) => {
   res.render("pages/StudySearch/registries", { id: id, vh: vh, interventionType: interventionType })
 })
 
-router.post('/Results', parameterHelper, searchForCT, CTsWithDatabase, (req, res) => {
-  // All middleware have executed in order by this point
-  // You can send the response here 
-  let data = {
-    numTrials: req.session.trialsList.length
+router.post('/Results', async (req, res) => {
+  try {
+    var body = {
+      ...req.session.params.searchCriteria, // Spread the searchCriteria properties
+      id: req.session.params.id,                  // Add the id field
+      visitNum: req.session.params.visitNum    // Add the visitNum field
+    };
+
+    const response = await axios.post(studySearchRequestURL, body);
+    const results = response.data;
+    req.session.trialsList = results.trialsList;
+    req.session.numTrials = results.numTrials;
+    logResults(req);
+    res.json({ numTrials: results.numTrials });
+  } catch (error) {
+    console.error("Error fetching results:", error);
+    res.status(502).json({ message: "Bad Gateway. Could not fetch results." });
   }
-  res.json(data);
 });
+
 
 
 router.get('/Results', (req, res) => {
@@ -221,52 +170,24 @@ router.get('/Results', (req, res) => {
   res.render("pages/StudySearch/results", { id: id, vh: vh, interventionType: interventionType, role: role, trialsList: trialsList, sponsoredList: sponsoredList })
 })
 
-router.post('/SendEmailPatient', logStudyContact, SendEmailPatient, (req, res) => {
-  console.log("SEND P");
-  res.send({ message: 'Email Sent Successfully - P' });
+router.post('/SendEmailPatient', logStudyContact, async (req, res) => {
+  // Uncomment when we're done with F&F
+  // const response = await axios.post(emailPatientURL, req);
+  console.log(req.body);
+  
+  const response = await axios.post(emailFriendsAndFamilyURL, req.body);
+  console.log(response.data);
+  res.send(response.data);
 });
 
-router.post('/SendEmailCaregiver', logStudyContact, SendEmailCaregiver, (req, res) => {
-  console.log("SEND CG");
-  res.send({ message: 'Email Sent Successfully - CG' });
+router.post('/SendEmailCaregiver', logStudyContact, async (req, res) => {
+  // Uncomment when we're done with F&F
+  // const response = await axios.post(emailCaregiverURL, req);
+  console.log(req.body);
+  const response = await axios.post(emailFriendsAndFamilyURL, req.body);
+  console.log(response.data);
+  res.send(response.data);
 });
-
-async function SendEmailPatient(req, res, next) {
-  const message = req.body.message;
-  const subject = req.body.subject;
-  const studyContact = req.body.studyContact;
-  const patientEmail = req.body.patientEmail;
-
-  const etchEmail = 'etch@mayo.edu';
-  const params = {
-    Source: 'reply-all@learn-research.org', // Must be verified in SES
-    Destination: {
-      ToAddresses: [studyContact],
-      BccAddresses: [etchEmail] // The recipient's email address
-    },
-    ReplyToAddresses: [patientEmail],
-    Message: {
-      Subject: {
-        Data: subject
-      },
-      Body: {
-        Text: {
-          Data: message
-        }
-      }
-    }
-  };
-
-  try {
-    const data = await ses.sendEmail(params).promise();
-    console.log('Email sent:', data);
-    next();
-  } catch (err) {
-    errorProtocol(err, req, res);
-    console.error('Failed to send email:', err);
-    next();
-  }
-}
 
 function logStudyContact(req, res, next) {
   if (!req.session.params.contactedStudies) {
@@ -386,559 +307,57 @@ async function errorProtocol(error, req, res) {
 }
 
 
-
-async function SendEmailCaregiver(req, res, next) {
-  const message = req.body.message;
-  const subject = req.body.subject;
-  const studyContact = req.body.studyContact; // Ensure it's a string
-  const patientEmail = req.body.patientEmail; // Ensure it's a string
-  const caregiverEmail = req.body.caregiverEmail;
-  const etchEmail = 'etch@mayo.edu';
-  const params = {
-    Source: 'reply-all@learn-research.org', // Must be verified in SES
-    Destination: {
-      ToAddresses: [studyContact],
-      BccAddresses: [etchEmail], // The recipient's email address
-      CcAddresses: [patientEmail, caregiverEmail]
-    },
-    ReplyToAddresses: [caregiverEmail],
-    Message: {
-      Subject: {
-        Data: subject
-      },
-      Body: {
-        Text: {
-          Data: message
-        }
-      }
-    }
-  };
-
-  try {
-    const data = await ses.sendEmail(params).promise();
-    console.log('Email sent:', data);
-    next();
-  } catch (err) {
-    errorProtocol(err, req, res);
-    console.error('Failed to send email:', err);
-    next();
+async function logResults(req) {
+  if (!req.session.params.searches.Results) {
+    req.session.params.searches.Results = [];
   }
-}
-
-
-function CTsWithDatabase(req, res, next) {
-  // The following function "processNext()" is a wrapper function so that the async calls made to
-  // summarizeGPT don't return out of order -- it's a glorified for loop.
-  // processNext() checks if we've already recorded the CT, if we have, retrieves it and stores in trialsList.GPTSummary
-  // if we have not recorded it, it calls summarizeGPT, stores it in trialsList.GPTSummary and then inserts it into the ClinicalTrials table
-  var trialsList = req.trialsList;
-  if (!trialsList || trialsList.length == 0)
-    trialsList = []
-  let iterations = trialsList.length;
-  let i = 0;
-  // idTracker is a temp variable to make sure we have no duplicates stored in the table
-  let idTracker = [];
-  function processNext() {
-    if (i == trialsList.length) {
-      req.session.trialsList = trialsList;
-      next();
-    }
-    if (i < iterations) {
-      // We do a sql.connect in every iteration of the loop because the table doesn't update until you disconnect and reconnect
-      // Basically, I'm trying to avoid weird interactions with multiple users + it doesn't throttle speed a whole ton.
-
-      sql.connect(config, function (err) {
-        var request = new sql.Request();
-        let queryString = `SELECT * FROM ClinicalTrials WHERE STUDYID='` + trialsList[i].NCTId + `'`;
-        req.session.params.queryString = queryString;
-        request.query(queryString, function (err, recordset) {
-          if (err) {
-            errorProtocol(err, req, res)
-            console.log(err);
-          }
-          // CASE 1: The StudyID is not in our table yet -- we have no summary, so we have to GPT it and store it.
-          // Also, a Sanity Check is Necessary (&&):
-          // If we somehow have duplicates in the trialsList, we don't want to store it in the table twice.
-          // This can happen in very rare cases where the recordset length returns 0, after an entry for it was added moments before.
-          if (recordset.recordset.length === 0 && !idTracker.includes(trialsList[i].NCTId)) {
-            // console.log("HERE")
-            summarizeGPT(trialsList[i].BriefSummary, trialsList[i].DetailedDescription, req, res).then((summary) => {
-              titleizeGPT(trialsList[i].BriefTitle, trialsList[i].BriefSummary, trialsList[i].DetailedDescription, req, res).then((title) => {
-
-                // Convert summary into a SQL friendly string and put in trialsList
-                title = title.replace(/'/g, "''");
-                summary = summary.replace(/'/g, "''");
-                trialsList[i]['GPTTitle'] = title;
-                trialsList[i]['GPTSummary'] = summary;
-                let category = trialsList[i]['Categories'];
-                // Keep track of IDs already seen.
-                idTracker.push(trialsList[i].NCTId);
-                // Insert new entry into table
-                // Useful SQL Code to empty out table, greatly helped with debugging: TRUNCATE TABLE ClinicalTrials;
-                let updateString = `INSERT INTO ClinicalTrials (StudyID, GPTTitle, GPTSummary, Categories) VALUES ('` + trialsList[i].NCTId + `','` + title + `','` + summary + `','` + category + `')`;
-                // console.log(updateString);
-                request.query(updateString, function (err, recordset2) {
-                  if (err) {
-                    errorProtocol(err, req, res)
-                    console.log(err);
-                  }
-                });
-                // Update for loop and call it again until we looped through all items in trialsList
-                i++;
-                processNext();
-              }).catch((error) => {
-                errorProtocol(error);
-                console.error("Error in title GPT:", error);
-              })
-            }).catch((error) => {
-              errorProtocol(error);
-              console.error("Error in summarize GPT:", error);
-            })
-          }
-          // CASE 2: The Study ID is already in the table, so we can just grab it from the table and store it in our array.
-          else if (recordset.recordset.length !== 0) {
-            // Console logs for Debugging.
-            // console.log("CASE 2: " + recordset.recordset[0].GPTSummary);
-            trialsList[i]['GPTTitle'] = recordset.recordset[0].GPTTitle;
-            trialsList[i]['GPTSummary'] = recordset.recordset[0].GPTSummary;
-            i++;
-            processNext();
-          }
-        });
-      });
-    }
-
-  }
-  // initial call to processNext()
-  processNext();
-}
-
-// summarizeGPT is an async helper function used to call openai API and returns the result
-async function summarizeGPT(briefSummary, detailedDescription, req, res) {
-  const prompt = SUMMARY_PROMPT + "\nTEXT1: [" + briefSummary + "]\nTEXT2: [" + detailedDescription + "]";
-  try {
-    const completion = await client.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: `${prompt}` }],
+  var trialsList = req.session.trialsList;
+  var results = [];
+  results.push({
+    "Criteria": `${JSON.stringify(req.session.params.searchCriteria)}`,
+    "NumberOfResults": `${req.session.numTrials}`
+  })
+  for (var trial of trialsList) {
+    var nctId = trial.NCTId;
+    var url = 'https://clinicaltrials.gov/study/' + trial.NCTId;
+    results.push({
+      "NCTId": nctId,
+      "URL": url
     });
-    const botResponse = completion.choices[0].message.content;
-    // console.log(botResponse);
-    return botResponse;
-  } catch (err) {
+  }
+  req.session.params.searches.Results.push(results);
+
+  sql.connect(config, function (err) {
     if (err) {
-      errorProtocol(err, req, res)
+      errorProtocol(err, req, res);
       console.log(err);
     }
-  }
-}
 
-async function titleizeGPT(title, briefSummary, detailedDescription, req, res) {
-  const prompt = TITLE_PROMPT + "\nTITLE: [" + title + "]\nTEXT1: [" + briefSummary + "]\nTEXT2: [" + detailedDescription + "]";
-  try {
-    const completion = await client.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: `${prompt}` }],
-    });
-    const botResponse = completion.choices[0].message.content;
-    // console.log(botResponse);
-    return botResponse;
-  } catch (err) {
-    if (err) {
-      errorProtocol(err, req, res)
-      console.log(err);
-    }
-  }
-}
+    // create Request object
+    var request = new sql.Request();
 
-async function categorizeGPT(title, briefSummary, detailedDescription, req, res) {
-  let prompt = `Classify the following clinical trial accurately using any number of the following categories: "Healthy Living", "Cancer Prevention & Screening", "Treatment", and "Survivorship." If the clinical trial does not fit into any of these four categories, classify it as "Other".
-      
-  Your output should be in JSON format only. The JSON object can be called "category", and its object should be an array.
-  
-  `
+    let queryString = `
+    UPDATE R24
+    SET StudyResults = @results
+    WHERE ID = @id
+    AND VisitNum = @visitNum`
 
-  prompt += title + "\n" + briefSummary + "\n" + detailedDescription;
+    req.session.params.queryString = queryString;
 
-  try {
-    const completion = await client.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }],
-      response_format: { type: 'json_object' }
-    });
-    const categoryString = completion.choices[0].message.content;
-    const categoryObject = JSON.parse(categoryString);
-    const categoryArray = categoryObject.category;
-    // console.log(categoryArray);
-    return categoryArray;
-  } catch (err) {
-    if (err) {
-      errorProtocol(err, req, res)
-      console.log(err);
-    }
-  }
+    request.input('results', sql.VarChar, JSON.stringify(req.session.params.searches.Results));
+    request.input('id', sql.VarChar, req.session.params.id);
+    request.input('visitNum', sql.Int, req.session.params.visitNum);
 
-}
-async function returnCategories(title, briefSummary, detailedDescription, nctId, req, res) {
-  return new Promise((resolve, reject) => {
-    sql.connect(config, function (err) {
+    request.query(queryString, function (err, recordset) {
       if (err) {
         errorProtocol(err, req, res);
-        return reject(err);
+        console.log(err);
       }
-
-      var request = new sql.Request();
-      let queryString = `SELECT Categories FROM ClinicalTrials WHERE StudyID = @studyId`;
-
-      // Add input parameters
-      request.input('studyId', sql.VarChar(50), nctId);
-      req.session.params.queryString = queryString;
-
-      request.query(queryString, async function (err, recordset) {
-        if (err) {
-          errorProtocol(err, req, res);
-          console.log(err);
-          return reject(err);  // Reject the promise if there's an error
-        }
-
-        if (recordset.recordset.length === 0) {
-          try {
-            const categories = await categorizeGPT(title, briefSummary, detailedDescription, req, res);
-            resolve(categories);  // Resolve with the categories from categorizeGPT
-          } catch (categorizeErr) {
-            reject(categorizeErr);  // Reject if categorizeGPT fails
-          }
-        } else {
-          // console.log("Previously discovered... ", nctId);
-          const categories = recordset.recordset[0].Categories;
-          // console.log(recordset.recordset[0]);
-          const categoriesArray = categories.split(',');
-          // console.log(categoriesArray);
-          resolve(categoriesArray);  // Resolve with the categories from the database
-        }
-      });
     });
   });
 }
 
-async function getCoordinates(city, state) {
-  const location = `${city}, ${state}`;
-  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(location)}&format=json&limit=1`;
 
-  try {
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if (data.length > 0) {
-          const { lat, lon } = data[0];
-          return { lat, lon };
-      } else {
-          // If no results found, return the original city and state
-          return { city, state };
-      }
-  } catch (error) {
-      console.error("Error fetching coordinates:", error);
-      // Return the original city and state in case of an error
-      return { city, state };
-  }
-}
-
-async function createClinicalTrialsString(fields) {
-  // return new Promise((resolve) => {
-  let conditionString = "query.cond=";
-  let conditions = [false, false, false]
-  // Health Condition Builder
-  if (fields.ConditionText1 && fields.ConditionText1 != "") {
-    conditionString += fields.ConditionText1;
-    conditions[0] = true;
-  }
-  if (fields.ConditionText2 && fields.ConditionText2 != "") {
-    if (conditions[0])
-      conditionString += " OR ";
-    conditionString += fields.ConditionText2
-    conditions[1] = true;
-  }
-  if (fields.ConditionText3 && fields.ConditionText3 != "") {
-    if (conditions[0] || conditions[1])
-      conditionString += " OR ";
-    conditionString += fields.ConditionText3
-    conditions[2] = true;
-  }
-
-  // Gender Builder
-  let genderString = "&query.term="
-  let gender = false;
-  if (fields.Gender && (fields.Gender == "Male" || fields.Gender == "Female")) {
-    genderString += "AREA[Gender] " + fields.Gender + " OR AREA[Gender] All";
-    gender = true;
-  }
-  
-  // Location Builder
-  let locationString = "&query.locn=AREA[LocationCountry] United States"
-  let locationState = false;
-  let locationCity = false;
-  if (fields.LocationState != "---") {
-    locationString += " AREA[LocationState] " + fields.LocationState;
-    locationState = true;
-  }
-  if (fields.LocationCity && fields.LocationCity != "") {
-    if (locationState)
-      locationString += " AND AREA[LocationCity] " + fields.LocationCity;
-    else
-      locationString += " AREA[LocationCity] " + fields.LocationCity;
-    locationCity = true;
-  }
-
-  // Distance Builder
-  let city = fields.LocationCity || "INVALID_STRING";
-  let state = fields.LocationState || "INVALID_STRING";
-  var coordinates;
-  coordinates = await getCoordinates(city, state);
-  const distance = '50mi';
-  var geoFilter = false;
-  var geoFilterString = "";
-  if (city != coordinates.lat && state != coordinates.lon) {
-    geoFilterString = `&filter.geo=distance(${coordinates.lat},${coordinates.lon},${distance})`;
-    geoFilter = true;
-  }
-
-
-  // Advanced String
-  let advancedString = "&filter.advanced="
-  let age = false;
-  if (fields.Age) {
-    advancedString += "AREA[MinimumAge]RANGE[MIN, " + fields.Age + " years] AND AREA[MaximumAge]RANGE[" + fields.Age + " years, MAX]";
-    age = true;
-  }
-
-  /*
-  let healthyString = "AREA[HealthyVolunteers] true";
-  if (age)
-    advancedString += " AND " + healthyString;
-  else
-    advancedString += healthyString;
-  */
-
-  // Constants in String
-  let recruitingString = "&filter.overallStatus=RECRUITING";
-
-
-  // Build
-  let expression = "";
-  if (conditions.includes(true))
-    expression += conditionString;
-  if (gender)
-    expression += genderString;
-  if (geoFilter)
-    expression += geoFilterString;
-  if ((locationState || locationCity) && (!geoFilter))
-    expression += locationString;
-
-  expression += advancedString;
-  expression += recruitingString
-
-  // Max results set to 50
-  let maxResults = "&pageSize=100";
-  expression += maxResults;
-
-  expression = encodeURI(expression);
-  return expression;
-  // resolve(expression);
-  // });
-}
-
-function parameterHelper(req, res, next) {
-  // console.log("IN HELPER");
-  req.body = {};
-  req.body = req.session.params.searchCriteria;
-  // console.log("IN PARAM HELPER")
-  // console.log(req.body)
-  next();
-}
-
-async function hasCommonElements(userCategories, studyCategories) {
-  const userCategoriesSet = new Set(userCategories);
-  const studyCategoriesSet = new Set(studyCategories);
-  for (let cat of studyCategoriesSet) {
-    if (userCategoriesSet.has(cat)) {
-      return true;
-    }
-  }
-  // console.log("Don't include");
-  return false;
-}
-
-async function searchForCT(req, res, next) {
-  // console.log("Starting search...");
-  let expression = await createClinicalTrialsString(req.body);
-  const apiUrl = `https://clinicaltrials.gov/api/v2/studies?${expression}&sort=%40relevance&countTotal=true`;
-  // console.log(apiUrl);
-  // console.log(req.body);
-  var userCategories = req.body.groupings;
-  // console.log(userCategories);
-  var categoriesArray = new Array(userCategories.length).fill(false);
-  var trialsList;
-  var finalTrialsIndex = 0;
-  trialsList = await axios.get(apiUrl)
-    .then(response => {
-      var studies = response.data.studies;
-      return studies;
-    })
-    .catch(err => {
-      req.session.params.queryString = apiUrl;
-      errorProtocol(err);
-      console.error('Error in retrieving trials...: ', err.message, apiUrl);
-    });
-  // console.log("Trials Length: ", trialsList.length);
-  var finalTrialsList = [];
-  try {
-    if (trialsList && trialsList.length > 0) {
-      // GETTING FACILITIES LIST -- loop through all trials
-      for (var i = 0; i < trialsList.length; i++) {
-
-        let briefTitle = trialsList[i].protocolSection.identificationModule.briefTitle || '';
-        let nctId = trialsList[i].protocolSection.identificationModule.nctId || '';
-        let briefSummary = trialsList[i].protocolSection.descriptionModule.briefSummary || '';
-        let detailedDescription = trialsList[i].protocolSection.descriptionModule.detailedDescription || '';
-        var categories;
-        var hasMatch;
-        categories = await returnCategories(briefTitle, briefSummary, detailedDescription, nctId, req, res)
-          .then(async response => {
-            hasMatch = await hasCommonElements(userCategories, response)
-            .then(response2 => {
-              return response2;
-            }).catch(err => {
-              errorProtcol(err);
-            });
-            return response;
-          }).catch(err => {
-            errorProtocol(err);
-          })
-
-        // console.log("The categories are : ", categories);
-        // console.log("Has Match? ^ ", hasMatch);
-
-        if (hasMatch) {
-          finalTrialsList[finalTrialsIndex] = {};
-          finalTrialsList[finalTrialsIndex]['Categories'] = categories;
-          for (var j = 0; j < categories.length; j++) {
-            let index = userCategories.indexOf(categories[j]);
-            if (index !== -1) {
-              categoriesArray[index] = true;
-            }
-          }
-
-          const armsInterventionsModule = trialsList[i].protocolSection.armsInterventionsModule;
-          var interventions;
-          if (armsInterventionsModule)
-            if (armsInterventionsModule.interventions)
-              interventions = armsInterventionsModule.interventions;
-          if (interventions)
-            trialsList[i].InterventionType = [...new Set(interventions.map(intervention => intervention.type))];
-          else
-            trialsList[i].InterventionType = ["Not listed"];
-          finalTrialsList[finalTrialsIndex]['InterventionType'] = trialsList[i].InterventionType;
-
-
-          // No need to error check for "" or "---" anymore because we require City/State, but we'll check that they're valid.
-          var facilities = []
-          var facilityLocations = []
-          var remaining = -1;
-          var locationsArray = trialsList[i].protocolSection.contactsLocationsModule.locations;
-          let city = req.body.LocationCity || "INVALID_STRING";
-          let state = req.body.LocationState || "INVALID_STRING";
-          var geoCoordinates;
-          geoCoordinates = await getCoordinates(city, state);
-          var stateDistances = [];
-          if (city != geoCoordinates.lat && state != geoCoordinates.lon) {
-            for (var j = 0; j < locationsArray.length; j++) {
-              let indexOfState = usStates.indexOf(req.body.LocationState);
-              if (locationsArray[j].state === req.body.LocationState || (((usStatesWithBorders[indexOfState]).borders).includes(locationsArray[j].state))) {
-                if (locationsArray[j].geoPoint) {
-                  if (locationsArray[j].lat && locationsArray[j].lon) {
-                    const distance = geolib.getDistance(
-                      { latitude: geoCoordinates.lat, longitude: geoCoordinates.lon },
-                      { latitude: locationsArray[j].lat, longitude: locationsArray[j].lon }
-                    );
-                    stateDistances.push({
-                      distance: distance,
-                      state: locationsArray[j].state,
-                      city: locationsArray[j].city,
-                      facility: locationsArray[j].facility
-                    });
-                  }
-                  else {
-                    stateDistances.push({
-                      distance: locationsArray[j].state === req.body.LocationState ? maxInt - 1 : maxInt,
-                      state: locationsArray[j].state,
-                      city: locationsArray[j].city,
-                      facility: locationsArray[j].facility
-                    })
-                  }
-                }
-                else {
-                  stateDistances.push({
-                    distance: locationsArray[j].state === req.body.LocationState ? maxInt - 1 : maxInt,
-                    state: locationsArray[j].state,
-                    city: locationsArray[j].city,
-                    facility: locationsArray[j].facility
-                  })
-                }
-              }
-            }
-          }
-
-          if (stateDistances.length > 1) {
-            stateDistances.sort((a, b) => a.distance - b.distance);
-          }
-          if (stateDistances.length > 5) {
-            remaining = stateDistances.length - 5;
-            stateDistances = stateDistances.slice(0, 5);
-          }
-
-          for (var j = 0; j < stateDistances.length; j++) {
-            facilities.push(stateDistances[j].facility);
-            const stateIndex = usStates.indexOf(stateDistances[j].state);
-            if (stateIndex !== -1)
-              facilityLocations.push(stateDistances[j].city + ", " + stateAbbreviations[stateIndex]);
-            else
-              facilityLocations.push(stateDistances[j].city + ", " + stateDistances[j].state);
-          }
-
-          // set new property on trialsList for filtered facilities
-          if (remaining > 0) {
-            finalTrialsList[finalTrialsIndex]['RemainingFacilities'] = `... and ${remaining} other locations.`
-          }
-          finalTrialsList[finalTrialsIndex]['FilteredFacilities'] = facilities;
-          finalTrialsList[finalTrialsIndex]['FacilityLocations'] = facilityLocations;
-          if (trialsList[i].protocolSection.contactsLocationsModule.centralContacts) {
-            finalTrialsList[finalTrialsIndex]['LocationContact'] = trialsList[i].protocolSection.contactsLocationsModule.centralContacts;
-          } else {
-            finalTrialsList[finalTrialsIndex]['LocationContact'] = [];
-          }
-          finalTrialsList[finalTrialsIndex]['Condition'] = trialsList[i].protocolSection.conditionsModule.conditions;
-          finalTrialsList[finalTrialsIndex]['StudyType'] = trialsList[i].protocolSection.designModule.studyType;
-          finalTrialsList[finalTrialsIndex]['BriefTitle'] = trialsList[i].protocolSection.identificationModule.briefTitle;
-          finalTrialsList[finalTrialsIndex]['NCTId'] = trialsList[i].protocolSection.identificationModule.nctId;
-          finalTrialsList[finalTrialsIndex]['BriefSummary'] = trialsList[i].protocolSection.descriptionModule.briefSummary;
-          finalTrialsList[finalTrialsIndex]['DetailedDescription'] = trialsList[i].protocolSection.descriptionModule.detailedDescription;
-          finalTrialsIndex = finalTrialsIndex + 1;
-          if (i >= 15 && finalTrialsIndex >= 5 && categoriesArray.includes(true)) {
-            console.log("Early breakout")
-            break;
-          }
-        }
-      }
-    }
-  } catch (err) {
-    errorProtocol(err, req, res);
-    console.log(err);
-  }
-
-  // Get remaining falses
-  // Return those somewhere and log em
-  req.trialsList = finalTrialsList;
-  next();
-}
 
 module.exports = {
   StudySearchRouter: router,
