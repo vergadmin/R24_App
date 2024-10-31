@@ -357,7 +357,7 @@ app.post('/storeParameters', (req, res) => {
         groupings = true;
     }
     else if (req.body.Role) {
-        console.log(req.body.Role);
+        // console.log(req.body.Role);
         req.session.params.searchCriteria.Role = req.body.Role;
         req.session.params.searches.Role.push({
             "Role": req.body.Role
@@ -371,8 +371,8 @@ app.post('/storeParameters', (req, res) => {
         })
         preferences = true;
     }
-    console.log(req.session.params.searches);
-    console.log(req.session.params.searchCriteria);
+    // console.log(req.session.params.searches);
+    // console.log(req.session.params.searchCriteria);
 
     // =============================================
     // Log Search Criterias
