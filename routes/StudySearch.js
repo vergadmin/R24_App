@@ -175,7 +175,7 @@ router.get('/Results', (req, res) => {
   var vhType = req.session.params.vhType;
 
   var trialsList = req.session.trialsList;
-  res.render("pages/StudySearch/results", { id: id, vh: vh, interventionType: interventionType, role: role, trialsList: trialsList, sponsoredList: sponsoredList })
+  res.render("pages/StudySearch/results", { id: id, vh: vh, interventionType: interventionType, role: role, trialsList: trialsList, sponsoredList: sponsoredList, vhType: vhType })
 })
 
 router.post('/SendEmailPatient', logStudyContact, async (req, res) => {
