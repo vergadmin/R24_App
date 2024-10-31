@@ -173,7 +173,6 @@ router.get('/Results', (req, res) => {
 router.post('/SendEmailPatient', logStudyContact, async (req, res) => {
   // Uncomment when we're done with F&F
   // const response = await axios.post(emailPatientURL, req);
-  console.log(req.body);
   
   const response = await axios.post(emailFriendsAndFamilyURL, req.body);
   console.log(response.data);
@@ -183,7 +182,6 @@ router.post('/SendEmailPatient', logStudyContact, async (req, res) => {
 router.post('/SendEmailCaregiver', logStudyContact, async (req, res) => {
   // Uncomment when we're done with F&F
   // const response = await axios.post(emailCaregiverURL, req);
-  console.log(req.body);
   const response = await axios.post(emailFriendsAndFamilyURL, req.body);
   console.log(response.data);
   res.send(response.data);
