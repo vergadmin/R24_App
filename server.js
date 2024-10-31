@@ -203,13 +203,14 @@ app.get('/:id/:interventionType/:vh', checkPreviousVisit, addVisitToDatabase, (r
 
     var id = req.session.params.id;
     var interventionType = req.session.params.interventionType;
+    var vhType = req.session.params.vhType;
     // console.log("INTERVENTION TYPE IS", interventionType)
 
     if (interventionType === "text") {
-        res.render('pages/indexText', { id: id, interventionType: interventionType })
-    }
+        res.render('pages/indexText', {id: id, interventionType: interventionType, vhType: vhType})
+    } 
     else {
-        res.render('pages/index', { id: id, interventionType: interventionType })
+        res.render('pages/index', {id: id, interventionType: interventionType, vhType: vhType})
     }
 })
 
@@ -219,6 +220,7 @@ app.get('/:id/:interventionType/:vh/Discover', (req, res) => {
     var interventionType = req.session.params.interventionType;
     var visitNum = req.session.params.visitNum;
     var vh = req.session.params.vCHE;
+    var vhType = req.session.params.vhType;
     // console.log("SESSION STUFF IS:", req.session)
     sql.connect(config, function (err) {
 
@@ -245,7 +247,7 @@ app.get('/:id/:interventionType/:vh/Discover', (req, res) => {
 
     });
 
-    res.render('pages/discover', { id: id, vh: vh, interventionType: interventionType })
+    res.render('pages/discover', {id: id, vh: vh, interventionType: interventionType, vhType: vhType})
 })
 
 

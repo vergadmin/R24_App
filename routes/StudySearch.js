@@ -85,42 +85,48 @@ router.get('/Role', (req, res) => {
   var id = req.session.params.id;
   var vh = req.session.params.vCHE;
   var interventionType = req.session.params.interventionType;
-  res.render("pages/StudySearch/role", { id: id, vh: vh, interventionType: interventionType })
+  var vhType = req.session.params.vhType;
+  res.render("pages/StudySearch/role", { id: id, vh: vh, interventionType: interventionType, vhType: vhType })
 })
 
 router.get('/Background', (req, res) => {
   var id = req.session.params.id;
   var vh = req.session.params.vCHE;
   var interventionType = req.session.params.interventionType;
-  res.render("pages/StudySearch/background", { id: id, vh: vh, interventionType: interventionType })
+  var vhType = req.session.params.vhType;
+  res.render("pages/StudySearch/background", { id: id, vh: vh, interventionType: interventionType, vhType: vhType })
 })
 
 router.get('/Preferences', (req, res) => {
   var id = req.session.params.id;
   var vh = req.session.params.vCHE;
   var interventionType = req.session.params.interventionType;
-  res.render("pages/StudySearch/preferences", { id: id, vh: vh, interventionType: interventionType })
+  var vhType = req.session.params.vhType;
+  res.render("pages/StudySearch/preferences", { id: id, vh: vh, interventionType: interventionType, vhType: vhType })
 })
 
 router.get('/Diagnosis', (req, res) => {
   var id = req.session.params.id;
   var vh = req.session.params.vCHE;
   var interventionType = req.session.params.interventionType;
-  res.render("pages/StudySearch/diagnosis", { id: id, vh: vh, interventionType: interventionType })
+  var vhType = req.session.params.vhType;
+  res.render("pages/StudySearch/diagnosis", { id: id, vh: vh, interventionType: interventionType, vhType: vhType })
 })
 
 router.get('/Groupings', (req, res) => {
   var id = req.session.params.id;
   var vh = req.session.params.vCHE;
   var interventionType = req.session.params.interventionType;
-  res.render("pages/StudySearch/groupings", { id: id, vh: vh, interventionType: interventionType })
+  var vhType = req.session.params.vhType;
+  res.render("pages/StudySearch/groupings", { id: id, vh: vh, interventionType: interventionType, vhType: vhType })
 })
 
 router.get('/Browse', (req, res) => {
   var id = req.session.params.id;
   var vh = req.session.params.vCHE;
   var interventionType = req.session.params.interventionType;
-  res.render("pages/StudySearch/browse", { id: id, vh: vh, interventionType: interventionType })
+  var vhType = req.session.params.vhType;
+  res.render("pages/StudySearch/browse", { id: id, vh: vh, interventionType: interventionType, vhType: vhType })
 })
 
 router.get('/GeneratingResults', (req, res) => {
@@ -135,7 +141,8 @@ router.get('/Registries', (req, res) => {
   var id = req.session.params.id;
   var vh = req.session.params.vCHE;
   var interventionType = req.session.params.interventionType;
-  res.render("pages/StudySearch/registries", { id: id, vh: vh, interventionType: interventionType })
+  var vhType = req.session.params.vhType;
+  res.render("pages/StudySearch/registries", { id: id, vh: vh, interventionType: interventionType, vhType: vhType })
 })
 
 router.post('/Results', async (req, res) => {
@@ -165,6 +172,7 @@ router.get('/Results', (req, res) => {
   var vh = req.session.params.vCHE;
   var interventionType = req.session.params.interventionType;
   var role = req.session.params.searchCriteria.Role;
+  var vhType = req.session.params.vhType;
 
   var trialsList = req.session.trialsList;
   res.render("pages/StudySearch/results", { id: id, vh: vh, interventionType: interventionType, role: role, trialsList: trialsList, sponsoredList: sponsoredList })
