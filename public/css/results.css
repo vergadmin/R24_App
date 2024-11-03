@@ -154,7 +154,7 @@ textarea {
   display: flex;
   flex-direction: column;
   width: 65%;
-  border: 1px solid #002657;
+  border: 2px solid #002657; /* Base outline color */
   border-radius: 7px;
   padding: 35px;
   text-align: left;
@@ -162,10 +162,15 @@ textarea {
   box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
   position: relative;
   background-color: white;
-  background-clip: padding-box;
-  border: 5px solid transparent;
   border-radius: 1.75rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+.study-card:hover {
+  border-color: #fa4616; /* Highlight outline on hover */
+  box-shadow: 0px 10px 20px -3px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow */
+}
+
 
 .study-card::before {
   content: "";
@@ -175,18 +180,19 @@ textarea {
   bottom: -5px;
   left: -5px;
   z-index: -1;
-  background-image: linear-gradient(
-    45deg,
-    #fa4616,#002657
-  );
+  background-image: linear-gradient(45deg, #fa4616, #002657);
   border-radius: 1.75rem;
 }
+
 
 .study-card h3 {
   font-size: 25px;
   margin: 0 0 15px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
 }
-
 .study-card h4 {
   margin: 0;
   font-size: 21px;
@@ -222,7 +228,7 @@ textarea {
   font-weight: 600;
 }
 
-.study-card .tag-row{
+.study-card .tag-row {
   display: flex;
   justify-content: flex-start;
   align-items: baseline;
@@ -236,7 +242,13 @@ textarea {
   padding: 5px;
   border-radius: 7px;
   margin: 5px;
+  transition: transform 0.2s;
 }
+
+.study-card .tag-item:hover {
+  transform: scale(1.05);
+}
+
 
 .more-expand {
   color:#002657;
@@ -258,6 +270,15 @@ textarea {
 
 .button-action-area button {
   margin: 25px;
+  padding: 10px 20px;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button-action-area button:hover {
+  background-color: #004080;
+  color: white;
+  transform: scale(1.05);
 }
 
 @keyframes pulse-animation {
@@ -290,4 +311,79 @@ textarea {
     font-size: 15px !important;
     margin: 11px;
   }
+}
+
+.card-summary {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+  padding: 0 10px;
+}
+
+.study-card.expanded .card-content {
+  max-height: 1000px; /* Smooth transition effect */
+  transition: max-height 0.5s ease-in, padding 0.3s ease-in;
+  padding: 10px 10px;
+}
+
+.study-card h3 {
+  cursor: pointer;
+}
+
+
+/* Expandable Icon */
+.study-card.collapsed h3::after,
+.study-card.expanded h3::after {
+  content: ' ▼';
+  font-weight: bold;
+  margin-left: 10px;
+  transition: transform 0.3s ease;
+  color: #fa4616;
+  animation: pulse-icon 1.5s infinite;
+}
+
+
+.study-card.expanded h3::after {
+  content: ' ▲';
+  animation: none; /* Stop pulsing animation when expanded */
+}
+
+
+.error-message {
+  display: inline-block;
+  color: red;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+/* Pulse animation for expand icon */
+@keyframes pulse-icon {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.study-card h3:hover {
+  color: #fa4616; /* Optional: change title color on hover */
+  text-decoration: underline; /* Add subtle underline */
+}
+
+
+/* Tooltip Text */
+.study-card h3:hover::before {
+  content: 'Click to expand/collapse';
+  position: absolute;
+  left: 0;
+  bottom: -20px;
+  font-size: 12px;
+  color: #002657;
+  opacity: 0.8;
 }

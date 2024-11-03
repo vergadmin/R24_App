@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,12 +17,38 @@
     <script src="/scripts/registerClicks.js"></script>
     <script src="/scripts/checkLanguage.js"></script>
     <script src="/scripts/StudySearch/checkRole.js"></script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <title>ALEX</title>
+
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('expanded');
+            card.classList.toggle('collapsed');
+
+            const content = card.querySelector('.card-content');
+            const summary = card.querySelector('.card-summary');
+
+            if (card.classList.contains('expanded')) {
+                content.style.display = 'block';
+                summary.style.display = 'none';
+            } else {
+                content.style.display = 'none';
+                summary.style.display = 'block';
+            }
+        }
+    </script>
 </head>
+
 <body>
     <div id="load">
-        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>
+        <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
     </div>
     <header>
         <%- include('../../partials/header'); %>
@@ -37,7 +64,7 @@
             </div>
             <form id="email-form" action="#">
                 <p class="email-modal-title">Connect with Research Coordinator</p>
-                <% if (role === 'Patient') { %>
+                <% if (role==='Patient' ) { %>
                     <div class="row">
                         <div class="col">
                             <label for="fname">Name</label>
@@ -48,68 +75,85 @@
                             <input type="email" id="patientEmail" name="email" placeholder="email@email.com" required>
                         </div>
                     </div>
-                <% } else { %>
-                    <div class="row">
-                        <div class="col">
-                            <label for="fname">Caregiver Name</label>
-                            <input type="text" id="caregiverName" name="name" placeholder="Name">
-                        </div>
-                        <div class="col">
-                            <label for="email">Caregiver Email</label>
-                            <input type="email" id="caregiverEmail" name="email" placeholder="email@email.com" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="fname">Patient Name</label>
-                            <input type="text" id="patientName" name="name" placeholder="Name">
-                        </div>
-                        <div class="col">
-                            <label for="email">Patient Email</label>
-                            <input type="email" id="patientEmail" name="email" placeholder="email@email.com" required>
-                        </div>
-                    </div>
-                <% } %>
-                <p class="label-info" style="margin-top: 11px !important">
-                    <em><b>Why are we asking for your name and email address?</b></em>
-                </p>
-                <ol class="label-info">
-                    <li>The research coordinator will receive the email and know who to contact.</li>
-                    <% if (role === 'Patient') { %>
-                        <li>You will receive a copy of the email for your record.</li>
                     <% } else { %>
-                        <li>You and the patient will receive a copy of the email for your record.</li>
-                    <% } %>
-                    <li>Our Research team will receive a copy of the email.</li>
-                </ol>
-                <br>
-                <label for="message">Message</label>
-                <p style="margin:0 0 7px 0; font-size:17px">The following auto-generated message will be sent. You may edit the message before submitting.</p>
-                <textarea id="message" name="message" rows="10" cols="50" required></textarea>
-                <br>
-                <label for="message">Message Recipients</label>
-                <% if (role === 'Patient') { %>
-                    <p style="margin:0 0 3px 0; font-size:17px">In addition to you, your message will be sent to the following emails.</p>
-                <% } else { %>
-                    <p style="margin:0 0 3px 0; font-size:17px">In addition to you and the patient, your message will be sent to the following emails.</p>
-                <% } %>
-                <ul style="margin: 0">
-                    <li><span class="bold-blue" id="coordinator-contact"></span> <em>*Required. This is the <b>study’s email contact.</b></em></li>
-                    <li><span class="bold-blue">Alex Research Team: etch@mayo.edu</span> <em>*Required. This is our <b>research team.</b></em></li>
-                </ul>
-                <hr style="margin: 11px 0"/>
-                <% if (role === 'Patient') { %>
-                    <p style="margin:0 0 7px 0; font-size:17px; text-align: center">By clicking “Send Message,” I acknowledge that my Name, Email, and Message will be shared with the contacts listed under Message Recipients.</p>
-                <% } else { %>
-                    <p style="margin:0 0 7px 0; font-size:17px; text-align: center">By clicking “Send Message,” I acknowledge that my Name, the patient's Name, my Email, the patient's Email, and Message will be shared with the contacts listed under Message Recipients.</p>
-                <% } %>
-                <br/>
+                        <div class="row">
+                            <div class="col">
+                                <label for="fname">Caregiver Name</label>
+                                <input type="text" id="caregiverName" name="name" placeholder="Name">
+                            </div>
+                            <div class="col">
+                                <label for="email">Caregiver Email</label>
+                                <input type="email" id="caregiverEmail" name="email" placeholder="email@email.com"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="fname">Patient Name</label>
+                                <input type="text" id="patientName" name="name" placeholder="Name">
+                            </div>
+                            <div class="col">
+                                <label for="email">Patient Email</label>
+                                <input type="email" id="patientEmail" name="email" placeholder="email@email.com"
+                                    required>
+                            </div>
+                        </div>
+                        <% } %>
+                            <p class="label-info" style="margin-top: 11px !important">
+                                <em><b>Why are we asking for your name and email address?</b></em>
+                            </p>
+                            <ol class="label-info">
+                                <li>The research coordinator will receive the email and know who to contact.</li>
+                                <% if (role==='Patient' ) { %>
+                                    <li>You will receive a copy of the email for your record.</li>
+                                    <% } else { %>
+                                        <li>You and the patient will receive a copy of the email for your record.</li>
+                                        <% } %>
+                                            <li>Our Research team will receive a copy of the email.</li>
+                            </ol>
+                            <br>
+                            <label for="message">Message</label>
+                            <p style="margin:0 0 7px 0; font-size:17px">The following auto-generated message will be
+                                sent. You may edit the message before submitting.</p>
+                            <textarea id="message" name="message" rows="10" cols="50" required></textarea>
+                            <br>
+                            <label for="message">Message Recipients</label>
+                            <% if (role==='Patient' ) { %>
+                                <p style="margin:0 0 3px 0; font-size:17px">In addition to you, your message will be
+                                    sent to the following emails.</p>
+                                <% } else { %>
+                                    <p style="margin:0 0 3px 0; font-size:17px">In addition to you and the patient, your
+                                        message will be sent to the following emails.</p>
+                                    <% } %>
+                                        <ul style="margin: 0">
+                                            <li><span class="bold-blue" id="coordinator-contact"></span> <em>*Required.
+                                                    This is the <b>study’s email contact.</b></em></li>
+                                            <li><span class="bold-blue">Alex Research Team: etch@mayo.edu</span>
+                                                <em>*Required. This is our <b>research team.</b></em>
+                                            </li>
+                                        </ul>
+                                        <hr style="margin: 11px 0" />
+                                        <% if (role==='Patient' ) { %>
+                                            <p style="margin:0 0 7px 0; font-size:17px; text-align: center">By clicking
+                                                “Send Message,” I acknowledge that my Name, Email, and Message will be
+                                                shared with the contacts listed under Message Recipients.</p>
+                                            <% } else { %>
+                                                <p style="margin:0 0 7px 0; font-size:17px; text-align: center">By
+                                                    clicking “Send Message,” I acknowledge that my Name, the patient's
+                                                    Name, my Email, the patient's Email, and Message will be shared with
+                                                    the contacts listed under Message Recipients.</p>
+                                                <% } %>
+                                                    <br />
 
-                <% if (role === 'Patient') { %>
-                    <button style="align-self: center" class="green" id = "submitEmailButton" onclick = "emailPatient()" type = "button">Send Message</button>  
-                <% } else { %>
-                    <button style="align-self: center" class="green" id = "submitEmailButton" onclick = "emailCaregiver()" type = "button">Send Message</button>
-                <% } %>
+                                                    <% if (role==='Patient' ) { %>
+                                                        <button style="align-self: center" class="green"
+                                                            id="submitEmailButton" onclick="emailPatient()"
+                                                            type="button">Send Message</button>
+                                                        <% } else { %>
+                                                            <button style="align-self: center" class="green"
+                                                                id="submitEmailButton" onclick="emailCaregiver()"
+                                                                type="button">Send Message</button>
+                                                            <% } %>
             </form>
         </div>
     </div>
@@ -140,156 +184,273 @@
         </div>
         <h1 class="title">Your Tailored List of Studies</h1>
         <div class="information">
-            <p>On this page, we have put together a few studies based on the information you shared! Here's what you can do next:</p>
+            <p>On this page, we have put together a few studies based on the information you shared! Here's what you can
+                do next:</p>
             <ul>
-                <li><span style="font-weight: 600; color: #002657">Read about each study.</span> If you're interested and want more information, you can <b>connect with a research coordinator</b>!</li>
-                <li><span style="font-weight: 600; color: #002657">Save your tailored list of studies.</span> You can click the "Save My Tailored Studies" button, and your browser will ask you to save this web page as a PDF.</li>
-                <li><span style="font-weight: 600; color: #002657">Search again.</span> Want to search for different research studies? You can click the "Search Again" button to start a new search.</li>
-                <li><span style="font-weight: 600; color: #002657">Complete the post-survey.</span> Finally, when you're done with this page, please click the "Complete Survey" button to be directed to our post-survey.</li>
-                
+                <li><span style="font-weight: 600; color: #002657">Read about each study.</span> If you're interested
+                    and want more information, you can <b>connect with a research coordinator</b>!</li>
+                <li><span style="font-weight: 600; color: #002657">Save your tailored list of studies.</span> You can
+                    click the "Save My Tailored Studies" button, and your browser will ask you to save this web page as
+                    a PDF.</li>
+                <li><span style="font-weight: 600; color: #002657">Search again.</span> Want to search for different
+                    research studies? You can click the "Search Again" button to start a new search.</li>
+                <li><span style="font-weight: 600; color: #002657">Complete the post-survey.</span> Finally, when you're
+                    done with this page, please click the "Complete Survey" button to be directed to our post-survey.
+                </li>
+
             </ul>
         </div>
-        
-        <br/>
+
+        <br />
         <div class="button-action-area">
-            <button onclick="sendToDatabase(`ResultsDownloadStudiesList`, `clicked`);window.print()">⬇️ Save My Tailored Studies</button>
-            <button class="green" onclick="sendToDatabase(`ResultsCompleteSurvey`, `clicked`)">📝 Complete Survey</button>
+            <button onclick="sendToDatabase(`ResultsDownloadStudiesList`, `clicked`);window.print()">⬇️ Save My Tailored
+                Studies</button>
+            <button class="green" onclick="sendToDatabase(`ResultsCompleteSurvey`, `clicked`)">📝 Complete
+                Survey</button>
             <a href="/<%=id%>/<%=interventionType%>/<%=vh%>/StudySearch/Role">
                 <button>🔍 Search Again</button>
             </a>
         </div>
-        <br/>
-        
-        <% for(var i=0; i<trialsList.length; i++) { %>
-            <div class="study-card">
-                <h3><%= trialsList[i].GPTTitle%>*</h3>
-                <p class="info"><strong>Official Title:</strong> <%= trialsList[i].BriefTitle %></p>
-                <div class="mini-card">
-                    <p><strong>Study Categories: </strong></p>
-                    <div class="tag-row">
-                        <% for (var j = 0; j < trialsList[i].Categories.length - 1; j++) { %>
-                            <div class="tag-item"><%= trialsList[i].Categories[j]%></div>  
-                        <% } %>
-                        <div class="tag-item"><%= trialsList[i].Categories[trialsList[i].Categories.length - 1]%></div>
+        <br />
+
+        <% for (var i=0; i < trialsList.length; i++) { %>
+            <div class="study-card collapsed" onclick="toggleCard(this)">
+                <h3>
+                    <%= trialsList[i].BriefTitle %>
+                </h3>
+
+                <!-- Collapsed Content -->
+                <div class="card-summary" style="display: block;">
+                    <!-- First Row: Study Category and Condition -->
+                    <div class="mini-card">
+                        <h5>Study Categories: </h5>
+                        <div class="tag-row">
+                            <% for (var j=0; j < trialsList[i].Categories.length; j++) { %>
+                                <div class="tag-item">
+                                    <%= trialsList[i].Categories[j] %>
+                                </div>
+                                <% } %>
+                        </div>
                     </div>
-                </div>
-                <br/>
-                <h4>Brief Summary*:</h4>
-                <p><%= trialsList[i].GPTSummary%></p>
-                <hr/>
-                <h4>More Information:</h4>
-                <div class="mini-card">
-                    <h5>Condition(s): </h5>
-                    <div class="tag-row">
-                        <% var conditionLength = trialsList[i].Condition.length; %>
-                        <% var displayLimit = 5; %>
-                        <% for (var j = 0; j < Math.min(displayLimit, conditionLength); j++) { %>
-                            <div class="tag-item"><%= trialsList[i].Condition[j] %></div>
-                        <% } %>
-                        <% if (conditionLength > displayLimit) { %>
-                            <% var moreCount = conditionLength - displayLimit; %>
-                            <p class="more-expand" onclick="showMore(this, `<%= moreCount %>`)">Show More Conditions (<%= moreCount %>)</p>
-                        <% } %>
-                        <div class="more-items" style="display: none;">
-                            <% for (var j = displayLimit; j < conditionLength; j++) { %>
-                                <div class="tag-item"><%= trialsList[i].Condition[j] %></div>
-                            <% } %>
+                    <div class="mini-card">
+                        <h5>Condition(s): </h5>
+                        <div class="tag-row">
+                            <div class="tag-item">
+                                <%= trialsList[i].Condition[0] %>
+                            </div>
+                            <% if (trialsList[i].Condition.length> 1) { %>
+                                <div>and <%= trialsList[i].Condition.length - 1 %> more</div>
+                                <% } %>
+                        </div>
+                    </div>
+
+                    <!-- Second Row: Location(s) -->
+                    <div class="mini-card">
+                        <h5>Location(s): </h5>
+                        <div class="tag-row">
+                            <div class="tag-item">
+                                <%= trialsList[i].FilteredFacilities[0] %>, <%= trialsList[i].FacilityLocations[0] %>
+                            </div>
+                            <% if (trialsList[i].FilteredFacilities.length> 1) { %>
+                                <div>and other locations.</div>
+                                <% } %>
                         </div>
                     </div>
                 </div>
-                <div class="study-row">
-                   <div class="col mini-card">
-                    <h5>Intervention/Treatment:</h5>
-                    <div class="tag-row">
-                        <% for (var j = 0; j < trialsList[i].InterventionType.length - 1; j++) { %>
-                            <div class="tag-item"><%= trialsList[i].InterventionType[j]%></div>
-                        <% } %>
-                        <div class="tag-item"><%= trialsList[i].InterventionType[trialsList[i].InterventionType.length - 1]%></div>
+
+                <!-- Expanded Content -->
+                <div class="card-content" style="display: none;">
+                    <!-- Category Displayed Above the Summary -->
+                    <div class="mini-card">
+                        <h5>Study Categories:</h5>
+                        <div class="tag-row">
+                            <% for (var j=0; j < trialsList[i].Categories.length; j++) { %>
+                                <div class="tag-item">
+                                    <%= trialsList[i].Categories[j] %>
+                                </div>
+                                <% } %>
+                        </div>
                     </div>
-                   </div>
-                   <div class="col mini-card">
-                    <h5>Study Type:</h5>
-                    <div class="tag-row">
-                        <div class="tag-item"><%= trialsList[i].StudyType%></div>  
-                    </div>
-                   </div>
-                </div>
-                <div class="study-row">
-                    <div class="col mini-card">
-                        <h5 style="margin-bottom: 5px;">Study Location(s): </h5>
-                        <% for (var j = 0; j < trialsList[i].FilteredFacilities.length; j++) {%>
-                            <p><%= trialsList[i].FilteredFacilities[j]%><br>
-                            <%= trialsList[i].FacilityLocations[j]%></p>
-                        <% } %> 
-                        <% if (trialsList[i].RemainingFacilities) %>
-                        <p><%= trialsList[i].RemainingFacilities%></p>
-                    </div>
-                    <div class="col mini-card">
-                        <h5 style="margin-bottom: 5px;">Study Contact:</h5>
-                        <% if (trialsList[i].LocationContact.length === 0) { %>
-                        <p>We could not find a primary study contact for this study. Please visit <a target="_blank" rel="noopener noreferrer" href="https://clinicaltrials.gov/study/<%= trialsList[i].NCTId %>">this link (click here)</a> and look under "Contacts and Locations" to find a contact or location closest to you.</p>
+
+                    <br />
+                    <h4>Brief Summary*</h4>
+                    <% if (trialsList[i].GPTSummary) { %>
+                        <p>
+                            <%= trialsList[i].GPTSummary %>
+                        </p>
                         <% } else { %>
-                        <p style="margin-bottom: 0px;">Name: <%= trialsList[i].LocationContact[0].name%> </p>
-                        <p>Email: <%= trialsList[i].LocationContact[0].email%> </p>
-                        <% } %>
-                    </div>
+                            <p>No brief summary listed.</p>
+                            <% } %>
+                                <hr />
+
+                                <!-- More Information -->
+                                <h4>More Information:</h4>
+                                <div class="mini-card">
+                                    <h5>Condition(s):</h5>
+                                    <div class="tag-row">
+                                        <% var conditionLength=trialsList[i].Condition.length; %>
+                                            <% var displayLimit=5; %>
+                                                <% for (var j=0; j < Math.min(displayLimit, conditionLength); j++) { %>
+                                                    <div class="tag-item">
+                                                        <%= trialsList[i].Condition[j] %>
+                                                    </div>
+                                                    <% } %>
+                                                        <% if (conditionLength> displayLimit) { %>
+                                                            <% var moreCount=conditionLength - displayLimit; %>
+                                                                <p class="more-expand"
+                                                                    onclick="showMore(this, `<%= moreCount %>`)">Show
+                                                                    More Conditions (<%= moreCount %>)</p>
+                                                                <% } %>
+                                                                    <div class="more-items" style="display: none;">
+                                                                        <% for (var j=displayLimit; j < conditionLength;
+                                                                            j++) { %>
+                                                                            <div class="tag-item">
+                                                                                <%= trialsList[i].Condition[j] %>
+                                                                            </div>
+                                                                            <% } %>
+                                                                    </div>
+                                    </div>
+                                </div>
+
+                                <!-- Other Expanded Details (Intervention, Study Type, Location, Contact) -->
+                                <div class="study-row">
+                                    <div class="col mini-card">
+                                        <h5>Intervention/Treatment:</h5>
+                                        <div class="tag-row">
+                                            <% for (var j=0; j < trialsList[i].InterventionType.length; j++) { %>
+                                                <div class="tag-item">
+                                                    <%= trialsList[i].InterventionType[j] %>
+                                                </div>
+                                                <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="col mini-card">
+                                        <h5>Study Type:</h5>
+                                        <div class="tag-row">
+                                            <div class="tag-item">
+                                                <%= trialsList[i].StudyType %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="study-row">
+                                    <div class="col mini-card">
+                                        <h5>Study Location(s):</h5>
+                                        <% for (var j=0; j < trialsList[i].FilteredFacilities.length; j++) { %>
+                                            <p>
+                                                <%= trialsList[i].FilteredFacilities[j] %><br>
+                                                    <%= trialsList[i].FacilityLocations[j] %>
+                                            </p>
+                                            <% } %>
+                                                <% if (trialsList[i].RemainingFacilities) { %>
+                                                    <p>
+                                                        <%= trialsList[i].RemainingFacilities %>
+                                                    </p>
+                                                    <% } %>
+                                    </div>
+                                    <div class="col mini-card">
+                                        <h5>Study Contact:</h5>
+                                        <% if (trialsList[i].LocationContact.length===0) { %>
+                                            <p>We could not find a primary study contact for this study. Please visit <a
+                                                    target="_blank" rel="noopener noreferrer"
+                                                    href="https://clinicaltrials.gov/study/<%= trialsList[i].NCTId %>">this
+                                                    link (click here)</a> and look under "Contacts and Locations" to
+                                                find a contact or location closest to you.</p>
+                                            <% } else { %>
+                                                <p style="margin-bottom: 0px;">Name: <%=
+                                                        trialsList[i].LocationContact[0].name %>
+                                                </p>
+                                                <p>Email: <%= trialsList[i].LocationContact[0].email %>
+                                                </p>
+                                                <% } %>
+                                    </div>
+                                </div>
+                                <hr />
+
+                                <!-- Connection Button (Conditional) -->
+                                <% if (trialsList[i].LocationContact.length===0) { %>
+                                    <p>Unfortunately we could not find a study coordinator for this study. However, if
+                                        you're interested in this study, click the button below to connect with our
+                                        research team!</p>
+                                    <br />
+                                    <div class="center">
+                                        <button class="pulse"
+                                            onclick="openEmailModal(null, null, `<%= trialsList[i].BriefTitle %>`, `<%= trialsList[i].NCTId %>`, `<%= trialsList[i].BriefSummary %>`, `<%= trialsList[i].DetailedDescription %>`)">Connect
+                                            with Our Research Team!</button>
+                                    </div>
+                                    <% } else { %>
+                                        <p>If you're interested in this study, click the button below to get connected
+                                            with the research coordinator.</p>
+                                        <br />
+                                        <div class="center">
+                                            <button class="pulse"
+                                                onclick="openEmailModal(`<%= trialsList[i].LocationContact[0].name %>`, `<%= trialsList[i].LocationContact[0].email %>`, `<%= trialsList[i].BriefTitle %>`, `<%= trialsList[i].NCTId %>`, `<%= trialsList[i].BriefSummary %>`, `<%= trialsList[i].DetailedDescription %>`)">Connect
+                                                with Research Coordinator!</button>
+                                        </div>
+                                        <% } %>
+                                            <br />
+                                            <hr />
+                                            <p class="info">See the official study in a new tab at: <a target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    href="https://clinicaltrials.gov/study/<%= trialsList[i].NCTId %>">https://clinicaltrials.gov/study/
+                                                    <%= trialsList[i].NCTId %></a></p>
                 </div>
-                <hr/>
-                <% if (trialsList[i].LocationContact.length === 0) { %>
-                    <p>Unfortunately we could not find a study coordinator for this study. However, if you're interested in this study, click the button below to connect with our research team!</p>
-                    <br/>
-                    <div class="center">
-                        <button class="pulse" onclick="sendToDatabase(`ResultsSendEmail`, `clicked`); openEmailModal(`<%= role %>`, null, null, `<%= trialsList[i].BriefTitle %>`, `<%= trialsList[i].GPTSummary%>`, `<%= trialsList[i].NCTId %>`)">Connect with Our Research Team!</button>         
-                    </div>
-                <% } else { %>
-                    <p>If you're interested in this study, click the button below to get connected with the research coordinator</p>
-                    <br/>
-                    <div class="center">
-                        <button class="pulse" onclick="sendToDatabase(`ResultsSendEmail`, `clicked`); openEmailModal(`<%= role %>`,`<%= trialsList[i].LocationContact[0].name %>`, `<%= trialsList[i].LocationContact[0].email %>`, `<%= trialsList[i].BriefTitle %>`, `<%= trialsList[i].GPTSummary%>`, `<%= trialsList[i].NCTId %>`)">Connect with Research Coordinator!</button>         
-                    </div>
-                <% } %>
-                <br/>
-                <hr/>
-                <p class="info">* This title and summary was prepared by the ALEX Research Team. See the official study description in a new tab at: <a target="_blank" rel="noopener noreferrer" href="https://clinicaltrials.gov/study/<%= trialsList[i].NCTId %>">https://clinicaltrials.gov/study/<%= trialsList[i].NCTId %></a></p>
             </div>
-        <% } %>
+            <% } %>
 
-        <% for(var i=0; i<sponsoredList.length; i++) { %>
-            <div class="study-card">
-                <div class="heading"><h3><%= sponsoredList[i].Title %></h3> <p class="sponsored">Sponsored Study</p></div>
-                <h4>Summary:</h4>
-                <p><%= sponsoredList[i].Summary %></p>
-                <hr/>
-                <h4>Study Contact:</h4>
-                <div class="row">
-                    <p>Name: <%= sponsoredList[i].ContactName %> </p>
-                    <p>Email: <%= sponsoredList[i].ContactEMail %> </p>
-                </div>
-                <hr/>
-                <h4>More Information:</h4>
-                <a target="_blank" rel="noopener noreferrer" href="<%= sponsoredList[i].Info %>" > <p>Click here to view more information about this study in a new tab.</p> </a>
-                <hr/>
-                <p>If you're interested in this study, click the "Enroll Now" button to get started.</p>
-                <div class="center">
-                    <a target="_blank" rel="noopener noreferrer" href="<%= sponsoredList[i].Link %>" > 
-                        <button>Enroll Now</button> </a>
-                </div>
-            </div>
-        <% } %>
 
-        <div>
-             <%- include('../../partials/registries.ejs'); %>
-        </div>
+                <% for(var i=0; i<sponsoredList.length; i++) { %>
+                    <div class="study-card">
+                        <div class="heading">
+                            <h3>
+                                <%= sponsoredList[i].Title %>
+                            </h3>
+                            <p class="sponsored">Sponsored Study</p>
+                        </div>
+                        <h4>Summary:</h4>
+                        <p>
+                            <%= sponsoredList[i].Summary %>
+                        </p>
+                        <hr />
+                        <h4>Study Contact:</h4>
+                        <div class="row">
+                            <p>Name: <%= sponsoredList[i].ContactName %>
+                            </p>
+                            <p>Email: <%= sponsoredList[i].ContactEMail %>
+                            </p>
+                        </div>
+                        <hr />
+                        <h4>More Information:</h4>
+                        <a target="_blank" rel="noopener noreferrer" href="<%= sponsoredList[i].Info %>">
+                            <p>Click here to view more information about this study in a new tab.</p>
+                        </a>
+                        <hr />
+                        <p>If you're interested in this study, click the "Enroll Now" button to get started.</p>
+                        <div class="center">
+                            <a target="_blank" rel="noopener noreferrer" href="<%= sponsoredList[i].Link %>">
+                                <button>Enroll Now</button> </a>
+                        </div>
+                    </div>
+                    <% } %>
 
-        <button onclick="sendToDatabase(`ResultsDownloadStudiesList`, `clicked`);window.print()">⬇️ Save My Tailored Studies</button>
-        <br/>
-        <button class="green" onclick="openSurvey(); sendToDatabase(`ResultsCompleteSurvey`, `clicked`)">📝 Complete Survey</button>
-        <br/>
-        <a href="/<%=id%>/<%=interventionType%>/<%=vh%>/StudySearch/Role">
-            <button>🔍 Search Again</button>
-        </a>
-        <br/>
+                        <div>
+                            <%- include('../../partials/registries.ejs'); %>
+                        </div>
+
+                        <button onclick="sendToDatabase(`ResultsDownloadStudiesList`, `clicked`);window.print()">⬇️ Save
+                            My Tailored Studies</button>
+                        <br />
+                        <button class="green"
+                            onclick="openSurvey(); sendToDatabase(`ResultsCompleteSurvey`, `clicked`)">📝 Complete
+                            Survey</button>
+                        <br />
+                        <a href="/<%=id%>/<%=interventionType%>/<%=vh%>/StudySearch/Role">
+                            <button>🔍 Search Again</button>
+                        </a>
+                        <br />
     </div>
 </body>
 <script src="/scripts/StudySearch/results.js"></script>
+
 </html>
