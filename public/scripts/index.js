@@ -125,8 +125,10 @@ function handleLanguageChange(mutationsList, observer) {
             
             if (mutation.target.lang == 'es') {
                 sessionStorage.setItem("literallanguage", 'es')
+                document.getElementById("translation").style.display = "none"
             } if (mutation.target.lang == 'en') {
                 sessionStorage.setItem("literallanguage", 'en')
+                document.getElementById("translation").style.display = "none"
             }
 
             sessionStorage.setItem("language", mutation.target.lang)
