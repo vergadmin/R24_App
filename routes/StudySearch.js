@@ -147,6 +147,7 @@ router.get('/Registries', (req, res) => {
 
 router.post('/Results', async (req, res) => {
   try {
+    console.log("BODY FOR POSTING RESULTS IS", req.session.params.searchCriteria)
     var body = {
       ...req.session.params.searchCriteria, // Spread the searchCriteria properties
       id: req.session.params.id,                  // Add the id field
@@ -175,7 +176,8 @@ router.get('/Results', (req, res) => {
   var vhType = req.session.params.vhType;
 
   var trialsList = req.session.trialsList;
-  res.render("pages/StudySearch/results", { id: id, vh: vh, interventionType: interventionType, role: role, trialsList: trialsList, sponsoredList: sponsoredList, vhType: vhType })
+  console.log("ROLE IS:", role)
+  res.render("pages/StudySearch/results", { id: id, vh: vh, interventionType: interventionType, role: role.Role, trialsList: trialsList, sponsoredList: sponsoredList, vhType: vhType })
 })
 
 router.post('/SendEmailPatient', logStudyContact, async (req, res) => {
@@ -319,6 +321,7 @@ async function logResults(req) {
   }
   var trialsList = req.session.trialsList;
   var results = [];
+  console.log("IN LOG RESULTS", req.session.params.searchCriteria)
   results.push({
     "Criteria": `${JSON.stringify(req.session.params.searchCriteria)}`,
     "NumberOfResults": `${req.session.numTrials}`

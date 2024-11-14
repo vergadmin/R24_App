@@ -132,6 +132,8 @@ function handleLanguageChange(mutationsList, observer) {
             }
 
             sessionStorage.setItem("language", mutation.target.lang)
+            console.log("GETTING BEGIN BUTTON")
+            console.log(document.getElementById("begin-intervention"))
             document.getElementById("begin-intervention").style.opacity = "100"
         }
     });

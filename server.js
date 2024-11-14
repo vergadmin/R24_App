@@ -310,12 +310,17 @@ app.post('/storeParameters', (req, res) => {
     // Store Information Sent from User
     // =============================================
     if (req.body.Background) {
-        req.session.params.searchCriteria = {
-            "Age": parseInt(req.body.Background.Age),
-            "Gender": req.body.Background.Gender,
-            "LocationState": req.body.Background.LocationState,
-            "LocationCity": req.body.Background.LocationCity
-        }
+        req.session.params.searchCriteria.Age = parseInt(req.body.Background.Age);
+        req.session.params.searchCriteria.Gender = req.body.Background.Gender;
+        req.session.params.searchCriteria.LocationState = req.body.Background.LocationState;
+        req.session.params.searchCriteria.LocationCity = req.body.Background.LocationCity;
+
+        // req.session.params.searchCriteria = {
+        //     "Age": parseInt(req.body.Background.Age),
+        //     "Gender": req.body.Background.Gender,
+        //     "LocationState": req.body.Background.LocationState,
+        //     "LocationCity": req.body.Background.LocationCity
+        // }
         req.session.params.searches.Age.push({
             "Age": parseInt(req.body.Background.Age),
         })
@@ -359,7 +364,7 @@ app.post('/storeParameters', (req, res) => {
         groupings = true;
     }
     else if (req.body.Role) {
-        // console.log(req.body.Role);
+        console.log(req.body.Role);
         req.session.params.searchCriteria.Role = req.body.Role;
         req.session.params.searches.Role.push({
             "Role": req.body.Role
@@ -516,6 +521,7 @@ app.post('/storeParameters', (req, res) => {
 
     });
     // END DATABASE STUFF
+    console.log("SEARCH CRITERIA IS", req.session.params.searchCriteria)
 })
 
 function checkPreviousVisit(req, res, next) {
