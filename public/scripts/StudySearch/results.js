@@ -124,7 +124,7 @@ async function emailPatient() {
 
 function openSurvey () {
   let id = sessionStorage.getItem("id") || "tempId";
-  const url =  `https://surveys.mayoclinic.org/jfe/form/SV_eEGb3g3UDzAGLqu?PreScreenerID=${id}`;
+  const url =  `https://surveys.mayoclinic.org/jfe/form/SV_eEGb3g3UDzAGLqu?ID=${id}`;
   window.open(url, '_blank');
 }
 
