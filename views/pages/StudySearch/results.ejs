@@ -205,7 +205,7 @@
         <div class="button-action-area">
             <button onclick="sendToDatabase(`ResultsDownloadStudiesList`, `clicked`);window.print()">⬇️ Save My Tailored
                 Studies</button>
-            <button class="green" onclick="sendToDatabase(`ResultsCompleteSurvey`, `clicked`)">📝 Complete
+            <button class="green" onclick="openSurvey(); sendToDatabase(`ResultsCompleteSurvey`, `clicked`)">📝 Complete
                 Survey</button>
             <a href="/<%=id%>/<%=interventionType%>/<%=vh%>/StudySearch/Role">
                 <button>🔍 Search Again</button>

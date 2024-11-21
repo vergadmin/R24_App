@@ -124,7 +124,7 @@ async function emailPatient() {
 
 function openSurvey () {
   let id = sessionStorage.getItem("id") || "tempId";
-  const url =  `https://ufl.qualtrics.com/jfe/form/SV_0v1xFWcmSi5MRPE?PreScreenerID=${id}`;
+  const url =  `https://surveys.mayoclinic.org/jfe/form/SV_eEGb3g3UDzAGLqu?PreScreenerID=${id}`;
   window.open(url, '_blank');
 }
 
