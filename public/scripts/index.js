@@ -126,18 +126,23 @@ function handleLanguageChange(mutationsList, observer) {
             if (mutation.target.lang == 'es') {
                 sessionStorage.setItem("literallanguage", 'es')
                 document.getElementById("translation").style.display = "none"
-            } if (mutation.target.lang == 'en') {
+                document.getElementById("spanish").style.display = "block"
+                document.getElementById("english").style.display = "none"
+                translatePage('es'); // Call translatePage for Spanish
+            } else if (mutation.target.lang == 'en') {
                 sessionStorage.setItem("literallanguage", 'en')
                 document.getElementById("translation").style.display = "none"
+                document.getElementById("english").style.display = "block"
+                document.getElementById("spanish").style.display = "none"
+                translatePage('en'); // Call translatePage for English
             }
 
             sessionStorage.setItem("language", mutation.target.lang)
-            console.log("GETTING BEGIN BUTTON")
-            console.log(document.getElementById("begin-intervention"))
             document.getElementById("begin-intervention").style.opacity = "100"
         }
     });
 }
+
 
 // Create a new MutationObserver to watch for changes to the lang attribute
 const observer = new MutationObserver(handleLanguageChange);
@@ -146,8 +151,31 @@ const observer = new MutationObserver(handleLanguageChange);
 observer.observe(document.documentElement, { attributes: true });
 
 function googleTranslateElementInit() {
-    new google.translate.TranslateElement({includedLanguages: "en,es", layout: google.translate.TranslateElement.InlineLayout}, 'google_translate_element')
+    new google.translate.TranslateElement({includedLanguages: "en,es", autoDisplay: false, layout: google.translate.TranslateElement.InlineLayout}, 'google_translate_element')
 }
+
+function translatePage(targetLang) {
+    if (typeof google === 'undefined' || typeof google.language === 'undefined' || typeof google.language.translate === 'undefined') {
+        console.error('Google Translate API not loaded');
+        return;
+    }
+    // Select all elements that don't have the "notranslate" class
+    const elements = document.querySelectorAll('*:not(.notranslate)');
+  
+    elements.forEach(element => {
+      // Check if the element contains only text (no child elements)
+      if (element.childNodes.length === 1 && element.childNodes[0].nodeType === Node.TEXT_NODE) {
+        const originalText = element.textContent;
+        
+        // Use Google Translate API to translate the text
+        google.language.translate(originalText, '', targetLang, function(result) {
+          if (result.translation) {
+            element.textContent = result.translation;
+          }
+        });
+      }
+    });
+  }
 
 async function sendGeneralData(browserInfo, deviceType, os, dateTime) {
     // console.log("IN SEND TO SERVER GENERAL DATA")

@@ -94,6 +94,10 @@ hr {
     display: none;
 }
 
+#spanish {
+  display: none;
+}
+
 /* -- Comments on August Release -- 
     Creating a separate set of css in index.css for August Release
     Separate css files created as well, but this felt appropriate for index.css
