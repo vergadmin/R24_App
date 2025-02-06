@@ -43,51 +43,51 @@ const buttons = [
 ]
 
 router.get('/Introduction', updateDatabase, (req, res) => {
-    var id = req.session.params.id;
-    var vh = req.session.params.vCHE;
-    var interventionType = req.session.params.interventionType;
-    var vhType = req.session.params.vhType;
-    res.render("pages/interventionType/EducationalComponent/introduction", {id: id, vh: vh, vhType: vhType, interventionType: interventionType, buttons: buttons, url: 'Introduction'})
+    const id = req.session?.params?.id;
+    const vCHE = req.session?.params?.vCHE;
+    const interventionType = req.session?.params?.interventionType;
+    const language = req.session?.params?.language;
+    res.render("pages/interventionType/EducationalComponent/introduction", {id: id, vCHE: vCHE, interventionType: interventionType, buttons: buttons, url: 'Introduction', language: language})
 })
 
 router.get('/1', updateDatabase, (req, res) => {
-    var id = req.session.params.id;
-    var vh = req.session.params.vCHE;
-    var interventionType = req.session.params.interventionType;
-    var vhType = req.session.params.vhType;
-    res.render("pages/interventionType/EducationalComponent/1", {id: id, vh: vh, vhType: vhType, interventionType: interventionType, buttons: buttons, url: '1'})
+    const id = req.session?.params?.id;
+    const vCHE = req.session?.params?.vCHE;
+    const interventionType = req.session?.params?.interventionType;
+    const language = req.session?.params?.language;
+    res.render("pages/interventionType/EducationalComponent/1", {id: id, vCHE: vCHE, interventionType: interventionType, buttons: buttons, url: '1', language: language})
 })
 
 router.get('/2', updateDatabase, (req, res) => {
-    var id = req.session.params.id;
-    var vh = req.session.params.vCHE;
-    var interventionType = req.session.params.interventionType;
-    var vhType = req.session.params.vhType;
-    res.render("pages/interventionType/EducationalComponent/2", {id: id, vh: vh, vhType: vhType, interventionType: interventionType, buttons: buttons, url: '2'})
+    const id = req.session?.params?.id;
+    const vCHE = req.session?.params?.vCHE;
+    const interventionType = req.session?.params?.interventionType;
+    const language = req.session?.params?.language;
+    res.render("pages/interventionType/EducationalComponent/2", {id: id, vCHE: vCHE, interventionType: interventionType, buttons: buttons, url: '2', language: language})
 })
 
 router.get('/3', updateDatabase, (req, res) => {
-    var id = req.session.params.id;
-    var vh = req.session.params.vCHE;
-    var interventionType = req.session.params.interventionType;
-    var vhType = req.session.params.vhType;
-    res.render("pages/interventionType/EducationalComponent/3", { id: id, vh: vh, vhType: vhType, interventionType: interventionType, buttons: buttons, url: '3'})
+    const id = req.session?.params?.id;
+    const vCHE = req.session?.params?.vCHE;
+    const interventionType = req.session?.params?.interventionType;
+    const language = req.session?.params?.language;
+    res.render("pages/interventionType/EducationalComponent/3", { id: id, vCHE: vCHE, interventionType: interventionType, buttons: buttons, url: '3', language: language})
 })
 
 router.get('/4', updateDatabase, (req, res) => {
-    var id = req.session.params.id;
-    var vh = req.session.params.vCHE;
-    var interventionType = req.session.params.interventionType;
-    var vhType = req.session.params.vhType;
-    res.render("pages/interventionType/EducationalComponent/4", {id: id, vh: vh, vhType: vhType, interventionType: interventionType, buttons: buttons, url: '4'})
+    const id = req.session?.params?.id;
+    const vCHE = req.session?.params?.vCHE;
+    const interventionType = req.session?.params?.interventionType;
+    const language = req.session?.params?.language;
+    res.render("pages/interventionType/EducationalComponent/4", {id: id, vCHE: vCHE, interventionType: interventionType, buttons: buttons, url: '4', language: language})
 })
 
 router.get('/5', updateDatabase, (req, res) => {
-    var id = req.session.params.id;
-    var vh = req.session.params.vCHE;
-    var interventionType = req.session.params.interventionType;
-    var vhType = req.session.params.vhType;
-    res.render("pages/interventionType/EducationalComponent/5", {id: id, vh: vh, vhType: vhType, interventionType: interventionType, buttons: buttons, url: '5'})
+    const id = req.session?.params?.id;
+    const vCHE = req.session?.params?.vCHE;
+    const interventionType = req.session?.params?.interventionType;
+    const language = req.session?.params?.language;
+    res.render("pages/interventionType/EducationalComponent/5", {id: id, vCHE: vCHE, interventionType: interventionType, buttons: buttons, url: '5', language: language})
 })
 
 function updateDatabase(req, res, next) {

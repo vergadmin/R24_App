@@ -5,10 +5,7 @@ window.addEventListener("load", () => {
 
 
 async function getResults() {
-    let id = sessionStorage.getItem("id") || "tempId";
-    let type = sessionStorage.getItem("type") || "tempType";
-    let vCHE = sessionStorage.getItem("vCHE") || "tempvCHE";
-    var url = `/${id}/${type}/${vCHE}/StudySearch/Results`
+    var url = `/StudySearch/Results`
 
     
     let res = await fetch(url, {

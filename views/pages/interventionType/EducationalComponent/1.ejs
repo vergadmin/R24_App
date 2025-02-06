@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,44 +11,55 @@
     <link href="/css/index.css" rel="stylesheet" type="text/css">
     <link href="/css/educationalComponent.css" rel="stylesheet" type="text/css">
     <script src="/scripts/checkLanguage.js"></script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <title>ALEX</title>
 </head>
+
 <body>
     <div id="load">
-        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>
+        <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
     </div>
     <header>
         <%- include('../../../partials/header'); %>
     </header>
     <div class="container">
         <video autoplay controls id="myVideo">
-            <source src="https://research-studies-with-alex.s3.amazonaws.com/R24_Characters/<%=vhType%>/<%=vh%>_1.mp4" type="video/mp4">
+            <source
+                src="https://research-studies-with-alex.s3.amazonaws.com/R24_Characters/<%= vCHE %>/<%= vCHE + language %>_1.mp4"
+                type="video/mp4">
         </video>
-        <br/>
+        <br />
         <div class="navigation-area">
-            <% for (var i = 0; i < buttons.length; i++) { %>
-                <% if (buttons[i].url === url) { %>
-                    <a href="/<%=id%>/<%=interventionType%>/<%=vh%>/EducationalComponent/<%=buttons[i].url%>">
-                        <button class="education-navigation selected" >
+            <% for (var i=0; i < buttons.length; i++) { %>
+                <% if (buttons[i].url===url) { %>
+                    <a href="/EducationalComponent/<%=buttons[i].url%>">
+                        <button class="education-navigation selected">
                             <%= buttons[i].text %>
                         </button>
                     </a>
-                <% } else { %>
-                    <a href="/<%=id%>/<%=interventionType%>/<%=vh%>/EducationalComponent/<%=buttons[i].url%>">
-                        <button class="education-navigation" >
-                            <%= buttons[i].text %>
-                        </button>
-                    </a>
-                <% } %>
-            <% } %>
+                    <% } else { %>
+                        <a href="/EducationalComponent/<%=buttons[i].url%>">
+                            <button class="education-navigation">
+                                <%= buttons[i].text %>
+                            </button>
+                        </a>
+                        <% } %>
+                            <% } %>
         </div>
         <div class="discover-button-area">
-            <a href="/<%=id%>/<%=interventionType%>/<%=vh%>/Discover">
+            <a href="/Discover">
                 <button class="green discover">Discover Research Opportunities</button>
             </a>
         </div>
     </div>
 </body>
 <script src="/scripts/videos.js"></script>
+
 </html>

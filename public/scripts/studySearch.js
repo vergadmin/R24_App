@@ -11,7 +11,7 @@ async function validateAndSendFormData(id) {
             sessionStorage.setItem("role-type", roleSelected.value);
             var ret = await sendFormData(id);
             return;
-            // window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Background`
+            // window.location.href = `/StudySearch/Background`
         }
         else {
             if (!roleSelected) {
@@ -245,40 +245,40 @@ async function sendFormData(id) {
         let ret = await res.json();
         console.log(ret);
         if (id === "role-type") {
-            window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Background`
+            window.location.href = `/StudySearch/Background`
         }
         else if (id === "background-info") {
-            window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Preferences`
+            window.location.href = `/StudySearch/Preferences`
         }
         else if (id === "preferences") {
             const pref = sessionStorage.getItem('preferences') || "Search";
             if (pref === 'Search') {
-                window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Diagnosis`
+                window.location.href = `/StudySearch/Diagnosis`
             }
             else if (pref === 'Browse') {
-                window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Groupings`
+                window.location.href = `/StudySearch/Groupings`
             }
             else {
-                window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Diagnosis`
+                window.location.href = `/StudySearch/Diagnosis`
             }
         }
         else if (id === "groupings-info") {
             const pref = sessionStorage.getItem('preferences') || "Search";
             if (pref === 'Search') {
-                window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/GeneratingResults`
+                window.location.href = `/StudySearch/GeneratingResults`
             }
             else if (pref === 'Browse') {
-                window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Browse`
+                window.location.href = `/StudySearch/Browse`
             }
             else {
-                window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Diagnosis`
+                window.location.href = `/StudySearch/Diagnosis`
             }
         }
         else if (id === "browse-info" || id == "no-info") {
-            window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/GeneratingResults`
+            window.location.href = `/StudySearch/GeneratingResults`
         }
         else if (id === "diagnosis-info") {
-            window.location.href = `/${ret.id}/${ret.type}/${ret.vCHE}/StudySearch/Groupings`
+            window.location.href = `/StudySearch/Groupings`
         }
         else {
 

@@ -93,10 +93,7 @@ async function retrieveCities(city, state) {
 
 
 async function getResults(cityVal, stateVal) {
-    let id = sessionStorage.getItem("id") || "tempId";
-    let type = sessionStorage.getItem("type") || "tempType";
-    
-    let url = `/${id}/${type}/RetrieveCities`;
+    let url = `/RetrieveCities`;
     // console.log(url)
 
     let data = {};

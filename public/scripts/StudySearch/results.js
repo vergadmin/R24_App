@@ -75,10 +75,7 @@ async function emailPatient() {
 
   const subject = `[ACTION REQUESTED] Potential Participant Requesting Information about ${title}`
 
-  let id = sessionStorage.getItem("id") || "tempId";
-  let type = sessionStorage.getItem("type") || "tempType";
-  let vCHE = sessionStorage.getItem("vCHE") || "tempvCHE";
-  let url =`/${id}/${type}/${vCHE}/StudySearch/SendEmailPatient`;
+  let url =`/StudySearch/SendEmailPatient`;
   let data = {
     message: openModalMessage,
     subject: subject,
@@ -151,10 +148,7 @@ async function emailCaregiver() {
 
   const subject = `[ACTION REQUESTED] Potential Participant Requesting Information about ${title}`
 
-  let id = sessionStorage.getItem("id") || "tempId";
-  let type = sessionStorage.getItem("type") || "tempType";
-  let vCHE = sessionStorage.getItem("vCHE") || "tempvCHE";
-  let url =`/${id}/${type}/${vCHE}/StudySearch/SendEmailCaregiver`;
+  let url =`/StudySearch/SendEmailCaregiver`;
 
   let data = {
     message: openModalMessage,

@@ -217,8 +217,7 @@ async function logLanguage() {
     console.log(vCHE)
     let url = '/updateDatabase';
     let data = {
-        'Language': sessionStorage.getItem("language"),
-        'vCHE': type
+        'Language': sessionStorage.getItem("language")
     };
 
     let res = await fetch(url, {
@@ -232,10 +231,10 @@ async function logLanguage() {
         let ret = await res.json();
         console.log(type)
         console.log(vCHE)
-        if (vCHE === 'vh') {
-            window.location.href=`/${sessionStorage.getItem('id')}/${type}/${vCHE}/EducationalComponent/Introduction`
+        if (vCHE === 'text') {
+            window.location.href=`/EducationalComponentText/Introduction`
         } else {
-            window.location.href=`/${sessionStorage.getItem('id')}/${type}/${vCHE}/EducationalComponentText/Introduction`
+            window.location.href=`/EducationalComponent/Introduction`
         }
     } else {
         return `HTTP error: ${res.status}`;

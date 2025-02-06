@@ -82,72 +82,66 @@ router.use(session({
 }));
 
 router.get('/Role', (req, res) => {
-  var id = req.session.params.id;
-  var vh = req.session.params.vCHE;
-  var interventionType = req.session.params.interventionType;
-  var vhType = req.session.params.vhType;
-  res.render("pages/StudySearch/role", { id: id, vh: vh, interventionType: interventionType, vhType: vhType })
+  const id = req.session?.params?.id;
+  const vCHE = req.session?.params?.vCHE;
+  const interventionType = req.session?.params?.interventionType;
+  res.render("pages/StudySearch/role", { id: id, interventionType: interventionType, vCHE: vCHE })
 })
 
 router.get('/Background', (req, res) => {
-  var id = req.session.params.id;
-  var vh = req.session.params.vCHE;
-  var interventionType = req.session.params.interventionType;
-  var vhType = req.session.params.vhType;
-  res.render("pages/StudySearch/background", { id: id, vh: vh, interventionType: interventionType, vhType: vhType })
+  const id = req.session?.params?.id;
+  const vCHE = req.session?.params?.vCHE;
+  const interventionType = req.session?.params?.interventionType;
+  res.render("pages/StudySearch/background", { id: id, interventionType: interventionType, vCHE: vCHE })
 })
 
 router.get('/Preferences', (req, res) => {
-  var id = req.session.params.id;
-  var vh = req.session.params.vCHE;
-  var interventionType = req.session.params.interventionType;
-  var vhType = req.session.params.vhType;
-  res.render("pages/StudySearch/preferences", { id: id, vh: vh, interventionType: interventionType, vhType: vhType })
+  const id = req.session?.params?.id;
+  const vCHE = req.session?.params?.vCHE;
+  const interventionType = req.session?.params?.interventionType;
+  res.render("pages/StudySearch/preferences", { id: id, interventionType: interventionType, vCHE: vCHE })
 })
 
 router.get('/Diagnosis', (req, res) => {
-  var id = req.session.params.id;
-  var vh = req.session.params.vCHE;
-  var interventionType = req.session.params.interventionType;
-  var vhType = req.session.params.vhType;
-  res.render("pages/StudySearch/diagnosis", { id: id, vh: vh, interventionType: interventionType, vhType: vhType })
+  const id = req.session?.params?.id;
+  const vCHE = req.session?.params?.vCHE;
+  const interventionType = req.session?.params?.interventionType;
+  res.render("pages/StudySearch/diagnosis", { id: id, interventionType: interventionType, vCHE: vCHE })
 })
 
 router.get('/Groupings', (req, res) => {
-  var id = req.session.params.id;
-  var vh = req.session.params.vCHE;
-  var interventionType = req.session.params.interventionType;
-  var vhType = req.session.params.vhType;
-  res.render("pages/StudySearch/groupings", { id: id, vh: vh, interventionType: interventionType, vhType: vhType })
+  const id = req.session?.params?.id;
+  const vCHE = req.session?.params?.vCHE;
+  const interventionType = req.session?.params?.interventionType;
+  res.render("pages/StudySearch/groupings", { id: id, interventionType: interventionType, vCHE: vCHE })
 })
 
 router.get('/Browse', (req, res) => {
-  var id = req.session.params.id;
-  var vh = req.session.params.vCHE;
-  var interventionType = req.session.params.interventionType;
-  var vhType = req.session.params.vhType;
-  res.render("pages/StudySearch/browse", { id: id, vh: vh, interventionType: interventionType, vhType: vhType })
+  const id = req.session?.params?.id;
+  const vCHE = req.session?.params?.vCHE;
+  const interventionType = req.session?.params?.interventionType;
+  res.render("pages/StudySearch/browse", { id: id, interventionType: interventionType,  vCHE: vCHE })
 })
 
 router.get('/GeneratingResults', (req, res) => {
-  var id = req.session.params.id;
-  var vh = req.session.params.vCHE;
-  var interventionType = req.session.params.interventionType;
-  var vhType = req.session.params.vhType;
-  res.render("pages/StudySearch/generatingResults", { id: id, vh: vh, vhType: vhType, interventionType: interventionType })
+  const id = req.session?.params?.id;
+  const vCHE = req.session?.params?.vCHE;
+  const interventionType = req.session?.params?.interventionType;
+  const language = req.session?.params?.language;
+
+  res.render("pages/StudySearch/generatingResults", { id: id, interventionType: interventionType, vCHE: vCHE, language: language})
 })
 
 router.get('/Registries', (req, res) => {
-  var id = req.session.params.id;
-  var vh = req.session.params.vCHE;
-  var interventionType = req.session.params.interventionType;
-  var vhType = req.session.params.vhType;
-  res.render("pages/StudySearch/registries", { id: id, vh: vh, interventionType: interventionType, vhType: vhType })
+  const id = req.session?.params?.id;
+  const vCHE = req.session?.params?.vCHE;
+  const interventionType = req.session?.params?.interventionType;
+  res.render("pages/StudySearch/registries", { id: id, interventionType: interventionType, vCHE: vCHE })
 })
 
 router.post('/Results', async (req, res) => {
   try {
-    console.log("BODY FOR POSTING RESULTS IS", req.session.params.searchCriteria)
+    // console.log("BODY FOR POSTING RESULTS IS", req.session.params.searchCriteria)
     var body = {
       ...req.session.params.searchCriteria, // Spread the searchCriteria properties
       id: req.session.params.id,                  // Add the id field
@@ -169,15 +163,13 @@ router.post('/Results', async (req, res) => {
 
 
 router.get('/Results', (req, res) => {
-  var id = req.session.params.id;
-  var vh = req.session.params.vCHE;
-  var interventionType = req.session.params.interventionType;
-  var role = req.session.params.searchCriteria.Role;
-  var vhType = req.session.params.vhType;
-
-  var trialsList = req.session.trialsList;
-  console.log("ROLE IS:", role)
-  res.render("pages/StudySearch/results", { id: id, vh: vh, interventionType: interventionType, role: role.Role, trialsList: trialsList, sponsoredList: sponsoredList, vhType: vhType })
+  const id = req.session?.params?.id;
+  const vCHE = req.session?.params?.vCHE;
+  const interventionType = req.session?.params?.interventionType;
+  const role = req.session?.params?.searchCriteria?.Role;
+  const trialsList = req.session.trialsList;
+  // YES, IT IS role.ROLE I don't know why! But I will figure it out when I am smarter (2/5/25 Chris) -- 
+  res.render("pages/StudySearch/results", { id: id, interventionType: interventionType, role: role.Role, trialsList: trialsList, sponsoredList: sponsoredList, vCHE: vCHE })
 })
 
 router.post('/SendEmailPatient', logStudyContact, async (req, res) => {
@@ -216,9 +208,9 @@ function logStudyContact(req, res, next) {
         return;
       }
 
-      var id = req.session.params.id;
-      var visitNum = req.session.params.visitNum;
-      var contactedStudies = JSON.stringify(req.session.params.contactedStudies);
+      const id = req.session?.params?.id;
+      const visitNum = req.session?.params?.visitNum;
+      const contactedStudies = JSON.stringify(req.session?.params?.contactedStudies);
 
       const request = new sql.Request();
       let queryString = `
@@ -321,7 +313,7 @@ async function logResults(req) {
   }
   var trialsList = req.session.trialsList;
   var results = [];
-  console.log("IN LOG RESULTS", req.session.params.searchCriteria)
+  // console.log("IN LOG RESULTS", req.session.params.searchCriteria)
   results.push({
     "Criteria": `${JSON.stringify(req.session.params.searchCriteria)}`,
     "NumberOfResults": `${req.session.numTrials}`
