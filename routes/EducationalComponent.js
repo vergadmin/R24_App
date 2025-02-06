@@ -29,15 +29,15 @@ const buttons = [
         text: "What are research studies?"
     },
     {
-        url: '3',
+        url: '2',
         text: "Why consider participating?"
     },
     {
-        url: '4',
+        url: '3',
         text: "Are research studies safe?"
     },
     {
-        url: '5',
+        url: '4',
         text: "How to participate and where to start?"
     }
 ]
