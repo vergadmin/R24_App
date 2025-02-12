@@ -1,27 +1,8 @@
 function download() {
-    window.open(`https://vpf2content.s3.amazonaws.com/Uploads/Videos/R24/pdfs/questions.pdf`, '_blank');
     sendToDatabase(`DownloadGuide`, `clicked`)
+    window.open(`https://vpf2content.s3.amazonaws.com/Uploads/Videos/R24/pdfs/questions.pdf`, '_blank');
 }
 
-function copyLink() {
-    let link = String(window.location).slice(0,-9)
-    navigator.clipboard.writeText(link).then(function() {
-        // alert("Copied the text: " + link);
-        sendToDatabase(`ShareLink`, `clicked`);
-        var button = document.getElementById("copyLink");
-        button.innerHTML = "&#x2713; Link Copied!";
-        button.style.backgroundColor = "green";
-    }).catch(function(error) {
-        // Error - handle the error here
-        const url = "/SendError";
-        let res = fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({error}),
-        });
-        console.error('An error occurred while copying to clipboard:', error);
-    });
-    
+function redirectToSearch() {
+    window.location.href = "/StudySearch/Role";
 }

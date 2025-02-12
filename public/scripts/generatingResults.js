@@ -27,9 +27,9 @@ async function getResults() {
             button.style.backgroundColor = "#22884C"
             button.classList.add('pulse');
 
-            loadedTitle.innerText = "We were unable to find any trials with your specified criteria. But we do have recommended trials you can observe."
+            loadedTitle.innerText = "ClinicalTrials.gov was unable to locate any trials with your specified criteria. But we do have recommended trials you can observe."
 
-            document.getElementById("still-loading").innerText = "We were unable to find any trials with your specified criteria. You can try searching again with different conditions and preferences, if you'd like.";
+            document.getElementById("still-loading").innerText = "ClinicalTrials.gov was unable to locate any trials with your specified criteria. You can try searching again with different conditions and preferences, if you'd like.";
             
             document.getElementById("still-loading").style.display = 'block'
             document.getElementById("link-text-area").style.display = 'none'

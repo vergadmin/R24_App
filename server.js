@@ -23,8 +23,6 @@ var sql = require("mssql");
 
 const columnNames = ['diseases', 'synonym1', 'synonym2', 'synonym3', 'synonym4', 'synonym5', 'synonym6', 'synonym7', 'synonym8', 'synonym9', 'synonym10', 'synonym11', 'synonym12', 'synonym13', 'synonym14', 'synonym15', 'synonym16', 'synonym17', 'synonym18', 'synonym19', 'synonym20', 'synonym21', 'synonym22', 'synonym23', 'synonym24', 'synonym25', 'synonym26', 'synonym27', 'synonym28', 'synonym29', 'synonym30', 'synonym31', 'synonym32', 'synonym33', 'synonym34', 'synonym35', 'synonym36', 'synonym37', 'synonym38', 'synonym39', 'synonym40', 'synonym41', 'synonym42', 'synonym43', 'synonym44', 'synonym45', 'synonym46', 'synonym47', 'synonym48', 'synonym49', 'synonym50', 'synonym51'];
 
-const FLAG = 'FLAG';
-const formData = ['ConditionText1', 'ConditionText2', 'ConditionText3', 'Age', 'Gender', 'LocationState', 'LocationCity', 'Conditions'];
 const groupingsData = ['HealthyLiving', 'PreventionScreening', 'Treatment', 'Survivorship', 'Other'];
 const groupingsNames = ['Healthy Living', 'Cancer Prevention & Screening', 'Treatment', 'Survivorship', 'Other'];
 
@@ -108,23 +106,144 @@ sessionStore.on('sessionError', (error, classMethod) => {
     console.error('❌ Class Method error connecting to the MSSQL session store:', classMethod);
 })
 
+app.post('/generalData', async (req, res) => {
+    try {
+        // ✅ Get the current time in EST and convert it to a proper Date object
+        const estTimeString = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+        const dateTime = new Date(estTimeString); // Convert string to Date object
+
+        // ✅ Ensure all fields are handled safely
+        const deviceType = req.body?.DeviceType || "Error in Device Type";
+        const operatingSystem = req.body?.OperatingSystem || "Error in OS";
+        const browser = req.body?.Browser || "Error in Browser";
+
+        const id = req.session?.params?.id || "Error in ID";
+        const interventionType = req.session?.params?.interventionType || "Error in Intervention Type";
+        const visitNum = req.session?.params?.visitNum || -1;
+
+        const request = new sql.Request();
+
+        // ✅ Parameterized Query (Prevents SQL Injection)
+        let queryString = `
+            UPDATE R24
+            SET DateTime = @dateTime, DeviceType = @deviceType, OperatingSystem = @operatingSystem, Browser = @browser
+            WHERE ID = @id
+            AND VisitNum = @visitNum
+            AND InterventionType = @interventionType`;
+
+        // ✅ Bind parameters properly
+        request.input("dateTime", sql.DateTime, dateTime); // Correctly formatted EST datetime
+        request.input("deviceType", sql.VarChar, deviceType);
+        request.input("operatingSystem", sql.VarChar, operatingSystem);
+        request.input("browser", sql.VarChar, browser);
+        request.input("id", sql.VarChar, id);
+        request.input("visitNum", sql.Int, visitNum);
+        request.input("interventionType", sql.VarChar, interventionType);
+
+        // ✅ Execute the SQL query
+        await request.query(queryString);
+        // ✅ Respond to the client
+        res.status(200).send({ success: true, message: "Data updated successfully" });
+    } catch (err) {
+        console.error("Error updating generalData:", err);
+        errorProtocol(err, req, res);
+    }
+});
+
+app.post('/completeSurvey', async (req, res) => {
+    try {
+        // ✅ Get the current time in EST and convert it to a proper Date object
+        const estTimeString = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+        const dateTime = new Date(estTimeString); // Convert string to Date object
+
+        const id = req.session?.params?.id || "Error in ID";
+        const interventionType = req.session?.params?.interventionType || "Error in Intervention Type";
+        const visitNum = req.session?.params?.visitNum || -1;
+
+        const request = new sql.Request();
+
+        // ✅ Parameterized Query (Prevents SQL Injection)
+        let queryString = `
+            UPDATE R24
+            SET CompleteSurvey = @dateTime
+            WHERE ID = @id
+            AND VisitNum = @visitNum
+            AND InterventionType = @interventionType`;
+
+        // ✅ Bind parameters properly
+        request.input("dateTime", sql.DateTime, dateTime); // Correctly formatted EST datetime
+        request.input("id", sql.VarChar, id);
+        request.input("visitNum", sql.Int, visitNum);
+        request.input("interventionType", sql.VarChar, interventionType);
+
+        // ✅ Execute the SQL query
+        await request.query(queryString);
+
+        // ✅ Respond to the client
+        res.status(200).send({ success: true, message: "Data updated successfully" });
+    } catch (err) {
+        console.error("Error updating generalData:", err);
+        errorProtocol(err, req, res);
+    }
+});
+
+
 app.post('/updateDatabase', (req, res) => {
     let setList = ''
     // console.log(req.body)
+    const currentTimeInEST = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
     for (const [key, value] of Object.entries(req.body)) {
-        if (key !== FLAG)
-            setList += key + `='` + value + `', `
-        if (key === "Language") {
+        setList += key + `='` + value + `', `;
+        if (key === "Language")
             req.session.params.language = value === "es" ? "s" : "e";
-        }
     }
     setList = setList.slice(0, -2);
 
+    if (setList.includes("DownloadGuide")) {
+        if (!req.session) {
+            req.session = {};
+        }
+        if (!req.session.params) {
+            req.session.params = {};
+        }
+        if (!req.session.params.downloadGuides) {
+            req.session.params.downloadGuides = [];
+        }
+        var downloadGuides = req.session?.params?.downloadGuides || [];
+        const downloadGuidesObject = { timestamp: currentTimeInEST };
+        downloadGuides.push(downloadGuidesObject);
+        req.session.params.downloadGuides = downloadGuides;
+        const downloadGuidesString = JSON.stringify(downloadGuides);
+        setList = `DownloadGuide='${downloadGuidesString}'`;
+    }
+    if (setList.includes("DownloadStudies")) {
+        if (!req.session) {
+            req.session = {};
+        }
+        if (!req.session.params) {
+            req.session.params = {};
+        }
+        if (!req.session.params.downloadStudies) {
+            req.session.params.downloadStudies = [];
+        }
+
+        const currentTimeInEST = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+        const currentSearchId = req.session?.params?.searches?.currentSearchId || -1;
+        var downloadStudies = req.session?.params?.downloadStudies || [];
+        const downloadStudiesObject = {
+            timestamp: currentTimeInEST,
+            searchId: currentSearchId
+        }
+        downloadStudies.push(downloadStudiesObject);
+        req.session.params.downloadStudies = downloadStudies;
+        const downloadStudiesString = JSON.stringify(downloadStudies);
+        setList = `DownloadStudies='${downloadStudiesString}'`;
+    }
     // BEGIN DATABSAE STUFF:SENDING VERSION (R24 OR U01) AND ID TO DATABASE
-    const id = req.session?.params?.id;
-    const interventionType = req.session?.params?.interventionType;
-    const vCHE = req.session?.params?.vCHE;
-    const visitNum = req.session?.params?.visitNum;
+    const id = req.session?.params?.id || "Error in ID";
+    const interventionType = req.session?.params?.interventionType || "Error in Intervention Type";
+    const vCHE = req.session?.params?.vCHE || "Error in vCHE";
+    const visitNum = req.session?.params?.visitNum || -1;
     // console.log("VCHE in UpdateDB ", vCHE);
     if (setList === '') {
         res.json({ id: id, interventionType: interventionType, vCHE: vCHE });
@@ -132,16 +251,16 @@ app.post('/updateDatabase', (req, res) => {
     }
     try {
         const request = new sql.Request();
-    
+
         let queryString = `
         UPDATE R24
         SET ${setList} 
         WHERE ID = '${id}' 
         AND VisitNum = ${visitNum} 
         AND InterventionType = '${interventionType}'`;
-    
+
         req.session.params.queryString = queryString;
-    
+
         request.query(queryString, (err, recordset) => {
             if (err) {
                 errorProtocol(err, req, res);
@@ -153,7 +272,7 @@ app.post('/updateDatabase', (req, res) => {
     } catch (err) {
         errorProtocol(err, req, res);
         console.error(err);
-    }    
+    }
 })
 
 app.post('/SendError', (req, res) => {
@@ -182,9 +301,9 @@ app.post("/RetrieveConditions", (req, res) => {
                 console.error(err);
                 return;
             }
-    
+
             let conditions = recordset.recordset;
-    
+
             // For each condition, find the synonym that is the closest match to the searchValue
             let results = conditions.map(condition => {
                 const synonymsArray = [];
@@ -194,23 +313,23 @@ app.post("/RetrieveConditions", (req, res) => {
                         synonymsArray.push(synonym.trim());
                     }
                 }
-    
+
                 // Find the synonym with the highest similarity score
                 const bestMatch = synonymsArray.reduce((best, synonym) => {
                     const similarity = stringSimilarity.compareTwoStrings(searchValue, synonym);
                     return (similarity > best.similarity) ? { synonym, similarity } : best;
                 }, { synonym: '', similarity: 0 });
-    
+
                 return {
                     disease: condition.diseases,
                     bestMatch: bestMatch.synonym,
                     similarity: bestMatch.similarity
                 };
             });
-    
+
             // Sort the results by similarity score, highest first
             results.sort((a, b) => b.similarity - a.similarity);
-    
+
             // Limit the results to top 10 most similar items
             res.json(results.slice(0, 10));
         });
@@ -218,7 +337,7 @@ app.post("/RetrieveConditions", (req, res) => {
         errorProtocol(err, req, res);
         console.error(err);
     }
-    
+
 });
 
 // Root route that redirects to valid route
@@ -229,29 +348,32 @@ app.get('/', verifySessionAndCheckPreviousVisit, addVisitToDatabase, (req, res) 
     res.render('pages/index', { id: id, interventionType: interventionType, vCHE: vCHE })
 });
 
-app.get('/Discover', async (req, res) => {
+app.get('/Discover', validateSession, async (req, res) => {
+    console.log("Getting here!");
     const id = req.session?.params?.id || "Error in ID";
     const interventionType = req.session?.params?.interventionType || "Error in Intervention Type";
     const vCHE = req.session?.params?.vCHE || "Error in vCHE";
     const visitNum = req.session?.params?.visitNum || -1;
-
+    const currentTimeInEST = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+    var discoverVisits = req.session?.params?.discoverVisits || [];
+    discoverVisits.push({ timestamp: currentTimeInEST });
+    req.session.params.discoverVisits = discoverVisits;
+    const discoverVisitsJsonString = JSON.stringify(discoverVisits);
     try {
         const request = new sql.Request(); // No need to connect, just use the global pool
 
         let queryString = `
             UPDATE R24
-            SET Discover = 'clicked'
+            SET Discover = @discoverVisits
             WHERE ID = @id
             AND VisitNum = @visitNum
             AND InterventionType = @interventionType`;
-;
-        req.session.params.queryString = queryString;
 
+        req.session.params.queryString = queryString;
+        request.input("discoverVisits", sql.VarChar, discoverVisitsJsonString);
         request.input("id", sql.VarChar, id);
         request.input("visitNum", sql.Int, visitNum);
         request.input("interventionType", sql.VarChar, interventionType);
-
-
         await request.query(queryString); // Await to ensure it finishes before rendering
         res.render('pages/discover', { id, interventionType, vCHE });
     } catch (err) {
@@ -474,6 +596,19 @@ function generateGuestId() {
     return `guest_${crypto.randomUUID().replace(/-/g, '').slice(0, 40)}`; // 40 chars + "guest_" = 48 chars max
 }
 
+function validateSession(req, res, next) {
+    if (!req.session) {
+        req.session = {};
+    }
+
+    // Ensure params object exists
+    if (!req.session.params) {
+        req.session.params = {};
+    }
+    next();
+    return;
+}
+
 
 async function checkPreviousVisit(id, interventionType) {
     try {
@@ -517,6 +652,12 @@ async function verifySessionAndCheckPreviousVisit(req, res, next) {
     const urlvCHE = req.params.vCHE || null;
     const oldvCHE = req.session?.params?.vCHE || null;
 
+
+    // Checking for AWS Health Checks
+    if (urlId && urlId == "AWS-Health-Check") {
+        next();
+        return;
+    }
     if (oldSessionId && oldSessionId == urlId) {
         const newInterventionType = urlInterventionType || "vh";
         const newvCHE = urlvCHE || oldvCHE || "bf";
@@ -524,11 +665,27 @@ async function verifySessionAndCheckPreviousVisit(req, res, next) {
         if (oldInterventionType != newInterventionType) {
             req.session.params.interventionType = newInterventionType;
             req.session.params.vCHE = newInterventionType == "text" ? "text" : newvCHE;
+            var selectedvCHEs = req.session?.params?.selectedvCHEs || [];
+            selectedvCHEs.push({ vCHE: newvCHE })
+            req.session.params.selectedvCHEs = selectedvCHEs;
             req.session.params.visitNum = await checkPreviousVisit(oldSessionId, newInterventionType);
             req.session.params.persistVisit = false;
             next();
             return;
         }
+        if (oldvCHE != newvCHE) {
+            req.session.params.vCHE = newInterventionType == "text" ? "text" : newvCHE;
+            var selectedvCHEs = req.session?.params?.selectedvCHEs || [];
+            selectedvCHEs.push({ vCHE: newvCHE })
+            const selectedvCHEsString = JSON.stringify(selectedvCHEs);
+            console.log(`Switched vCHEs, but same user: ${selectedvCHEsString}`);
+            req.session.params.selectedvCHEs = selectedvCHEs;
+            const visitNum = req.session?.params?.visitNum || -1;
+            const id = req.session?.params?.id || "Error in ID";
+            const interventionType = req.session?.params?.interventionType || "Error in Intervention Type";
+            await updatevCHE(selectedvCHEsString, id, visitNum, interventionType);
+        }
+
         req.session.params.persistVisit = true;
         next();
         return;
@@ -538,10 +695,25 @@ async function verifySessionAndCheckPreviousVisit(req, res, next) {
         if (oldInterventionType != newInterventionType) {
             req.session.params.interventionType = newInterventionType;
             req.session.params.vCHE = newInterventionType == "text" ? "text" : newvCHE;
+            var selectedvCHEs = req.session?.params?.selectedvCHEs || [];
+            selectedvCHEs.push({ vCHE: req.session.params.vCHE })
+            req.session.params.selectedvCHEs = selectedvCHEs;
             req.session.params.visitNum = await checkPreviousVisit(oldSessionId, newInterventionType);
             req.session.params.persistVisit = false;
             next();
             return;
+        }
+        if (oldvCHE != newvCHE) {
+            req.session.params.vCHE = newInterventionType == "text" ? "text" : newvCHE;
+            var selectedvCHEs = req.session?.params?.selectedvCHEs || [];
+            selectedvCHEs.push({ vCHE: newvCHE })
+            req.session.params.selectedvCHEs = selectedvCHEs;
+            const selectedvCHEsString = JSON.stringify(selectedvCHEs);
+            console.log(`Switched vCHEs, but same user: ${selectedvCHEsString}`);
+            const visitNum = req.session?.params?.visitNum || -1;
+            const id = req.session?.params?.id || "Error in ID";
+            const interventionType = req.session?.params?.interventionType || "Error in Intervention Type";
+            await updatevCHE(selectedvCHEsString, id, visitNum, interventionType);
         }
         req.session.params.persistVisit = true;
         next();
@@ -555,7 +727,9 @@ async function verifySessionAndCheckPreviousVisit(req, res, next) {
         if (!sessionIdExists) {
             req.session = req.session || {};
             req.session.params = { id: newSessionId, interventionType: newInterventionType, vCHE: newInterventionType == "text" ? "text" : newvCHE };
-
+            var selectedvCHEs = req.session?.params?.selectedvCHEs || [];
+            selectedvCHEs.push({ vCHE: req.session.params.vCHE })
+            req.session.params.selectedvCHEs = selectedvCHEs;
             if (newSessionId.includes("guest_")) {
                 req.session.params.visitNum = 1;
                 next();
@@ -580,7 +754,9 @@ async function verifySessionAndCheckPreviousVisit(req, res, next) {
                     return next(err);
                 }
                 req.session.params = { id: newSessionId, interventionType: newInterventionType, vCHE: newInterventionType == "text" ? "text" : newvCHE };
-
+                var selectedvCHEs = req.session?.params?.selectedvCHEs || [];
+                selectedvCHEs.push({ vCHE: req.session.params.vCHE })
+                req.session.params.selectedvCHEs = selectedvCHEs;
                 try {
                     req.session.params.visitNum = await checkPreviousVisit(newSessionId, newInterventionType);
                     next();
@@ -593,8 +769,39 @@ async function verifySessionAndCheckPreviousVisit(req, res, next) {
     }
 }
 
+async function updatevCHE(selectedvCHEs, id, visitNum, interventionType) {
+    try {
+        const sqlQuery = `
+            UPDATE R24
+            SET vCHE = @selectedvCHEs
+            WHERE ID = @id
+            AND VisitNum = @visitNum
+            AND InterventionType = @interventionType`;
+
+        // ✅ Bind parameters properly
+        const request = new sql.Request();
+        request.input("selectedvCHEs", sql.VarChar, selectedvCHEs); // Correctly formatted EST datetime
+        request.input("id", sql.VarChar, id);
+        request.input("visitNum", sql.Int, visitNum);
+        request.input("interventionType", sql.VarChar, interventionType);
+
+        await request.query(sqlQuery); // Await to ensure it finishes before rendering
+        return;
+    } catch (err) {
+        console.error("SQL query error:", err);
+        throw err; // Rethrow the error for handling in the caller function
+    }
+}
+
+
 
 function addVisitToDatabase(req, res, next) {
+    // Checking for AWS Health Checks
+    const urlId = req.params.id || null;
+    if (urlId && urlId == "AWS-Health-Check") {
+        next();
+        return;
+    }
     const persistVisit = req.session?.params?.persistVisit;
     if (persistVisit) {
         console.log(`Did not add visit to database. User is on same device with "same" id and parameters: ${req.session.params.id}, ${req.session.params.interventionType}, ${req.session.params.vCHE}, ${req.session.params.visitNum}`);
@@ -605,6 +812,9 @@ function addVisitToDatabase(req, res, next) {
         const interventionType = req.session?.params?.interventionType || "Error in Type";
         const visitNum = req.session?.params?.visitNum || -1;
         const vCHE = req.session?.params?.vCHE || "Error in vCHE";
+        const selectedvCHEs = req.session?.params?.selectedvCHEs || [];
+        const selectedvCHEsString = JSON.stringify(selectedvCHEs);
+
         console.log(`Adding visit to database. User is on device with "new" id and parameters: ${req.session.params.id}, ${req.session.params.interventionType}, ${req.session.params.vCHE}, ${req.session.params.visitNum}`);
 
         try {
@@ -612,12 +822,12 @@ function addVisitToDatabase(req, res, next) {
             let queryString = `
                 INSERT INTO R24 (ID, VisitNum, InterventionType, vCHE)
                 VALUES (@id, @visitNum, @interventionType, @vCHE)`;
-        
+
             request.input('id', sql.VarChar(50), id);
             request.input('visitNum', sql.Int, visitNum);
             request.input('interventionType', sql.VarChar(50), interventionType);
-            request.input('vCHE', sql.VarChar(50), vCHE);
-        
+            request.input('vCHE', sql.VarChar, selectedvCHEsString);
+
             request.query(queryString, (err, recordset) => {
                 if (err) {
                     errorProtocol(err, req, res);
@@ -632,8 +842,8 @@ function addVisitToDatabase(req, res, next) {
             console.error('Unexpected error:', err);
             next(err);
         }
-        
-        
+
+
     }
 }
 
@@ -710,8 +920,8 @@ app.use('/StudySearch', function (req, res, next) {
 // ID is userID from qualtrics, interventionType is vh or text from Qualtrics
 app.get('/:id/:interventionType/:vCHE', verifySessionAndCheckPreviousVisit, addVisitToDatabase, (req, res) => {
     const id = req.session?.params?.id;
-    const interventionType = req.session?.params?.interventionType;
-    const vCHE = req.session?.params?.vCHE;
+    const interventionType = req.session?.params?.interventionType || "vh";
+    const vCHE = req.session?.params?.vCHE || "bf";
     // console.log("INTERVENTION TYPE IS", interventionType)
 
     if (interventionType === "text") {

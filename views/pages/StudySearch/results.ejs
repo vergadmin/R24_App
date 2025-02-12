@@ -203,9 +203,9 @@
 
         <br />
         <div class="button-action-area">
-            <button onclick="sendToDatabase(`ResultsDownloadStudiesList`, `clicked`);window.print()">⬇️ Save My Tailored
+            <button onclick="sendToDatabase(`DownloadStudies`, `clicked`);window.print()">⬇️ Save My Tailored
                 Studies</button>
-            <button class="green" onclick="openSurvey(); sendToDatabase(`ResultsCompleteSurvey`, `clicked`)">📝 Complete
+            <button class="green" onclick="openSurvey(); completeSurvey()">📝 Complete
                 Survey</button>
             <a href="/StudySearch/Role">
                 <button>🔍 Search Again</button>
@@ -374,9 +374,10 @@
                                         you're interested in this study, click the button below to connect with our
                                         research team!</p>
                                     <br />
+
                                     <div class="center">
                                         <button class="pulse"
-                                            onclick="openEmailModal(null, null, `<%= trialsList[i].BriefTitle %>`, `<%= trialsList[i].NCTId %>`, `<%= trialsList[i].BriefSummary %>`, `<%= trialsList[i].DetailedDescription %>`)">Connect
+                                            onclick="openEmailModal(`<%= role %>`, null, null, `<%= trialsList[i].BriefTitle %>`, `<%= trialsList[i].BriefSummary %>`, `<%= trialsList[i].NCTId %>`)">Connect
                                             with Our Research Team!</button>
                                     </div>
                                     <% } else { %>
@@ -385,7 +386,7 @@
                                         <br />
                                         <div class="center">
                                             <button class="pulse"
-                                                onclick="openEmailModal(`<%= trialsList[i].LocationContact[0].name %>`, `<%= trialsList[i].LocationContact[0].email %>`, `<%= trialsList[i].BriefTitle %>`, `<%= trialsList[i].NCTId %>`, `<%= trialsList[i].BriefSummary %>`, `<%= trialsList[i].DetailedDescription %>`)">Connect
+                                                onclick="openEmailModal(`<%= role %>`, `<%= trialsList[i].LocationContact[0].name %>`, `<%= trialsList[i].LocationContact[0].email %>`, `<%= trialsList[i].BriefTitle %>`, `<%= trialsList[i].BriefSummary %>`, `<%= trialsList[i].NCTId %>`)">Connect
                                                 with Research Coordinator!</button>
                                         </div>
                                         <% } %>

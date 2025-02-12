@@ -6,16 +6,16 @@ const config = {
     user: 'VergAdmin',
     password: process.env.PASSWORD,
     server: process.env.SERVER,
-    port: parseInt(process.env.DBPORT, 10), 
+    port: parseInt(process.env.DBPORT, 10),
     database: process.env.DATABASE,
     pool: {
-      max: 10,
-      min: 0,
-      idleTimeoutMillis: 30000
+        max: 10,
+        min: 0,
+        idleTimeoutMillis: 30000
     },
     options: {
-      encrypt: true, // for azure
-      trustServerCertificate: true // change to true for local dev / self-signed certs
+        encrypt: true, // for azure
+        trustServerCertificate: true // change to true for local dev / self-signed certs
     }
 }
 
@@ -42,67 +42,97 @@ const buttons = [
     }
 ]
 
-router.get('/Introduction', updateDatabase, (req, res) => {
+router.get('/Introduction', validateSession, updateDatabase, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;
-    res.render("pages/interventionType/EducationalComponentText/introduction", {id: id, interventionType: interventionType, buttons: buttons, url: 'Introduction', vCHE: vCHE})
+    res.render("pages/interventionType/EducationalComponentText/introduction", { id: id, interventionType: interventionType, buttons: buttons, url: 'Introduction', vCHE: vCHE })
 })
 
-router.get('/1', updateDatabase, (req, res) => {
+router.get('/1', validateSession, updateDatabase, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;
-    res.render("pages/interventionType/EducationalComponentText/1", {id: id, interventionType: interventionType, buttons: buttons, url: '1', vCHE: vCHE})
+    res.render("pages/interventionType/EducationalComponentText/1", { id: id, interventionType: interventionType, buttons: buttons, url: '1', vCHE: vCHE })
 })
 
-router.get('/2', updateDatabase, (req, res) => {
+router.get('/2', validateSession, updateDatabase, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;
-    res.render("pages/interventionType/EducationalComponentText/2", {id: id, interventionType: interventionType, buttons: buttons, url: '2', vCHE: vCHE})
+    res.render("pages/interventionType/EducationalComponentText/2", { id: id, interventionType: interventionType, buttons: buttons, url: '2', vCHE: vCHE })
 })
 
-router.get('/3', updateDatabase, (req, res) => {
+router.get('/3', validateSession, updateDatabase, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;
-    res.render("pages/interventionType/EducationalComponentText/3", { id: id, interventionType: interventionType, buttons: buttons, url: '3', vCHE: vCHE})
+    res.render("pages/interventionType/EducationalComponentText/3", { id: id, interventionType: interventionType, buttons: buttons, url: '3', vCHE: vCHE })
 })
 
-router.get('/4', updateDatabase, (req, res) => {
+router.get('/4', validateSession, updateDatabase, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;
-    res.render("pages/interventionType/EducationalComponentText/4", {id: id, interventionType: interventionType, buttons: buttons, url: '4', vCHE: vCHE})
+    res.render("pages/interventionType/EducationalComponentText/4", { id: id, interventionType: interventionType, buttons: buttons, url: '4', vCHE: vCHE })
 })
 
-function updateDatabase(req, res, next) {
-    let dbEntry = req.url.slice(1)
-    // BEGIN DATABSAE STUFF:SENDING VERSION (R24 OR U01) AND ID TO DATABASE
-    sql.connect(config, function (err) {
-
-        if (err) console.log(err);
-
-        // create Request object
-        var request = new sql.Request();
-
-        let queryString = `
-        UPDATE R24U01
-        SET Educational_` + dbEntry + `= 'clicked'
-        WHERE ID = '` + req.id + `' 
-        AND VisitNum = '` + req.visitNum + `'`;
-        req.session.params.queryString = queryString;
-
-        // console.log("AB TO DO DATABASE THING")
-        request.query(queryString, function (err, recordset) {
-            if (err) console.log(err)
-        }); 
-        //console.log("DID THE DB THING")
-    });
-    // END DATABASE STUFF
-
+function validateSession(req, res, next) {
+    if (!req.session) {
+        req.session = {};
+    }
+    if (!req.session.params) {
+        req.session.params = {};
+    }
+    if (!req.session.params.videosWatched) {
+        req.session.params.videosWatched = {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "Introduction": []
+        };
+    }
     next();
+    return;
+}
+
+async function updateDatabase(req, res, next) {
+    const dbEntry = req.url.slice(1);
+    const currentTimeInEST = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+    const vCHE = req.session?.params?.vCHE || "Error in vCHE"
+    const videoObject = { timestamp: currentTimeInEST, vCHE: vCHE };
+    var currentVideos = req.session?.params?.videosWatched[dbEntry] || [];
+    currentVideos.push(videoObject);
+    req.session.params.videosWatched[dbEntry] = currentVideos;
+    const videosWatchedString = JSON.stringify(currentVideos);
+    const id = req.session?.params?.id || "Error in ID";
+    const interventionType = req.session?.params?.interventionType || "Error in Intervention Type";
+    const visitNum = req.session?.params?.visitNum || -1;
+
+    // BEGIN DATABSAE STUFF:SENDING VERSION (R24 OR U01) AND ID TO DATABASE
+
+    try {
+        const request = new sql.Request(); // No need to connect, just use the global pool
+        let queryString = `
+            UPDATE R24
+            SET Educational_${dbEntry} = @videosWatched
+            WHERE ID = @id
+            AND VisitNum = @visitNum
+            AND InterventionType = @interventionType`
+
+        req.session.params.queryString = queryString;
+        request.input("videosWatched", sql.VarChar, videosWatchedString);
+        request.input("id", sql.VarChar, id);
+        request.input("visitNum", sql.Int, visitNum);
+        request.input("interventionType", sql.VarChar, interventionType);
+        await request.query(queryString); // Await to ensure it 
+        next();
+    } catch (err) {
+        console.error("SQL error:", err);
+        errorProtocol(err, req, res);
+        next(err);
+    }
 }
 
 module.exports = router

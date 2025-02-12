@@ -120,16 +120,16 @@ router.get('/Browse', (req, res) => {
   const id = req.session?.params?.id;
   const vCHE = req.session?.params?.vCHE;
   const interventionType = req.session?.params?.interventionType;
-  res.render("pages/StudySearch/browse", { id: id, interventionType: interventionType,  vCHE: vCHE })
+  res.render("pages/StudySearch/browse", { id: id, interventionType: interventionType, vCHE: vCHE })
 })
 
-router.get('/GeneratingResults', (req, res) => {
+router.get('/GeneratingResults', validateSession, updateGeneratingResults, (req, res) => {
   const id = req.session?.params?.id;
   const vCHE = req.session?.params?.vCHE;
   const interventionType = req.session?.params?.interventionType;
   const language = req.session?.params?.language;
 
-  res.render("pages/StudySearch/generatingResults", { id: id, interventionType: interventionType, vCHE: vCHE, language: language})
+  res.render("pages/StudySearch/generatingResults", { id: id, interventionType: interventionType, vCHE: vCHE, language: language })
 })
 
 router.get('/Registries', (req, res) => {
@@ -152,7 +152,6 @@ router.post('/Results', async (req, res) => {
     const results = response.data;
     req.session.trialsList = results.trialsList;
     req.session.numTrials = results.numTrials;
-    logResults(req);
     res.json({ numTrials: results.numTrials });
   } catch (error) {
     console.error("Error fetching results:", error);
@@ -162,7 +161,7 @@ router.post('/Results', async (req, res) => {
 
 
 
-router.get('/Results', (req, res) => {
+router.get('/Results', logResults, (req, res) => {
   const id = req.session?.params?.id;
   const vCHE = req.session?.params?.vCHE;
   const interventionType = req.session?.params?.interventionType;
@@ -175,7 +174,7 @@ router.get('/Results', (req, res) => {
 router.post('/SendEmailPatient', logStudyContact, async (req, res) => {
   // Uncomment when we're done with F&F
   // const response = await axios.post(emailPatientURL, req);
-  
+
   const response = await axios.post(emailFriendsAndFamilyURL, req.body);
   console.log(response.data);
   res.send(response.data);
@@ -189,54 +188,107 @@ router.post('/SendEmailCaregiver', logStudyContact, async (req, res) => {
   res.send(response.data);
 });
 
-function logStudyContact(req, res, next) {
+function validateSession(req, res, next) {
+  if (!req.session) {
+    req.session = {};
+  }
+  if (!req.session.params) {
+    req.session.params = {};
+  }
+  if (!req.session.params.generatingResults) {
+    req.session.params.generatingResults = [];
+  }
+  next();
+  return;
+}
+
+async function updateGeneratingResults(req, res, next) {
+  const vCHE = req.session?.params?.vCHE || "Error in vCHE"
+  var generatingResults = req.session?.params?.generatingResults || [];
+  const currentTimeInEST = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+  const videoObject = { timestamp: currentTimeInEST, vCHE: vCHE };
+  generatingResults.push(videoObject);
+  req.session.params.videosWatched = generatingResults;
+  const generatingResultsString = JSON.stringify(generatingResults);
+  const id = req.session?.params?.id || "Error in ID";
+  const interventionType = req.session?.params?.interventionType || "Error in Intervention Type";
+  const visitNum = req.session?.params?.visitNum || -1;
+
+  // BEGIN DATABSAE STUFF:SENDING VERSION (R24 OR U01) AND ID TO DATABASE
+
+  try {
+    const request = new sql.Request(); // No need to connect, just use the global pool
+    let queryString = `
+            UPDATE R24
+            SET LoadingResultsPage = @generatingResults
+            WHERE ID = @id
+            AND VisitNum = @visitNum
+            AND InterventionType = @interventionType`;
+
+    req.session.params.queryString = queryString;
+    request.input("generatingResults", sql.VarChar, generatingResultsString);
+    request.input("id", sql.VarChar, id);
+    request.input("visitNum", sql.Int, visitNum);
+    request.input("interventionType", sql.VarChar, interventionType);
+    await request.query(queryString); // Await to ensure it 
+    next();
+  } catch (err) {
+    console.error("SQL error:", err);
+    errorProtocol(err, req, res);
+    next(err);
+  }
+}
+
+async function logStudyContact(req, res, next) {
+  if (!req.session) {
+    req.session = {};
+  }
+  if (!req.session.params) {
+    req.session.params = {};
+  }
   if (!req.session.params.contactedStudies) {
     req.session.params.contactedStudies = [];
   }
-  let studyObject = {
-    NCTId: req.body.nctId,
-    studyContact: req.body.studyContact
+  const currentTimeInEST = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+  const currentSearchId = req.session?.params?.searches?.currentSearchId || -1;
+  const studyObject = {
+    Role: req.session?.params?.searchCriteria?.Role || "Error in Role",
+    NCTId: req.body.nctId || "Error in NCTId",
+    studyContact: req.body.studyContact || "Error in studyContact",
+    timestamp: currentTimeInEST,
+    searchId: currentSearchId
   }
-  req.session.params.contactedStudies.push(studyObject);
+  var contactedStudies = req.session?.params?.contactedStudies || [];
+  contactedStudies.push(studyObject);
+  req.session.params.contactedStudies = contactedStudies;
+
+  const emailsSent = contactedStudies.length;
+  const contactedStudiesString = JSON.stringify(contactedStudies);
+  const id = req.session?.params?.id || "Error in ID";
+  const interventionType = req.session?.params?.interventionType || "Error in Intervention Type";
+  const visitNum = req.session?.params?.visitNum || -1;
 
   try {
-    sql.connect(config, function (err) {
-      if (err) {
-        errorProtocol(err, req, res);
-        console.error('SQL connection error:', err);
-        next(err);
-        return;
-      }
+    const request = new sql.Request(); // No need to connect, just use the global pool
+    let queryString = `
+              UPDATE R24
+              SET ContactedStudies = @contactedStudies, EmailsSentCount = @emailsSent
+              WHERE ID = @id
+              AND VisitNum = @visitNum
+              AND InterventionType = @interventionType`
 
-      const id = req.session?.params?.id;
-      const visitNum = req.session?.params?.visitNum;
-      const contactedStudies = JSON.stringify(req.session?.params?.contactedStudies);
-
-      const request = new sql.Request();
-      let queryString = `
-      UPDATE R24U01 SET ContactedStudies = @contactedStudies
-      WHERE ID = @id AND VisitNum = @visitNum`
-      req.session.params.queryString = queryString;
-
-      // Add input parameters
-      request.input('id', sql.VarChar(50), id);
-      request.input('visitNum', sql.Int, visitNum);
-      request.input('contactedStudies', sql.VarChar(sql.MAX), contactedStudies);
-
-      request.query(queryString, function (err, recordset) {
-        if (err) {
-          errorProtocol(err, req, res);
-          console.error('SQL query error:', err);
-          next(err);
-          return;
-        }
-        next();
-      });
-    });
+    req.session.params.queryString = queryString;
+    request.input("contactedStudies", sql.VarChar, contactedStudiesString);
+    request.input("emailsSent", sql.Int, emailsSent);
+    request.input("id", sql.VarChar, id);
+    request.input("visitNum", sql.Int, visitNum);
+    request.input("interventionType", sql.VarChar, interventionType);
+    await request.query(queryString); // Await to ensure it 
+    next();
   } catch (err) {
+    console.error("SQL error:", err);
     errorProtocol(err, req, res);
     next(err);
-    return;
   }
 
 }
@@ -307,16 +359,44 @@ async function errorProtocol(error, req, res) {
 }
 
 
-async function logResults(req) {
+async function logResults(req, res, next) {
+  if (!req.session) {
+    req.session = {};
+  }
+  if (!req.session.params) {
+    req.session.params = {};
+  }
+  if (!req.session.params.searches) {
+    req.session.params.searches = {};
+  }
   if (!req.session.params.searches.Results) {
     req.session.params.searches.Results = [];
   }
-  var trialsList = req.session.trialsList;
+  if (!req.session.params.searches.searchId) {
+    req.session.params.searches.searchId = 1;
+  }
+  if (!req.session.params.searches.currentSearchId) {
+    req.session.params.searches.currentSearchId = 1;
+  }
+
+  const trialsList = req.session?.trialsList || [];
+  const criteria = req.session?.params?.searchCriteria || {};
+  const criteriaString = JSON.stringify(criteria);
+  const numTrials = req.session?.numTrials ?? -1;
+  const currentTimeInEST = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+  const searchId = req.session?.params?.searches?.searchId || -1;
+  if (searchId != -1) {
+    req.session.params.searches.currentSearchId = req.session.params.searches.searchId;
+    req.session.params.searches.searchId = req.session.params.searches.searchId + 1;
+  }
+  const currentSearchId = req.session?.params?.searches?.currentSearchId || -1;
   var results = [];
   // console.log("IN LOG RESULTS", req.session.params.searchCriteria)
   results.push({
-    "Criteria": `${JSON.stringify(req.session.params.searchCriteria)}`,
-    "NumberOfResults": `${req.session.numTrials}`
+    Criteria: criteriaString,
+    NumberOfResults: numTrials,
+    timestamp: currentTimeInEST,
+    searchId: currentSearchId
   })
   for (var trial of trialsList) {
     var nctId = trial.NCTId;
@@ -326,36 +406,38 @@ async function logResults(req) {
       "URL": url
     });
   }
-  req.session.params.searches.Results.push(results);
+  var totalResults = req.session?.params?.searches?.Results || [];
+  totalResults.push(results);
+  req.session.params.searches.Results = totalResults;
+  const resultsPageLength = totalResults.length;
+  const totalResultsString = JSON.stringify(totalResults);
+  const id = req.session?.params?.id || "Error in ID";
+  const interventionType = req.session?.params?.interventionType || "Error in Intervention Type";
+  const visitNum = req.session?.params?.visitNum || -1;
 
-  sql.connect(config, function (err) {
-    if (err) {
-      errorProtocol(err, req, res);
-      console.log(err);
-    }
-
-    // create Request object
-    var request = new sql.Request();
-
+  try {
+    const request = new sql.Request(); // No need to connect, just use the global pool
     let queryString = `
-    UPDATE R24
-    SET StudyResults = @results
-    WHERE ID = @id
-    AND VisitNum = @visitNum`
-
+        UPDATE R24
+        SET ResultsPageVisitedCount = @resultsPageLength, StudyResults = @totalResultsString
+        WHERE ID = @id
+        AND VisitNum = @visitNum
+        AND InterventionType = @interventionType`
     req.session.params.queryString = queryString;
+    request.input('resultsPageLength', sql.Int, resultsPageLength);
+    request.input('totalResultsString', sql.VarChar, totalResultsString);
+    request.input('id', sql.VarChar(50), id);
+    request.input('visitNum', sql.Int, visitNum);
+    request.input('interventionType', sql.VarChar(50), interventionType);
 
-    request.input('results', sql.VarChar, JSON.stringify(req.session.params.searches.Results));
-    request.input('id', sql.VarChar, req.session.params.id);
-    request.input('visitNum', sql.Int, req.session.params.visitNum);
+    await request.query(queryString); // Await to ensure it 
+    next();
+  } catch (err) {
+    console.error("SQL error:", err);
+    errorProtocol(err, req, res);
+    next(err);
+  }
 
-    request.query(queryString, function (err, recordset) {
-      if (err) {
-        errorProtocol(err, req, res);
-        console.log(err);
-      }
-    });
-  });
 }
 
 

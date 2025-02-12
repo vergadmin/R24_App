@@ -179,7 +179,7 @@ function translatePage(targetLang) {
 
 async function sendGeneralData(browserInfo, deviceType, os, dateTime) {
     // console.log("IN SEND TO SERVER GENERAL DATA")
-    let url = '/updateDatabase';
+    let url = '/generalData';
     let data = {
         'DateTime': dateTime,
         'DeviceType': deviceType,
