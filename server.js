@@ -848,8 +848,6 @@ function addVisitToDatabase(req, res, next) {
 }
 
 app.post('/RetrieveCities', (req, res) => {
-    var id = req.params.id
-    var interventionType = req.params.interventionType
     let stateVal = (Object.entries(req.body)[0][1])
     let cityVal = (Object.entries(req.body)[1][1])
     const code = cityVal.charCodeAt(0)
