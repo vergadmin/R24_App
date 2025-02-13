@@ -395,7 +395,8 @@
                                             <p class="info">See the official study in a new tab at: <a target="_blank"
                                                     rel="noopener noreferrer"
                                                     href="https://clinicaltrials.gov/study/<%= trialsList[i].NCTId %>">https://clinicaltrials.gov/study/
-                                                    <%= trialsList[i].NCTId %></a></p>
+                                                    <%= trialsList[i].NCTId %>
+                                                </a></p>
                 </div>
             </div>
             <% } %>
@@ -439,12 +440,11 @@
                             <%- include('../../partials/registries.ejs'); %>
                         </div>
 
-                        <button onclick="sendToDatabase(`ResultsDownloadStudiesList`, `clicked`);window.print()">⬇️ Save
-                            My Tailored Studies</button>
+                        <button onclick="sendToDatabase(`DownloadStudies`, `clicked`);window.print()">⬇️ Save My Tailored Studies</button>
+
                         <br />
-                        <button class="green"
-                            onclick="openSurvey(); sendToDatabase(`ResultsCompleteSurvey`, `clicked`)">📝 Complete
-                            Survey</button>
+                        <button class="green" onclick="openSurvey(); completeSurvey()">📝 Complete Survey</button>
+
                         <br />
                         <a href="/StudySearch/Role">
                             <button>🔍 Search Again</button>
