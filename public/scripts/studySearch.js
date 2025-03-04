@@ -200,6 +200,16 @@ async function sendFormData(id) {
             selectedCards.push(value);
         });
         dataCards = selectedCards.reduce((acc, cur) => ({ ...acc, [cur]: 'yes' }), {});
+        if (Object.keys(dataCards).length === 0) {
+            dataCards = {
+                HealthyLiving: "yes",
+                Other: "yes",
+                PreventionScreening: "yes",
+                Survivorship: "yes",
+                Treatment: "yes"
+            }
+        }
+        console.log(dataCards)
         data = {
             "Groupings": dataCards
         }
