@@ -192,6 +192,9 @@
                 <li><span style="font-weight: 600; color: #002657">Save your tailored list of studies.</span> You can
                     click the "Save My Tailored Studies" button, and your browser will ask you to save this web page as
                     a PDF.</li>
+                <li><span style="font-weight: 600; color: #002657">Download question guide.</span> You can
+                    click the "Download Question Guide (New Tab)" button, which will open a new tab with a PDF you can download. This PDF contains a list of 
+                    questions to ask healthcare providers, study teams, and loved ones.</li>
                 <li><span style="font-weight: 600; color: #002657">Search again.</span> Want to search for different
                     research studies? You can click the "Search Again" button to start a new search.</li>
                 <li><span style="font-weight: 600; color: #002657">Complete the post-survey.</span> Finally, when you're
@@ -205,11 +208,12 @@
         <div class="button-action-area">
             <button onclick="sendToDatabase(`DownloadStudies`, `clicked`);window.print()">⬇️ Save My Tailored
                 Studies</button>
-            <button class="green" onclick="openSurvey(); completeSurvey()">📝 Complete
-                Survey</button>
+            <button onclick="download()">⬇️ Download Question Guide (New Tab)</button>
             <a href="/StudySearch/Role">
                 <button>🔍 Search Again</button>
             </a>
+            <button class="green" onclick="openSurvey(); completeSurvey()">📝 Complete
+                Survey</button>
         </div>
         <br />
 
