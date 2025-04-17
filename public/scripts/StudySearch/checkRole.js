@@ -3,17 +3,38 @@ console.log(role)
 if (document.getElementById("background-info")) {
     console.log("BACKGROUND INFO EXISTS")
     if (role === 'Patient') {
-        document.getElementById('background-description').innerHTML = `Please fill out the information below so we can find research studies <b>you might qualify for</b>.`
+        if (sessionStorage.getItem("literallanguage") === "en") {
+            document.getElementById('background-description').innerHTML = `Please fill out the information below so we can find research studies <b>you might qualify for</b>.`
+        } else if (sessionStorage.getItem("literallanguage") === "es") {
+            document.getElementById('background-description').innerHTML = `Por favor comparta su información para ayudarle a encontrar estudios de investigación en los que pueda participar.`
+        }
     } else {
-        document.getElementById('background-description').innerHTML = `Please fill out the information below so we can find research studies <b>the person you're entering information for might qualify for</b>.`
+        if (sessionStorage.getItem("literallanguage") === "en") {
+            document.getElementById('background-description').innerHTML = `Please fill out the information below so we can find research studies <b>the person you're entering information for might qualify for</b>.`
+        } else if (sessionStorage.getItem("literallanguage") === "es") {
+            document.getElementById('background-description').innerHTML = `Por favor comparta su información para ayudarle a encontrar estudios de investigación en los que pueda participar.`
+        }
     }
 }
 
 if (document.getElementById("preferences-description")) {
     if (role === 'Patient') {
-        document.getElementById('preferences-description').innerHTML = `First, do you have a <b>specific diagnosis</b> in mind?`
+        if (sessionStorage.getItem("literallanguage") === "en") {
+            document.getElementById('preferences-description').innerHTML = `First, do you have a <b>specific diagnosis</b> in mind?`
+        } else if (sessionStorage.getItem("literallanguage") === "es") {
+            document.getElementById('preferences-description').innerHTML = `¿Tiene en mente un diagnóstico específico?`
+        }
     } else {
-        document.getElementById('preferences-description').innerHTML = `First, is there a <b>specific diagnosis</b> for the person you are searching for?`
+        if (sessionStorage.getItem("literallanguage") === "en") {
+            document.getElementById('preferences-description').innerHTML = `First, is there a <b>specific diagnosis</b> for the person you are searching for?`
+        } else if (sessionStorage.getItem("literallanguage") === "es") {
+            document.getElementById('preferences-description').innerHTML = `¿Tiene en mente un diagnóstico específico?`
+        }
+    }
+    if (sessionStorage.getItem("literallanguage") === "es") {
+        document.getElementById('diagnosis-option').innerHTML = `Sí, quiero buscar un diagnóstico específico.`
+    } else if (sessionStorage.getItem("literallanguage") === "es") {
+        document.getElementById('browse-option').innerHTML = `No, solo estoy explorando.`
     }
 }
 

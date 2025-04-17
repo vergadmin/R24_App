@@ -63,7 +63,8 @@
                 <button id="close-btn">Click here to close this window.</button>
             </div>
             <form id="email-form" action="#">
-                <p class="email-modal-title">Connect with Research Coordinator</p>
+                <p class="email-modal-title notranslate english">Connect with Research Coordinator</p>
+                <p class="email-modal-title notranslate spanish">Conéctese con el Coordinador de Investigación</p>
                 <% if (role==='Patient' ) { %>
                     <div class="row">
                         <div class="col">
@@ -99,10 +100,13 @@
                             </div>
                         </div>
                         <% } %>
-                            <p class="label-info" style="margin-top: 11px !important">
+                            <p class="label-info notranslate english" style="margin-top: 11px !important">
                                 <em><b>Why are we asking for your name and email address?</b></em>
                             </p>
-                            <ol class="label-info">
+                            <p class="label-info notranslate spanish" style="margin-top: 11px !important">
+                                <em><b>¿Por qué le pedimos su nombre y correo electrónico?</b></em>
+                            </p>
+                            <ol class="label-info notranslate english">
                                 <li>The research coordinator will receive the email and know who to contact.</li>
                                 <% if (role==='Patient' ) { %>
                                     <li>You will receive a copy of the email for your record.</li>
@@ -111,20 +115,36 @@
                                         <% } %>
                                             <li>Our Research team will receive a copy of the email.</li>
                             </ol>
+                            <ol class="label-info notranslate spanish">
+                                <% if (role==='Patient' ) { %>
+                                    <li>El coordinador de la investigación recibirá su mensaje y podrá contactarlo.</li>
+                                    <% } else { %>
+                                        <li>El coordinador de la investigación recibirá su mensaje y podrá contactarlos.</li>
+                                        <% } %>
+                                <% if (role==='Patient' ) { %>
+                                    <li>Usted recibirá una copia del correo para su registro.</li>
+                                    <% } else { %>
+                                        <li>Usted y el paciente recibirán una copia del correo para su registro.</li>
+                                        <% } %>
+                                            <li>Nuestro equipo de investigación también recibirá una copia.</li>
+                            </ol>
                             <br>
                             <label for="message">Message</label>
-                            <p style="margin:0 0 7px 0; font-size:17px">The following auto-generated message will be
+                            <p class="notranslate english" style="margin:0 0 7px 0; font-size:17px">The following auto-generated message will be
                                 sent. You may edit the message before submitting.</p>
+                            <p class="notranslate spanish" style="margin:0 0 7px 0; font-size:17px">A continuación, verá un mensaje generado automáticamente. Puede editarlo antes de enviarlo.</p>
                             <textarea id="message" name="message" rows="10" cols="50" required></textarea>
                             <br>
                             <label for="message">Message Recipients</label>
                             <% if (role==='Patient' ) { %>
-                                <p style="margin:0 0 3px 0; font-size:17px">In addition to you, your message will be
+                                <p class="notranslate english" style="margin:0 0 3px 0; font-size:17px">In addition to you, your message will be
                                     sent to the following emails.</p>
-                                <% } else { %>
-                                    <p style="margin:0 0 3px 0; font-size:17px">In addition to you and the patient, your
-                                        message will be sent to the following emails.</p>
-                                    <% } %>
+                                <p class="notranslate spanish" style="margin:0 0 3px 0; font-size:17px">Además de usted, su mensaje se enviará a los siguientes correos electrónicos:</p>
+                            <% } else { %>
+                                <p class="notranslate english" style="margin:0 0 3px 0; font-size:17px">In addition to you and the patient, your
+                                    message will be sent to the following emails.</p>
+                                <p class="notranslate spanish" style="margin:0 0 3px 0; font-size:17px">Además de usted, su mensaje se enviará a los siguientes correos electrónicos:</p>
+                            <% } %>
                                         <ul style="margin: 0">
                                             <li><span class="bold-blue" id="coordinator-contact"></span> <em>*Required.
                                                     This is the <b>study’s email contact.</b></em></li>
@@ -134,14 +154,16 @@
                                         </ul>
                                         <hr style="margin: 11px 0" />
                                         <% if (role==='Patient' ) { %>
-                                            <p style="margin:0 0 7px 0; font-size:17px; text-align: center">By clicking
+                                            <p class="notranslate english" style="margin:0 0 7px 0; font-size:17px; text-align: center">By clicking
                                                 “Send Message,” I acknowledge that my Name, Email, and Message will be
                                                 shared with the contacts listed under Message Recipients.</p>
+                                            <p class="notranslate english" style="margin:0 0 7px 0; font-size:17px; text-align: center">Al hacer clic en el botón ‘Enviar mensaje’, reconozco que mi nombre, mi correo electrónico, y el contenido del mensaje se compartirán con los contactos indicados en el botón ‘Destinatarios del mensaje’.</p>
                                             <% } else { %>
-                                                <p style="margin:0 0 7px 0; font-size:17px; text-align: center">By
+                                                <p class="notranslate english" style="margin:0 0 7px 0; font-size:17px; text-align: center">By
                                                     clicking “Send Message,” I acknowledge that my Name, the patient's
                                                     Name, my Email, the patient's Email, and Message will be shared with
                                                     the contacts listed under Message Recipients.</p>
+                                                    <p class="notranslate spanish" style="margin:0 0 7px 0; font-size:17px; text-align: center">Al hacer clic en el botón ‘Enviar mensaje’, reconozco que mi nombre, el nombre del paciente, mi correo electrónico, el correo electrónico del paciente y el contenido del mensaje se compartirán con los contactos indicados en el botón ‘Destinatarios del mensaje’.</p>
                                                 <% } %>
                                                     <br />
 
@@ -411,8 +433,11 @@
                                         <% } %>
                                             <br />
                                             <hr />
-                                            <p class="info">See the official study in a new tab at: <a target="_blank"
-                                                    rel="noopener noreferrer"
+                                            <p class="info notranslate english">* This title and summary were created by the ALEX Research Team. See more study details on the official ClinicalTrials.gov page: <a target="_blank" rel="noopener noreferrer"
+                                                href="https://clinicaltrials.gov/study/<%= trialsList[i].NCTId %>">https://clinicaltrials.gov/study/
+                                                <%= trialsList[i].NCTId %>
+                                            </a></p>
+                                            <p class="info notranslate spanish">* Este título y resumen fueron creados por el equipo de investigación de ALEX. Ver más detalles del estudio en la página oficial de ClinicalTrials.gov: <a target="_blank" rel="noopener noreferrer"
                                                     href="https://clinicaltrials.gov/study/<%= trialsList[i].NCTId %>">https://clinicaltrials.gov/study/
                                                     <%= trialsList[i].NCTId %>
                                                 </a></p>
@@ -447,16 +472,19 @@
                             <p>Click here to view more information about this study in a new tab.</p>
                         </a>
                         <hr />
-                        <p>If you're interested in this study, click the "Enroll Now" button to get started.</p>
+                        <p>If you're interested in this study, click the button below to get started.</p>
                         <div class="center">
-                            <a target="_blank" rel="noopener noreferrer" href="<%= sponsoredList[i].Link %>">
-                                <button>Enroll Now</button> </a>
+                            <button class="pulse notranslate english"
+                                            onclick="openEmailModal(`<%= role %>`,`<%= sponsoredList[i].ContactName %>`, `<%= sponsoredList[i].ContactEmail %>`, `<%= sponsoredList[i].Title %>`, `<%= sponsoredList[i].Description %>`, `CUSTOM`)">Connect
+                                            with Research Coordinator!</button>
+                                        <button class="pulse notranslate spanish"
+                                        onclick="openEmailModal(`<%= role %>`,`<%= sponsoredList[i].ContactName %>`, `<%= sponsoredList[i].ContactEmail %>`, `<%= sponsoredList[i].Title %>`, `<%= sponsoredList[i].Description %>`, `CUSTOM`)">¡Conéctese con el Coordinador de Investigación!</button>
                         </div>
                     </div>
                     <% } %>
 
                         <div>
-                            <%- include('../../partials/registries.ejs'); %>
+                            <!-- <%- include('../../partials/registries.ejs'); %> -->
                         </div>
 
                         <button onclick="sendToDatabase(`DownloadStudies`, `clicked`);window.print()">⬇️ Save My Tailored Studies</button>

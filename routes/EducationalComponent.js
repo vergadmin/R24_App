@@ -113,7 +113,7 @@ async function updateDatabase(req, res, next) {
     const vCHE = req.session?.params?.vCHE || "Error in vCHE"
     const videoObject = { timestamp: currentTimeInEST, vCHE: vCHE};
     var currentVideos = req.session?.params?.videosWatched[dbEntry] || [];
-    currentVideos.push(videoObject);
+    // currentVideos.push(videoObject);
     req.session.params.videosWatched[dbEntry] = currentVideos;
     const videosWatchedString = JSON.stringify(currentVideos);
     const id = req.session?.params?.id || "Error in ID";
