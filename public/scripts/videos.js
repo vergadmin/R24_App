@@ -181,7 +181,7 @@ window.addEventListener("beforeunload", (event) => {
             console.log("VIDEO INFO", videoInfo)
     
             sessionStorage.setItem("videoObjects", videoInfo)
-            // logVideosToDatabase()
+            logVideosToDatabase()
         }).catch(function(error) {
             // an error occurred
         });

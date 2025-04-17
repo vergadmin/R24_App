@@ -145,4 +145,34 @@ async function updateDatabase(req, res, next) {
     }
 }
 
+router.post('/updateVideosInDatabase', async (req, res) => {
+    // console.log("IN UPDATE VIDEOS IN DB", req.session?.params)
+    // console.log("IN UPDATE VIDEOS IN DB", req.body)
+    const videosWatchedString = JSON.stringify(req.body.videoInfo);
+    const id = req.session?.params?.id || "Error in ID";
+    const interventionType = req.session?.params?.interventionType || "Error in Intervention Type";
+    const visitNum = req.session?.params?.visitNum || -1;
+
+    try {
+        const request = new sql.Request(); // No need to connect, just use the global pool
+        let queryString = `
+            UPDATE R24
+            SET ${req.body.videoColumn} = @videosWatched
+            WHERE ID = @id
+            AND VisitNum = @visitNum
+            AND InterventionType = @interventionType`
+
+        req.session.params.queryString = queryString;
+        request.input("videosWatched", sql.VarChar, videosWatchedString);
+        request.input("id", sql.VarChar, id);
+        request.input("visitNum", sql.Int, visitNum);
+        request.input("interventionType", sql.VarChar, interventionType);
+        await request.query(queryString); // Await to ensure it 
+        console.log("Done! Check database!")
+    } catch (err) {
+        console.error("SQL error:", err);
+        errorProtocol(err, req, res);
+    }
+})
+
 module.exports = router
