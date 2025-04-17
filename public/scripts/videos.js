@@ -46,44 +46,44 @@ var englishVideoURLs = {
         "wm": "https://player.vimeo.com/video/1076135714?h=8f48f0bf42"
     },
     "1": {
-        "bf": "https://player.vimeo.com/video/",
-        "bm": "https://player.vimeo.com/video/",
-        "hf": "https://player.vimeo.com/video/",
-        "hm": "https://player.vimeo.com/video/",
-        "wf": "https://player.vimeo.com/video/",
-        "wm": "https://player.vimeo.com/video/"
+        "bf": "https://player.vimeo.com/video/1076134107?h=4bfb3807be",
+        "bm": "https://player.vimeo.com/video/1076133504?h=9261ce5c3c",
+        "hf": "https://player.vimeo.com/video/1076134244?h=25b1e1ad08",
+        "hm": "https://player.vimeo.com/video/1076134266?h=10427f7eae",
+        "wf": "https://player.vimeo.com/video/1076134292?h=d2d593cc95",
+        "wm": "https://player.vimeo.com/video/1076133968?h=b34eab7588"
     },
     "2": {
-        "bf": "https://player.vimeo.com/video/",
-        "bm": "https://player.vimeo.com/video/",
-        "hf": "https://player.vimeo.com/video/",
-        "hm": "https://player.vimeo.com/video/",
-        "wf": "https://player.vimeo.com/video/",
-        "wm": "https://player.vimeo.com/video/"
+        "bf": "https://player.vimeo.com/video/1076137228?h=918bcac907",
+        "bm": "https://player.vimeo.com/video/1076134621?h=1b17ebb4fa",
+        "hf": "https://player.vimeo.com/video/1076137308?h=a6270af85a",
+        "hm": "https://player.vimeo.com/video/1076137324?h=41ac96084f",
+        "wf": "https://player.vimeo.com/video/1076137341?h=77d6454a2d",
+        "wm": "https://player.vimeo.com/video/1076137360?h=a7d1b1c19d"
     },
     "3": {
-        "bf": "https://player.vimeo.com/video/",
-        "bm": "https://player.vimeo.com/video/",
-        "hf": "https://player.vimeo.com/video/",
-        "hm": "https://player.vimeo.com/video/",
-        "wf": "https://player.vimeo.com/video/",
-        "wm": "https://player.vimeo.com/video/"
+        "bf": "https://player.vimeo.com/video/1076138422?h=5db78d54f6",
+        "bm": "https://player.vimeo.com/video/1076134808?h=8eb164ec87",
+        "hf": "https://player.vimeo.com/video/1076138642?h=fdfcad23a5",
+        "hm": "https://player.vimeo.com/video/1076138670?h=831f34eb71",
+        "wf": "https://player.vimeo.com/video/1076138703?h=b4a251e0dc",
+        "wm": "https://player.vimeo.com/video/1076138719?h=e3b534473a"
     },
     "4": {
-        "bf": "https://player.vimeo.com/video/",
-        "bm": "https://player.vimeo.com/video/",
-        "hf": "https://player.vimeo.com/video/",
-        "hm": "https://player.vimeo.com/video/",
-        "wf": "https://player.vimeo.com/video/",
-        "wm": "https://player.vimeo.com/video/"
+        "bf": "https://player.vimeo.com/video/1076139463?h=008a435d92",
+        "bm": "https://player.vimeo.com/video/1076134780?h=36fa1d222a",
+        "hf": "https://player.vimeo.com/video/1076139587?h=e81ad6f96c",
+        "hm": "https://player.vimeo.com/video/1076139617?h=d8767180fa",
+        "wf": "https://player.vimeo.com/video/1076139629?h=dcdb3b8688",
+        "wm": "https://player.vimeo.com/video/1076139643?h=8c5aaa68c8"
     },
     "GeneratingResults": {
-        "bf": "https://player.vimeo.com/video/",
-        "bm": "https://player.vimeo.com/video/",
-        "hf": "https://player.vimeo.com/video/",
-        "hm": "https://player.vimeo.com/video/",
-        "wf": "https://player.vimeo.com/video/",
-        "wm": "https://player.vimeo.com/video/"
+        "bf": "https://player.vimeo.com/video/1076136123?h=22e10aa165",
+        "bm": "https://player.vimeo.com/video/1076134667?h=74b2df6045",
+        "hf": "https://player.vimeo.com/video/1076136245?h=f7ee9f6dc3",
+        "hm": "https://player.vimeo.com/video/1076136254?h=e6ac690977",
+        "wf": "https://player.vimeo.com/video/1076136270?h=e82ea9cc3b",
+        "wm": "https://player.vimeo.com/video/1076136287?h=2906d827d5"
     }
 }
 
@@ -98,44 +98,44 @@ var spanishVideoURLS = {
         "wm": "https://player.vimeo.com/video/1076135618?h=facc90971c"
     },
     "1": {
-        "bf": "https://player.vimeo.com/video/",
-        "bm": "https://player.vimeo.com/video/",
-        "hf": "https://player.vimeo.com/video/",
-        "hm": "https://player.vimeo.com/video/",
-        "wf": "https://player.vimeo.com/video/",
-        "wm": "https://player.vimeo.com/video/"
+        "bf": "https://player.vimeo.com/video/1076134127?h=9139df36c9",
+        "bm": "https://player.vimeo.com/video/1076133541?h=c0ddb25267",
+        "hf": "https://player.vimeo.com/video/1076134149?h=102a2e4667",
+        "hm": "https://player.vimeo.com/video/1076134176?h=1bc120196f",
+        "wf": "https://player.vimeo.com/video/1076134197?h=3cc12c69d9",
+        "wm": "https://player.vimeo.com/video/1076133581?h=47e6ba772a"
     },
     "2": {
-        "bf": "https://player.vimeo.com/video/",
-        "bm": "https://player.vimeo.com/video/",
-        "hf": "https://player.vimeo.com/video/",
-        "hm": "https://player.vimeo.com/video/",
-        "wf": "https://player.vimeo.com/video/",
-        "wm": "https://player.vimeo.com/video/"
+        "bf": "https://player.vimeo.com/video/1076137235?h=61a1fe34b3",
+        "bm": "https://player.vimeo.com/video/1076134636?h=eeaf1e52c9",
+        "hf": "https://player.vimeo.com/video/1076137257?h=c029cae797",
+        "hm": "https://player.vimeo.com/video/1076137270?h=da3b2c7121",
+        "wf": "https://player.vimeo.com/video/1076137284?h=ff972bffef",
+        "wm": "https://player.vimeo.com/video/1076137293?h=ca335c1141"
     },
     "3": {
-        "bf": "https://player.vimeo.com/video/",
-        "bm": "https://player.vimeo.com/video/",
-        "hf": "https://player.vimeo.com/video/",
-        "hm": "https://player.vimeo.com/video/",
-        "wf": "https://player.vimeo.com/video/",
-        "wm": "https://player.vimeo.com/video/"
+        "bf": "https://player.vimeo.com/video/1076138458?h=96a8c4bb23",
+        "bm": "https://player.vimeo.com/video/1076134832?h=93be4650e8",
+        "hf": "https://player.vimeo.com/video/1076138500?h=4e73f2ffca",
+        "hm": "https://player.vimeo.com/video/1076138535?h=7551d7942e",
+        "wf": "https://player.vimeo.com/video/1076138566?h=8fbdad0640",
+        "wm": "https://player.vimeo.com/video/1076138598?h=0ba0a68fe1"
     },
-   "4": {
-        "bf": "https://player.vimeo.com/video/",
-        "bm": "https://player.vimeo.com/video/",
-        "hf": "https://player.vimeo.com/video/",
-        "hm": "https://player.vimeo.com/video/",
-        "wf": "https://player.vimeo.com/video/",
-        "wm": "https://player.vimeo.com/video/"
+    "4": {
+        "bf": "https://player.vimeo.com/video/1076139488?h=f80d60ec1d",
+        "bm": "https://player.vimeo.com/video/1076134794?h=9a96cf6f24",
+        "hf": "https://player.vimeo.com/video/1076139511?h=dd6613fb64",
+        "hm": "https://player.vimeo.com/video/1076139536?h=2e75db5b2b",
+        "wf": "https://player.vimeo.com/video/1076139558?h=63d8560dfb",
+        "wm": "https://player.vimeo.com/video/1076139574?h=e9779198ae"
     },
     "GeneratingResults": {
-        "bf": "https://player.vimeo.com/video/",
-        "bm": "https://player.vimeo.com/video/",
-        "hf": "https://player.vimeo.com/video/",
-        "hm": "https://player.vimeo.com/video/",
-        "wf": "https://player.vimeo.com/video/",
-        "wm": "https://player.vimeo.com/video/"
+        "bf": "https://player.vimeo.com/video/1076136141?h=ae8631a2bc",
+        "bm": "https://player.vimeo.com/video/1076134681?h=86d48c3ccf",
+        "hf": "https://player.vimeo.com/video/1076136160?h=cf7aef6d99",
+        "hm": "https://player.vimeo.com/video/1076136179?h=708a1f3c28",
+        "wf": "https://player.vimeo.com/video/1076136201?h=6343bc093d",
+        "wm": "https://player.vimeo.com/video/1076136221?h=958ea1e60e",
     }
 }
 
