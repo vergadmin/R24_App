@@ -1,6 +1,15 @@
 console.log("IN VIDEO JS")
 const video = document.getElementById('myvideo');
 
+    if (video) {
+        // Add an event listener for the 'ended' event
+        video.addEventListener('ended', function () {
+            console.log('The video has ended.');
+            var stillLoadingText = document.getElementById("still-loading");
+            stillLoadingText.style.display = 'block'
+        });
+    }
+
 // Listen for the video to enter full-screen mode
 video.addEventListener('ended', () => {
     console.log("VIDEO HAS ENDED")

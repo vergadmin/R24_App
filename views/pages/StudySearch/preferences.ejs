@@ -24,48 +24,55 @@
         <%- include('../../partials/header'); %>
     </header>
     <div class="container">
-        <div class="progress-container">
-            <div class="progress-bar">
+        <div class="progress-container-a">
+            <div class="progress-bar-a">
                 <div class="step visted">
                     <div class="bullet visited"><span>✓</span></div>
-                    <p>Role</p>
+                    <p class="notranslate english">Role</p>
+                    <p class="notranslate spanish">Rol</p>
                 </div>
                 <div class="step visited">
                     <div class="bullet visited"><span>✓</span></div>
-                    <p>Background</p>
+                    <p class="notranslate english">Background</p>
+                    <p class="notranslate spanish">Datos Básicos</p>
                 </div>
                 <div class="step active">
                     <div class="bullet active"><span>3</span></div>
-                    <p>Preferences</p>
+                    <p class="notranslate english">Preferences</p>
+                    <p class="notranslate spanish">Preferencias</p>
                 </div>
                 <div class="step">
                     <div class="bullet"><span>4</span></div>
-                    <p>Generating Results</p>
+                    <p class="notranslate english">Generating Results</p>
+                    <p class="notranslate spanish">Generando Resultados</p>
                 </div>
                 <div class="step">
                     <div class="bullet"><span>5</span></div>
-                    <p>Studies</p>
+                    <p class="notranslate english">Studies</p>
+                    <p class="notranslate spanish">Estudios</p>
                 </div>
             </div>
         </div>
-        <h1 class="title">Let's find some research studies!</h1>
+        <h1 class="title">Let's find research studies!</h1>
         <p id="preferences-description" class="preferences-legend"></p>
         <div class="form-area">
             <form onsubmit="return false" id="preferences">
                 <div class="single-select-button">
                     <input type="radio" id="search" name="Preferences" value="Search" />
-                    <label for="search">Yes, I'd like to search for a specific diagnosis.</label>
+                    <label id="diagnosis-option" for="search">Yes, I'd like to search for a specific diagnosis or health topic.</label>
                 </div>
                 <div class="single-select-button">
                     <input type="radio" id="browse" name="Preferences" value="Browse" />
-                    <label for="browse">No, I'm just browsing.</label>    
+                    <label  id="browse-option" for="browse">No, I'm just browsing.</label>    
                 </div>     
                 <br/>
             </form>
         </div>
         <div class="next-back-button-area">
-            <a href="/StudySearch/Background"><button class="back">Back</button></a>
-            <button class="green" onclick="validateAndSendFormData(`preferences`)">Next</button>
+            <a class="notranslate english" href="/StudySearch/Background"><button class="back">Back</button></a>
+            <a class="notranslate spanish" href="/StudySearch/Background"><button class="back">Regresar</button></a>
+            <button class="green notranslate english" onclick="validateAndSendFormData(`preferences`)">Next</button>
+            <button class="green notranslate spanish" onclick="validateAndSendFormData(`preferences`)">Continuar</button>
         </div>
     </div>
 </body>

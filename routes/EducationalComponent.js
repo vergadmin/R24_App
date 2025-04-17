@@ -22,23 +22,28 @@ const config = {
 const buttons = [
     {
         url: 'Introduction',
-        text: "Introduction"
+        text: "Introduction",
+        spanishText: "Inicio"
     },
     {
         url: '1',
-        text: "What are research studies?"
+        text: "What are research studies?",
+        spanishText: "¿Qué son los estudios de investigación?"
     },
     {
         url: '2',
-        text: "Why consider participating?"
+        text: "Why consider participating?",
+        spanishText: "¿Por qué considerar participar?"
     },
     {
         url: '3',
-        text: "Are research studies safe?"
+        text: "Are research studies safe?",
+        spanishText: "¿Son seguros los estudios de investigación?"
     },
     {
         url: '4',
-        text: "How to participate and where to start?"
+        text: "How to participate and where to start",
+        spanishText: "Cómo participar y por dónde empezar"
     }
 ]
 

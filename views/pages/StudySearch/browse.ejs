@@ -25,32 +25,39 @@
         <%- include('../../partials/header'); %>
     </header>
     <div class="container">
-        <div class="progress-container">
-            <div class="progress-bar">
+        <div class="progress-container-a">
+            <div class="progress-bar-a">
                 <div class="step visted">
                     <div class="bullet visited"><span>✓</span></div>
-                    <p>Role</p>
+                    <p class="notranslate english">Role</p>
+                    <p class="notranslate spanish">Rol</p>
                 </div>
                 <div class="step visited">
                     <div class="bullet visited"><span>✓</span></div>
-                    <p>Background</p>
+                    <p class="notranslate english">Background</p>
+                    <p class="notranslate spanish">Datos Básicos</p>
                 </div>
                 <div class="step active">
                     <div class="bullet active"><span>3</span></div>
-                    <p>Preferences</p>
+                    <p class="notranslate english">Preferences</p>
+                    <p class="notranslate spanish">Preferencias</p>
                 </div>
                 <div class="step">
                     <div class="bullet"><span>4</span></div>
-                    <p>Generating Results</p>
+                    <p class="notranslate english">Generating Results</p>
+                    <p class="notranslate spanish">Generando Resultados</p>
                 </div>
                 <div class="step">
                     <div class="bullet"><span>5</span></div>
-                    <p>Studies</p>
+                    <p class="notranslate english">Studies</p>
+                    <p class="notranslate spanish">Estudios</p>
                 </div>
             </div>
         </div>
-        <h1 class="title" id="browse" id="browse-description">Are you interested in research studies relating to the following conditions?</h1>
-        <p>You may select <b>up to 3</b> of the following conditions.</p>
+        <h1 class="title notranslate english" id="browse" id="browse-description">Are you interested in research studies relating to the following diagnoses or health topics?</h1>
+        <h1 class="title notranslate spanish" id="browse" id="browse-description">¿Le interesan estudios de investigación sobre estas diagnósticos o temas de salud?</h1>
+        <p class="notranslate english">You may select <b>up to 3</b> of the following diagnoses and/or health topics.</p>
+        <p class="notranslate spanish">Puede elegir hasta 3 opciones de la lista.</p>
         <br/>
         <div class="form-area">
             <form onsubmit="return false" id="browse-info">
@@ -121,12 +128,14 @@
             <br/>
         </div>
         <div class="next-back-button-area">
-            <a id="back-link" href="/StudySearch/Groupings"><button class="back">Back</button></a>
-            <button class="green" onclick="sendFormData(`browse-info`)">Next</button>
+            <a class="notranslate english" id="back-link" href="/StudySearch/Groupings"><button class="back">Back</button></a>
+            <a class="notranslate spanish" id="back-link" href="/StudySearch/Groupings"><button class="back">Regresar</button></a>
+            <button class="green notranslate english" onclick="sendFormData(`browse-info`)">Next</button>
+            <button class="green notranslate spanish" onclick="sendFormData(`browse-info`)">Continuar</button>
         </div>
         <div class="nav-link-text-area">
-            <p id="link-text" onclick="sendFormData(`no-info`)">I am not interested in any of these conditions (Click here to skip)</p>
-        </div>
+            <p class="notranslate english" id="link-text" onclick="sendFormData(`no-info`)">I am not interested in any of these diagnoses or health topics (Click here to skip)</p>
+            <p class="notranslate spanish" id="link-text" onclick="sendFormData(`no-info`)">No me interesa ninguna de estas diagnósticos o temas de salud (Haga clic aquí para omitir)</p>        </div>
     </div>
 </body>
 <script src="/scripts/StudySearch/checkRole.js"></script>

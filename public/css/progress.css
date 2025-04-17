@@ -1,4 +1,4 @@
-.progress-container {
+.progress-container-a {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,7 +6,7 @@
   margin: 35px 0;
 }
 
-.progress-bar {
+.progress-bar-a {
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -98,7 +98,7 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .progress-container {
+  .progress-container-a {
     width: 95%;
     margin-top: 5px;
   }

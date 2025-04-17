@@ -158,62 +158,77 @@
         </div>
     </div>
     <div class="container" id="results-page">
-        <div class="progress-container">
-            <div class="progress-bar">
+        <div class="progress-container-a">
+            <div class="progress-bar-a">
                 <div class="step visted">
                     <div class="bullet visited"><span>✓</span></div>
-                    <p>Role</p>
+                    <p class="notranslate english">Role</p>
+                    <p class="notranslate spanish">Rol</p>
                 </div>
                 <div class="step visited">
                     <div class="bullet visited"><span>✓</span></div>
-                    <p>Background</p>
+                    <p class="notranslate english">Background</p>
+                    <p class="notranslate spanish">Datos Básicos</p>
                 </div>
                 <div class="step visited">
                     <div class="bullet visited"><span>✓</span></div>
-                    <p>Preferences</p>
+                    <p class="notranslate english">Preferences</p>
+                    <p class="notranslate spanish">Preferencias</p>
                 </div>
                 <div class="step visited">
                     <div class="bullet visited"><span>✓</span></div>
-                    <p>Generating Results</p>
+                    <p class="notranslate english">Generating Results</p>
+                    <p class="notranslate spanish">Generando Resultados</p>
                 </div>
                 <div class="step active">
                     <div class="bullet active"><span>★</span></div>
-                    <p>Studies</p>
+                    <p class="notranslate english">Studies</p>
+                    <p class="notranslate spanish">Estudios</p>
                 </div>
             </div>
         </div>
-        <h1 class="title">Your Tailored List of Studies</h1>
+        <h1 class="title notranslate english">Your Tailored List of Studies</h1>
+        <h1 class="title notranslate spanish">¡Su Lista Personalizada de Estudios!</h1>
         <div class="information">
-            <p>On this page, we have put together a few studies based on the information you shared! Here's what you can
-                do next:</p>
-            <ul>
+            <p class="notranslate english">On this page, we have put together a few studies based on the information you shared! Here's what you can do next:</p>
+            <p class="notranslate spanish">En esta página, hemos seleccionado algunos estudios según la información que compartió. A continuación, le mostramos sus opciones:</p>
+            <ul class="notranslate english">
                 <li><span style="font-weight: 600; color: #002657">Read about each study.</span> If you're interested
                     and want more information, you can <b>connect with a research coordinator</b>!</li>
                 <li><span style="font-weight: 600; color: #002657">Save your tailored list of studies.</span> You can
                     click the "Save My Tailored Studies" button, and your browser will ask you to save this web page as
                     a PDF.</li>
-                <li><span style="font-weight: 600; color: #002657">Download question guide.</span> You can
-                    click the "Download Question Guide (New Tab)" button, which will open a new tab with a PDF you can download. This PDF contains a list of 
-                    questions to ask healthcare providers, study teams, and loved ones.</li>
+                <li><span style="font-weight: 600; color: #002657">Download question guide.</span> 
+                    Click the button "Download question guide (new tab)," which will open a PDF file with questions you can ask healthcare providers, study teams, and family members to help you make a decision about participating in a research study.</li>
                 <li><span style="font-weight: 600; color: #002657">Search again.</span> Want to search for different
                     research studies? You can click the "Search Again" button to start a new search.</li>
                 <li><span style="font-weight: 600; color: #002657">Complete the post-survey.</span> Finally, when you're
                     done with this page, please click the "Complete Survey" button to be directed to our post-survey.
                 </li>
-
+            </ul>
+            <ul class="notranslate spanish">
+                <li><span style="font-weight: 600; color: #002657">Leer sobre cada estudio.</span> Si alguno le interesa y desea más información, puede ponerse en contacto con un coordinador de investigación.</li>
+                <li><span style="font-weight: 600; color: #002657">Guardar su lista personalizada. </span> Haga clic en el botón "Guardar Mis Estudios", y su navegador le permitirá guardar esta página como un archivo PDF.</li>
+                <li><span style="font-weight: 600; color: #002657">Descargar la guía de preguntas. </span> Haga clic en el botón "Descargar guía de preguntas aquí (nueva pestaña)", que abrirá un archivo PDF con preguntas que puede hacer a proveedores de atención médica, equipos de estudio y seres queridos/cuidadores.</li>
+                <li><span style="font-weight: 600; color: #002657">Realizar una nueva búsqueda. </span> Si desea explorar otros estudios de investigación, haga clic en el botón "Nueva Búsqueda" para iniciar una nueva búsqueda.</li>
+                <li><span style="font-weight: 600; color: #002657">Responder la encuesta final. </span> Cuando haya finalizado, haga clic en el botón "Completar Encuesta" para compartir su opinión.</li>
             </ul>
         </div>
 
         <br />
         <div class="button-action-area">
-            <button onclick="sendToDatabase(`DownloadStudies`, `clicked`);window.print()">⬇️ Save My Tailored
+            <button class="notranslate english" onclick="sendToDatabase(`DownloadStudies`, `clicked`);window.print()">⬇️ Save My Tailored
                 Studies</button>
-            <button onclick="download()">⬇️ Download Question Guide (New Tab)</button>
+            <button class="notranslate spanish" onclick="sendToDatabase(`DownloadStudies`, `clicked`);window.print()">⬇️ Guardar Mis Estudios</button>
+            <button class="notranslate english" onclick="download()">⬇️ Download Question Guide (New Tab)</button>
+            <button class="notranslate spanish" onclick="download()">⬇️ Descargar Guía de Preguntas Aquí</button>
             <a href="/StudySearch/Role">
-                <button>🔍 Search Again</button>
+                <button class="notranslate english">🔍 Search Again</button>
+                <button class="notranslate spanish">🔍 Nueva Búsqueda</button>
             </a>
-            <button class="green" onclick="openSurvey(); completeSurvey()">📝 Complete
+            <button class="green notranslate english" onclick="openSurvey(); completeSurvey()">📝 Complete
                 Survey</button>
+            <button class="green notranslate spanish" onclick="openSurvey(); completeSurvey()">📝 Completar Encuesta</button>
         </div>
         <br />
 

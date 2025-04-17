@@ -126,14 +126,28 @@ function handleLanguageChange(mutationsList, observer) {
             if (mutation.target.lang == 'es') {
                 sessionStorage.setItem("literallanguage", 'es')
                 document.getElementById("translation").style.display = "none"
-                document.getElementById("spanish").style.display = "block"
+                const spanishElements = document.getElementsByClassName("spanish");
+                for (let element of spanishElements) {
+                    element.style.display = "block";
+                }
+                const englishElements = document.getElementsByClassName("english");
+                for (let element of englishElements) {
+                    element.style.display = "none";
+                }
+
                 document.getElementById("english").style.display = "none"
                 translatePage('es'); // Call translatePage for Spanish
             } else if (mutation.target.lang == 'en') {
                 sessionStorage.setItem("literallanguage", 'en')
                 document.getElementById("translation").style.display = "none"
-                document.getElementById("english").style.display = "block"
-                document.getElementById("spanish").style.display = "none"
+                const englishElements = document.getElementsByClassName("english");
+                for (let element of englishElements) {
+                    element.style.display = "block";
+                }
+                const spanishElements = document.getElementsByClassName("spanish");
+                for (let element of spanishElements) {
+                    element.style.display = "none";
+                }
                 translatePage('en'); // Call translatePage for English
             }
 

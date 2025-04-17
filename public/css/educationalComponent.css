@@ -2,6 +2,20 @@ video {
     width: 75%;
 }
 
+.goog-te-banner-frame.skiptranslate, 
+.goog-tooltip, 
+.goog-tooltip:hover, 
+.goog-text-highlight {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+#goog-gt-tt {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
 .navigation-area {
     display: flex;
     flex-direction: row;

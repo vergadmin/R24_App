@@ -25,33 +25,39 @@
         <%- include('../../partials/header'); %>
     </header>
     <div class="container">
-        <div class="progress-container">
-            <div class="progress-bar">
+        <div class="progress-container-a">
+            <div class="progress-bar-a">
                 <div class="step">
                     <div class="bullet active"><span>1</span></div>
-                    <p>Role</p>
+                    <p class="notranslate english">Role</p>
+                    <p class="notranslate spanish">Rol</p>
                 </div>
                 <div class="step">
                     <div class="bullet"><span>2</span></div>
-                    <p>Background</p>
+                    <p class="notranslate english">Background</p>
+                    <p class="notranslate spanish">Datos Básicos</p>
                 </div>
                 <div class="step">
                     <div class="bullet"><span>3</span></div>
-                    <p>Preferences</p>
+                    <p class="notranslate english">Preferences</p>
+                    <p class="notranslate spanish">Preferencias</p>
                 </div>
                 <div class="step">
                     <div class="bullet"><span>4</span></div>
-                    <p>Registries</p>
+                    <p class="notranslate english">Generating Results</p>
+                    <p class="notranslate spanish">Generando Resultados</p>
                 </div>
                 <div class="step">
                     <div class="bullet"><span>5</span></div>
-                    <p>Studies</p>
+                    <p class="notranslate english">Studies</p>
+                    <p class="notranslate spanish">Estudios</p>
                 </div>
             </div>
         </div>
         <h1 class="title">Select Your Role</h1>
         <p class="search-subtext">Before we begin, are you a patient or a caregiver?</p>
-        <p class="role-legend search-subtitle"><em>You will be shown the same research studies regardless of your role.</em></p>
+        <p class="role-legend search-subtitle notranslate english"><em>You will be shown the same research studies regardless of your role.</em></p>
+        <p class="role-legend search-subtitle notranslate spanish"><em>Independientemente de su rol, podrá acceder a los mismos estudios de investigación.</em></p>
         <div class="form-area">
             <form onsubmit="return false" id="role-type">
                 <div class="single-select-button">
@@ -60,14 +66,22 @@
                 </div>
                 <div class="single-select-button">
                     <input type="radio" id="caregiver" name="Role" value="Caregiver" />
-                    <label for="caregiver">Caregiver</label>
+                    <label for="caregiver" style="text-transform: capitalize;">Caregiver</label>
                 </div>
                 <br/>
             </form>
         </div>
         <div class="next-back-button-area">
-            <a href="/Discover"><button class="back">Back</button></a>
-            <button class="green" onclick="validateAndSendFormData(`role-type`)">Next</button>
+            <% if (interventionType === 'vh') { %>
+                <a class="notranslate english" href="/EducationalComponent/4"><button class="back">Back</button></a>
+                <a class="notranslate spanish" href="/EducationalComponent/4"><button class="back">Regresar</button></a>
+            <% } else { %>
+                <a class="notranslate english" href="/EducationalComponentText/4"><button class="back">Back</button></a>
+                <a class="notranslate spanish" href="/EducationalComponentText/4"><button class="back">Regresar</button></a>
+            <% } %>
+            
+            <button class="green notranslate english" onclick="validateAndSendFormData(`role-type`)">Next</button>
+            <button class="green notranslate spanish" onclick="validateAndSendFormData(`role-type`)">Continuar</button>
         </div>
 </body>
 </html>

@@ -55,14 +55,20 @@
             <% for (var i=0; i < buttons.length; i++) { %>
                 <% if (buttons[i].url===url) { %>
                     <a href="/EducationalComponent/<%=buttons[i].url%>">
-                        <button class="education-navigation selected">
+                        <button class="education-navigation selected notranslate english" >
                             <%= buttons[i].text %>
+                        </button>
+                        <button class="education-navigation selected notranslate spanish" >
+                            <%= buttons[i].spanishText %>
                         </button>
                     </a>
                     <% } else { %>
                         <a href="/EducationalComponent/<%=buttons[i].url%>">
-                            <button class="education-navigation">
+                            <button class="education-navigation notranslate english" >
                                 <%= buttons[i].text %>
+                            </button>
+                            <button class="education-navigation notranslate spanish" >
+                                <%= buttons[i].spanishText %>
                             </button>
                         </a>
                         <% } %>
@@ -70,11 +76,13 @@
         </div>
         <div class="discover-button-area">
             <a href="/StudySearch/Role">
-                <button class="green discover">Find Research Studies</button>
+                <button class="green discover notranslate english ">Find Research Studies</button>
+                <button class="green discover notranslate spanish">Buscar Estudios de Investigación </button>            
             </a>
         </div>
     </div>
 </body>
 <script src="/scripts/videos.js"></script>
+<script src="https://player.vimeo.com/api/player.js"></script>
 
 </html>

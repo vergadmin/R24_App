@@ -11,8 +11,8 @@
     <link href="/css/index.css" rel="stylesheet" type="text/css">
     <link href="/css/educationalComponent.css" rel="stylesheet" type="text/css">
     <script src="/scripts/checkLanguage.js"></script>
-    <script type="text/javascript"
-        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
     <title>ALEX</title>
 </head>
 
@@ -30,24 +30,39 @@
         <%- include('../../../partials/header'); %>
     </header>
     <div class="container">
-        <video autoplay controls id="myVideo">
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe 
+                id="myvideo"
+                class="embed-responsive-item" 
+                src="" 
+                allow="autoplay"
+                allowfullscreen>
+            </iframe>
+        </div>        
+        <!-- <video autoplay controls id="myVideo">
             <source
                 src="https://research-studies-with-alex.s3.amazonaws.com/R24_Characters/<%= vCHE %>/<%= vCHE + language %>_4.mp4"
                 type="video/mp4">
-        </video>
+        </video> -->
         <br />
         <div class="navigation-area">
             <% for (var i=0; i < buttons.length; i++) { %>
                 <% if (buttons[i].url===url) { %>
                     <a href="/EducationalComponent/<%=buttons[i].url%>">
-                        <button class="education-navigation selected">
+                        <button class="education-navigation selected notranslate english" >
                             <%= buttons[i].text %>
+                        </button>
+                        <button class="education-navigation selected notranslate spanish" >
+                            <%= buttons[i].spanishText %>
                         </button>
                     </a>
                     <% } else { %>
                         <a href="/EducationalComponent/<%=buttons[i].url%>">
-                            <button class="education-navigation">
+                            <button class="education-navigation notranslate english" >
                                 <%= buttons[i].text %>
+                            </button>
+                            <button class="education-navigation notranslate spanish" >
+                                <%= buttons[i].spanishText %>
                             </button>
                         </a>
                         <% } %>
@@ -55,11 +70,13 @@
         </div>
         <div class="discover-button-area">
             <a href="/StudySearch/Role">
-                <button class="green discover">Find Research Studies</button>
+                <button class="green discover notranslate english ">Find Research Studies</button>
+                <button class="green discover notranslate spanish">Buscar Estudios de Investigación </button>
             </a>
         </div>
     </div>
 </body>
 <script src="/scripts/videos.js"></script>
+<script src="https://player.vimeo.com/api/player.js"></script>
 
 </html>

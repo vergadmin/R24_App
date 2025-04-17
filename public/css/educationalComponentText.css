@@ -184,3 +184,13 @@ h3 {
 .text-container .education-navigation, .text-container .discover {
     font-size: 21px !important;
 }
+
+.text-image-area {
+    display: flex;
+    justify-content: center;
+}
+
+.text-image {
+    width: 150px;
+    height: 150px;
+}

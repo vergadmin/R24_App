@@ -16,10 +16,21 @@
 </head>
 <!-- Text Variables for Clarity :) -->
 <% var mainTitle = `What are Research Studies?` %>
+<% var mainTitleSpanish = `¿Qué son los estudios de investigación?` %>
 
-<% var text1 = `A research study uses a carefully designed protocol, or plan, that allows researchers to learn about a person’s health, behavior, or response to a specific treatment or program. There are many different types of research studies. Some research studies are used to test or improve medical, surgical, or behavioral treatments. This could involve testing how well a new medication works for different types of people or whether a mobile app can help people quit smoking. Other research studies don’t involve any treatment, and may only ask a person to complete a survey or be observed in their typical settings to help researchers learn more about their experiences with things like chronic pain, sleep issues, or mental health.` %>
+<% var text1 = `If you have never participated in a research study before, it's normal not to know much about them. <br><br>
+A research study uses a carefully designed protocol, or plan, that allows researchers to learn about a patient's health, behavior, or response to a specific treatment or program. There are many different types of research studies. Some research studies are used to test or improve medical, surgical, or behavioral treatments. This could involve testing how well a new medication works for different types of patients or whether a mobile app can help patients quit smoking. Other clinical studies don't involve any treatment and may only ask patients to complete a survey or to be observed in their typical settings to help researchers learn more about patient experiences with things like chronic pain, sleep issues, or mental health. <br><br>
+Most of the treatments and tools we use to take care of patients today came from research studies in the past.<br><br>
+For example, we learned that mammograms are a good way to screen for breast cancer through a research study to improve screening and diagnosis.<br><br>
+Recently, the FDA approved new immune boosting therapies to allow a patient's own immune system. This approval was based on a research study that proved these new therapies were safe and effective compared to standard treatment.<br><br>
+In each of these examples, it was only through research studies that we now know how best to screen for, diagnose, treat, and help patients.` %>
 
-<% var text2 = `The most important thing to remember is that research studies are the way we discover new treatments and tools we will use to take care of people in the future. In fact, research studies done in the past have given us most of the treatments and tools we use to take care of people today. For example, we learned that mammograms are a good way to screen for breast cancer through a research study to improve screening and diagnosis. We also recently learned of a new drug that can delay the onset of Type 1 diabetes and a virtual reality system that can relieve chronic back pain. In each of these examples, it was only through research studies that we now know how best to screen, diagnose, treat, and help people.` %>
+<% var text1Spanish = `Si nunca ha participado en un estudio de investigación, es normal que no sepa mucho sobre ellos.<br><br>
+Un estudio de investigación utiliza un protocolo, o plan, cuidadosamente diseñado que permite a los investigadores conocer la salud, el comportamiento o la respuesta de un paciente a un tratamiento o programa específico. Hay muchos tipos diferentes de estudios de investigación. Algunos se utilizan para probar o mejorar tratamientos médicos, quirúrgicos o conductuales. Puede tratarse de probar la eficacia de un nuevo medicamento en distintos tipos de pacientes o si una aplicación móvil puede ayudar a los pacientes a dejar de fumar. Otros estudios clínicos no implican ningún tratamiento y pueden limitarse a pedir a los pacientes que rellenen una encuesta o que sean observados en su entorno habitual para ayudar a los investigadores a obtener más información sobre las experiencias de los pacientes con cosas como el dolor crónico, los problemas de sueño o la salud mental. <br><br>
+La mayoría de los tratamientos y herramientas que utilizamos hoy en día para atender a los pacientes proceden de estudios de investigación realizados en el pasado.<br><br>
+Por ejemplo, aprendimos que las mamografías son una buena forma de detectar el cáncer de mama gracias a un estudio de investigación para mejorar el cribado y el diagnóstico.<br><br>
+Recientemente, la FDA ha aprobado nuevas terapias de refuerzo inmunitario para que el propio sistema inmunitario del paciente pueda actuar. Esta aprobación se basó en un estudio de investigación que demostró que estas nuevas terapias eran seguras y eficaces en comparación con el tratamiento estándar.<br><br>
+En cada uno de estos ejemplos, sólo gracias a los estudios de investigación sabemos ahora cuál es la mejor forma de detectar, diagnosticar, tratar y ayudar a los pacientes.` %>
 
 <body>
     <div id="load">
@@ -35,12 +46,16 @@
         <!-- Main Text Content -->
         <div class ="content-container">
             <div class = "title-container">
-                <text-h1 class = "main-title-container title"><%=mainTitle%></text-h1>
+                <text-h1 class = "main-title-container title notranslate english"><%=mainTitle%></text-h1>
+                <text-h1 class = "main-title-container title notranslate spanish"><%=mainTitleSpanish%></text-h1>
+            </div>
+            <div class="text-image-area">
+                <img class="text-image" src="/images/text-image.jpg"></img>
             </div>
             <div class="text-component-row">
                 <div class="text-component-col">
-                    <text-p><%-text1%></text-p>
-                    <text-p><%-text2%></text-p>
+                    <text-p class="notranslate english"><%-text1%></text-p>
+                    <text-p class="notranslate spanish"><%-text1Spanish%></text-p>
                 </div>
             </div>
             <br>
@@ -50,14 +65,20 @@
             <% for (var i = 0; i < buttons.length; i++) { %>
                 <% if (buttons[i].url === url) { %>
                     <a href="/EducationalComponentText/<%=buttons[i].url%>">
-                        <button class="education-navigation selected" >
+                        <button class="education-navigation selected notranslate english" >
                             <%= buttons[i].text %>
+                        </button>
+                        <button class="education-navigation selected notranslate spanish" >
+                            <%= buttons[i].spanishText %>
                         </button>
                     </a>
                 <% } else { %>
                     <a href="/EducationalComponentText/<%=buttons[i].url%>">
-                        <button class="education-navigation" >
+                        <button class="education-navigation notranslate english" >
                             <%= buttons[i].text %>
+                        </button>
+                        <button class="education-navigation notranslate spanish" >
+                            <%= buttons[i].spanishText %>
                         </button>
                     </a>
                 <% } %>
@@ -65,7 +86,8 @@
         </div>
         <div class="discover-button-area">
             <a href="/StudySearch/Role">
-                <button class="green discover">Find Research Studies</button>
+                <button class="green discover notranslate english ">Find Research Studies</button>
+                <button class="green discover notranslate spanish">Buscar Estudios de Investigación </button> 
             </a>
         </div>
         

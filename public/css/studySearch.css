@@ -139,18 +139,30 @@ li {
 }
 
 .card label {
-    display: block;
     cursor: pointer;
     border: 3px solid #002657;
     border-radius: 35px;
     margin: 11px;
     padding: 15px;
     width: 300px;
-    height: 100px;
-    display: flex;
+    height: 175px;
     align-items: center;
     justify-content: center;
-    transition: .2s ease-in-out
+    transition: .2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.card label i {
+    font-size: 25px;
+}
+
+.card label p {
+    margin: 7px 0px;
+}
+
+.card label .groupings-description {
+    font-size: 17px;
 }
 
 .browse-card label, .single-select-button label {

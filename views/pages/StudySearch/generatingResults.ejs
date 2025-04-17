@@ -16,8 +16,8 @@
     <script src="/scripts/registerClicks.js"></script>
     <script src="/scripts/generatingResults.js"></script>
     <script src="/scripts/checkLanguage.js"></script>
-    <script type="text/javascript"
-        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
     <title>ALEX</title>
 </head>
 
@@ -35,76 +35,77 @@
         <%- include('../../partials/header'); %>
     </header>
     <div class="container">
-        <div class="progress-container">
-            <div class="progress-bar">
+        <div class="progress-container-a">
+            <div class="progress-bar-a">
                 <div class="step visted">
                     <div class="bullet visited"><span>✓</span></div>
-                    <p>Role</p>
+                    <p class="notranslate english">Role</p>
+                    <p class="notranslate spanish">Rol</p>
                 </div>
                 <div class="step visited">
                     <div class="bullet visited"><span>✓</span></div>
-                    <p>Background</p>
+                    <p class="notranslate english">Background</p>
+                    <p class="notranslate spanish">Datos Básicos</p>
                 </div>
                 <div class="step visited">
                     <div class="bullet visited"><span>✓</span></div>
-                    <p>Preferences</p>
+                    <p class="notranslate english">Preferences</p>
+                    <p class="notranslate spanish">Preferencias</p>
                 </div>
                 <div class="step active">
                     <div class="bullet active"><span>4</span></div>
-                    <p>Generating Results</p>
+                    <p class="notranslate english">Generating Results</p>
+                    <p class="notranslate spanish">Generando Resultados</p>
                 </div>
                 <div class="step">
                     <div class="bullet"><span>5</span></div>
-                    <p>Studies</p>
+                    <p class="notranslate english">Studies</p>
+                    <p class="notranslate spanish">Estudios</p>
                 </div>
             </div>
         </div>
-        <h1 class="title" id="loaded-title">Your Results Are Loading ...</h1>
-        <% if (interventionType==='vh' ) { %>
-            <div id="notice-area">
-                <p style="font-size: 19px; margin-top: 5px; font-style: italic;">Please view a quick message from Alex
-                    below while we create a personalized list of research studies for you!</p>
-            </div>
-            <br />
-            <video id="alex-video" autoplay controls>
-                <source
-                    src="https://research-studies-with-alex.s3.amazonaws.com/R24_Characters/<%= vCHE %>/<%= vCHE + language %>_GeneratingResults.mp4"
-                    type="video/mp4">
-            </video>
+        <h1 class="title notranslate english" id="loaded-title">We are searching for your results...</h1>      
+        <h1 class="title notranslate spanish" id="loaded-title">Estamos buscando sus resultados...</h1>      
+            <% if (interventionType === 'vh') { %>
+                <div id="notice-area">
+                    <p class="notranslate english" style="font-size: 19px; margin-top: 5px; font-style: italic;">Please view a quick message from Alex below while we create a personalized list of research studies for you!</p>
+                    <p class="notranslate spanish" style="font-size: 19px; margin-top: 5px; font-style: italic;">Mientras preparamos una lista personalizada de estudios de investigación para usted, vea un breve mensaje de ALEX a continuación.</p>
+                </div>
+                <br/>
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe 
+                        id="myvideo"
+                        class="embed-responsive-item" 
+                        src="" 
+                        allow="autoplay"
+                        allowfullscreen>
+                    </iframe>
+                </div>   
             <% } else { %>
                 <div id="notice-area">
-                    <p style="font-size: 19px; margin-top: 5px; font-style: italic;">Please read the message below while
-                        we create a personalized list of research studies for you!</p>
-                    <p>Thank you so much for sharing that information! We are now generating a personalized list of
-                        research studies that might be a great fit for you. This process only takes a few moments.</p>
-                    <p>On the next page, be sure to locate the "Complete Survey" button to take the post-survey once you
-                        are done looking through your personalized list of research studies.</p>
-                    <p>Your personalized list of research studies should be ready soon. Please click the button below to view
-                        your results!</p>
+                <p class="notranslate english" style="font-size: 19px; margin-top: 5px; font-style: italic;">Please read the message below while we create a personalized list of research studies for you!</p>
+                <p class="notranslate spanish" style="font-size: 19px; margin-top: 5px; font-style: italic;">Lea el siguiente mensaje mientras generamos su lista personalizada de estudios de investigación.</p>
+
+                <p class="notranslate english">Thank you so much for sharing that information. We are now generating a personalized list of research studies that might be a good fit for you. This process only takes a few moments.</p>
+                <p class="notranslate spanish">Muchas gracias por compartir esa información. Ahora estamos generando una lista personalizada de estudios de investigación que podrían ser adecuados para usted. Este proceso solo se lleva unos instantes.</p>
+
+                <p class="notranslate english">On the next page, be sure to locate the "Complete Survey" once you are done looking through your personalized list of research studies. Also, we have included a Frequently Asked Questions Guide that you can download for your reference when speaking to research staff.</p>
+                <p class="notranslate spanish">En la página siguiente, asegúrese de localizar la "Encuesta completa" una vez que haya terminado de consultar su lista personalizada de estudios de investigación. Además, hemos incluido una Guía de preguntas frecuentes que puede descargar para consultarla cuando hable con el personal de investigación.</p>
+
+                <p class="notranslate english">Your personalized list should be ready. Please click the button below to view your results.</p>
+                <p class="notranslate spanish">Su lista personalizada debería estar lista. Haga clic en el botón de abajo para ver sus resultados.</p>
                 </div>
-                <% } %>
-
-
-                    <br />
-                    <p id="still-loading" style="font-size: 19px; margin-top: 5px; font-style: italic; display: none">
-                        Your results are taking slightly longer than expected to load. \n Please wait one more minute
-                        for us to personalize your research studies list!</p>
-                    <a id="seeHref" href="/StudySearch/Results">
-                        <button id="results" disabled class="disabled">Loading...</button>
-                    </a>
+            <% } %>
+       
+        
+        <br/>
+        <p class="notranslate english" id="still-loading" style="font-size: 19px; margin-top: 5px; font-style: italic; display: none">Your results are taking slightly longer than expected to load. Please wait one more minute for us to personalize your research studies list!</p>
+        <p class="notranslate spanish" id="still-loading" style="font-size: 19px; margin-top: 5px; font-style: italic; display: none">Estamos tardando un poco más en cargar sus resultados. Por favor, espere un momento mientras preparamos su lista de estudios personalizados. </p>
+        <a id = "seeHref" href="/StudySearch/Results">
+            <button id = "results" disabled class = "disabled">Loading...</button>
+        </a>      
     </div>
 </body>
-<script>
-    var video = document.getElementById("alex-video")
-    if (video) {
-        // Add an event listener for the 'ended' event
-        video.addEventListener('ended', function () {
-            console.log('The video has ended.');
-            var stillLoadingText = document.getElementById("still-loading");
-            stillLoadingText.style.display = 'block'
-        });
-    }
-
-</script>
-
+<script src="https://player.vimeo.com/api/player.js"></script>
+<script src="/scripts/videos.js"></script>
 </html>

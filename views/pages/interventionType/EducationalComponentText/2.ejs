@@ -16,8 +16,16 @@
 </head>
 <!-- Text Variables for Clarity :) -->
 <% var mainTitle = `Why Consider Participating?` %>
+<% var mainTitleSpanish = `¿Por qué considerar participar?` %>
 
-<% var text1 = `We have learned a lot about improving people’s health and wellbeing with the help of research studies. But, there is still more work to be done. Doctors, scientists, and people like you are working together right now on research studies that will help you, your family, and future generations. There is still much to learn and you can help. People often have different or multiple reasons to consider participating in a research study. Some participate to receive a potentially helpful treatment that may benefit their health. Others participate so that study results found today may help people in the future. Sometimes people may even participate because they are interested in the study topic itself.  Whatever reasons you have to consider participating, it is important to know that it is always your choice to participate in a research study. It’s ok to ask questions and meet the research team as you make your decision to start participating. And even if you agree to participate, you can change your mind at any time and stop your participation, no matter what your reason is.` %>
+<% var text1 = `We have learned a lot about improving health and wellbeing with the help of research studies. But there is still more work to be done. Doctors, scientists, and patients like you are working together right now on research studies that will help improve healthcare for you, your family, and future generations. There is still much to learn, and you can help.<br><br>
+People often have different or multiple reasons to consider participating in a research study. Some participate to receive a potentially helpful treatment that may benefit their health. Others participate so that study results found today may help patients in the future. Sometimes people may even participate because they are interested in the study topic itself. <br><br>
+Whatever reasons you have to consider participating, it is important to know that it is always your choice to participate in a research study. It's ok to ask questions and meet the research team as you make your decision to start participating. And even if you agree to participate, you can change your mind at any time and stop your participation, no matter what your reason is.` %>
+
+<% var text1Spanish = `Hemos aprendido mucho sobre cómo mejorar la salud y el bienestar con la ayuda de los estudios de investigación. Pero aún queda mucho por hacer. Médicos, científicos y pacientes como usted están colaborando ahora mismo en estudios de investigación que ayudarán a mejorar la asistencia sanitaria para usted, su familia y las generaciones futuras. Aún queda mucho por aprender y usted puede ayudar.<br><br>
+Las personas suelen tener diferentes o múltiples razones para plantearse participar en un estudio de investigación. Algunas participan para recibir un tratamiento potencialmente útil que pueda beneficiar a su salud. Otras participan para que los resultados de un estudio descubiertos hoy puedan ayudar a los pacientes en el futuro. A veces, las personas incluso participan porque les interesa el tema del estudio en sí. <br><br>
+Sean cuales sean las razones por las que se plantee participar, es importante saber que siempre es su decisión participar en un estudio de investigación. Está bien hacer preguntas y conocer al equipo de investigación mientras toma la decisión de empezar a participar. E incluso si acepta participar, puede cambiar de opinión en cualquier momento y detener su participación, sin importar cuál sea su razón.` %>
+
 <body>
     <div id="load">
         <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>
@@ -32,11 +40,16 @@
         <!-- Main Text Content -->
         <div class ="content-container">
             <div class = "title-container">
-                <text-h1 class = "main-title-container title"><%=mainTitle%></text-h1>
+                <text-h1 class = "main-title-container title notranslate english"><%=mainTitle%></text-h1>
+                <text-h1 class = "main-title-container title notranslate spanish"><%=mainTitleSpanish%></text-h1>
+            </div>
+            <div class="text-image-area">
+                <img class="text-image" src="/images/text-image.jpg"></img>
             </div>
             <div class="text-component-row">
                 <div class="text-component-col">
-                    <text-p><%-text1%></text-p>
+                    <text-p class="notranslate english"><%-text1%></text-p>
+                    <text-p class="notranslate spanish"><%-text1Spanish%></text-p>
                 </div>
             </div>
             <br>
@@ -46,14 +59,20 @@
             <% for (var i = 0; i < buttons.length; i++) { %>
                 <% if (buttons[i].url === url) { %>
                     <a href="/EducationalComponentText/<%=buttons[i].url%>">
-                        <button class="education-navigation selected" >
+                        <button class="education-navigation selected notranslate english" >
                             <%= buttons[i].text %>
+                        </button>
+                        <button class="education-navigation selected notranslate spanish" >
+                            <%= buttons[i].spanishText %>
                         </button>
                     </a>
                 <% } else { %>
                     <a href="/EducationalComponentText/<%=buttons[i].url%>">
-                        <button class="education-navigation" >
+                        <button class="education-navigation notranslate english" >
                             <%= buttons[i].text %>
+                        </button>
+                        <button class="education-navigation notranslate spanish" >
+                            <%= buttons[i].spanishText %>
                         </button>
                     </a>
                 <% } %>
@@ -61,7 +80,8 @@
         </div>
         <div class="discover-button-area">
             <a href="/StudySearch/Role">
-                <button class="green discover">Find Research Studies</button>
+                <button class="green discover notranslate english ">Find Research Studies</button>
+                <button class="green discover notranslate spanish">Buscar Estudios de Investigación </button> 
             </a>
         </div>
     </div>

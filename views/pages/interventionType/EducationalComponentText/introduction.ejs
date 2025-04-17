@@ -16,7 +16,27 @@
 </head>
 <!-- Text Variables for Clarity :) -->
 <% var mainTitle = `Introduction` %>
-<% var text1 = `Hi, thanks for clicking on this site. We’ve shared this link with you because your healthcare team wanted us to talk with you about participating in research studies. Additionally, we would like to talk with you about how to become an active member of a research registry. There are differences between a research study and a research registry. We are happy to discuss them in further detail. And we’re also happy to talk with your family and friends if they want information on research studies and research registries, too.<br><br>So, pick a starting point to learn more about research studies!` %>
+<% var mainTitleSpanish = `Inicio` %>
+
+<% var text1 = `Hi, I'm Alex. Welcome to the ALEX Portal. ALEX will help you learn more about research and help you find any studies that you might be a good fit for. <br><br>
+I'm meeting with you today because your healthcare team wanted me to provide some important information about participating in a research study. Did you know that there are thousands of research studies looking for new participants at any given time? We the members of the research team, pride ourselves on giving patients the opportunity about whether to participate in research studies. <br><br>
+Many of our patients have not participated in research before, and it's normal to have lots of questions. My job is to help explain the purpose of research studies, help you find a research study that might be a good fit for you, and provide some questions that you might want to ask before you participate. I'm also happy to talk with your family and friends if they want information on research studies too. <br><br>
+Let's figure out where to start our conversation based on what you already know about research studies. <br><br>
+First, we could start with the basics. I can tell you more about what the term "research study" means and give you some examples of the different types of research studies and how they work. <br><br>
+If you're already familiar with the term research studies, I can give you a brief overview of why patients participate in them. From contributing to a healthier society for the ones you love, to receiving additional testing, monitoring, or treatment for a health issue that concerns you - there are several potential benefits to consider. <br><br>
+Once you are familiar with the term, research studies, and why they are important, you may want to know how safe research studies are. I can go over some of the ways patients are protected in research studies and review important questions to ask before enrolling that will help you make sure you fit with a particular study and trust the researchers.<br><br>
+Finally, if you've worked or participated in research enough that you feel confident answering the first three questions, I can start by going over eligibility requirements, which are basically qualities that you must have to participate in a certain study. I'll follow that with some steps you can take right now to learn more or get started.<br><br>
+You can choose the topic you'd like to start with below. Remember: you can always change your mind and start somewhere else by clicking on any of the topics below at any time during our conversation. So, pick a starting point and let's talk about research studies!` %>
+
+<% var text1Spanish = `Hola, soy Alex. Bienvenido al Portal ALEX. El portal ALEX le ayudará a obtener más información sobre la investigación y a encontrar los estudios para los que podría ser apto. <br><br>
+Me reúno hoy con usted porque su equipo sanitario quiere que le proporcione información importante sobre la participación en un estudio de investigación. ¿Sabía que hay miles de estudios de investigación que buscan nuevos participantes en cualquier momento? Nosotros, los miembros del equipo de investigación, nos enorgullecemos de dar a los pacientes la oportunidad de participar o no en estudios de investigación. <br><br>
+Muchos de nuestros pacientes no han participado antes en una investigación, y es normal que tengan muchas preguntas. Mi trabajo consiste en explicarles la finalidad de los estudios de investigación, ayudarles a encontrar un estudio de investigación que se ajuste a sus necesidades y formularles algunas preguntas antes de participar. También estaré encantada de hablar con sus familiares y amigos si también desean información sobre los estudios de investigación. <br><br>
+Averigüemos por dónde empezar nuestra conversación basándonos en lo que ya sabes sobre los estudios de investigación. <br><br>
+En primer lugar, podríamos empezar por lo básico. Puedo explicarte mejor qué significa el término "estudio de investigación" y darte algunos ejemplos de los distintos tipos de estudios de investigación y cómo funcionan. <br><br>
+Si ya está familiarizado con el término estudios de investigación, puedo darle una breve visión general de por qué los pacientes participan en ellos. Desde contribuir a una sociedad más sana para sus seres queridos hasta recibir pruebas, controles o tratamientos adicionales para un problema de salud que le preocupe, hay varios beneficios potenciales que debe tener en cuenta. <br><br>
+Una vez que se haya familiarizado con el término "estudios de investigación" y con su importancia, es posible que desee saber hasta qué punto son seguros. Puedo repasar algunas de las formas en que se protege a los pacientes en los estudios de investigación y repasar preguntas importantes que debe hacer antes de inscribirse y que le ayudarán a asegurarse de que encaja en un estudio concreto y de que confía en los investigadores. <br><br>
+Por último, si ha trabajado o participado en investigación lo suficiente como para sentirse seguro respondiendo a las tres primeras preguntas, puedo empezar repasando los requisitos de elegibilidad, que son básicamente las cualidades que debe tener para participar en un determinado estudio. A continuación, le daré algunos pasos que puede dar ahora mismo para obtener más información o empezar. <br><br>
+A continuación puedes elegir el tema por el que te gustaría empezar. Recuerda: siempre puedes cambiar de opinión y empezar por otro tema haciendo clic en cualquiera de los que aparecen a continuación en cualquier momento de nuestra conversación. Elija un punto de partida y hablemos de estudios de investigación.` %>
 <body>
     <div id="load">
         <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>
@@ -36,9 +56,13 @@
             <div class = "title-container">
                 <text-h1 class = "main-title-container title"><%=mainTitle%></text-h1>
             </div>
+            <div class="text-image-area">
+                <img class="text-image" src="/images/text-image.jpg"></img>
+            </div>
             <div class="text-component-row">
                 <div class="text-component-col">
-                    <text-p><%-text1%></text-p>
+                    <text-p class="notranslate english"><%-text1%></text-p>
+                    <text-p class="notranslate spanish"><%-text1Spanish%></text-p>
                 </div>
             </div>
             <br>
@@ -49,14 +73,20 @@
             <% for (var i = 0; i < buttons.length; i++) { %>
                 <% if (buttons[i].url === url) { %>
                     <a href="/EducationalComponentText/<%=buttons[i].url%>">
-                        <button class="education-navigation selected" >
+                        <button class="education-navigation selected notranslate english" >
                             <%= buttons[i].text %>
+                        </button>
+                        <button class="education-navigation selected notranslate spanish" >
+                            <%= buttons[i].spanishText %>
                         </button>
                     </a>
                 <% } else { %>
                     <a href="/EducationalComponentText/<%=buttons[i].url%>">
-                        <button class="education-navigation" >
+                        <button class="education-navigation notranslate english" >
                             <%= buttons[i].text %>
+                        </button>
+                        <button class="education-navigation notranslate spanish" >
+                            <%= buttons[i].spanishText %>
                         </button>
                     </a>
                 <% } %>
@@ -64,7 +94,8 @@
         </div>
         <div class="discover-button-area">
             <a href="/StudySearch/Role">
-                <button class="green discover">Find Research Studies</button>
+                <button class="green discover notranslate english ">Find Research Studies</button>
+                <button class="green discover notranslate spanish">Buscar Estudios de Investigación </button> 
             </a>
         </div>
         

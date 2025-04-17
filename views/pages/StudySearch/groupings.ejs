@@ -15,6 +15,7 @@
     <script src="/scripts/StudySearch/groupings.js"></script>
     <script src="/scripts/checkLanguage.js"></script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>ALEX</title>
 </head>
 <body>
@@ -25,31 +26,37 @@
         <%- include('../../partials/header'); %>
     </header>
     <div class="container">
-        <div class="progress-container">
-            <div class="progress-bar">
+        <div class="progress-container-a">
+            <div class="progress-bar-a">
                 <div class="step visted">
                     <div class="bullet visited"><span>✓</span></div>
-                    <p>Role</p>
+                    <p class="notranslate english">Role</p>
+                    <p class="notranslate spanish">Rol</p>
                 </div>
                 <div class="step visited">
                     <div class="bullet visited"><span>✓</span></div>
-                    <p>Background</p>
+                    <p class="notranslate english">Background</p>
+                    <p class="notranslate spanish">Datos Básicos</p>
                 </div>
                 <div class="step active">
                     <div class="bullet active"><span>3</span></div>
-                    <p>Preferences</p>
+                    <p class="notranslate english">Preferences</p>
+                    <p class="notranslate spanish">Preferencias</p>
                 </div>
                 <div class="step">
                     <div class="bullet"><span>4</span></div>
-                    <p>Generating Results</p>
+                    <p class="notranslate english">Generating Results</p>
+                    <p class="notranslate spanish">Generando Resultados</p>
                 </div>
                 <div class="step">
                     <div class="bullet"><span>5</span></div>
-                    <p>Studies</p>
+                    <p class="notranslate english">Studies</p>
+                    <p class="notranslate spanish">Estudios</p>
                 </div>
             </div>
         </div>
-        <h1 class="title" id="groupings" id="groupings-description">What kind of studies are you interested in?</h1>
+        <h1 class="title notranslate english" id="groupings" id="groupings-description">What kind of studies are you interested in?</h1>
+        <h1 class="title notranslate spanish" id="groupings" id="groupings-description">¿Qué tipo de estudios le interesan? </h1>
         <br/>
         <div class="form-area">
             <form onsubmit="return false" id="groupings-info">
@@ -57,31 +64,46 @@
                     <div class="card">
                         <input type="checkbox" id="HealthyLiving" name="HealthyLiving" value="HealthyLiving">
                         <label for="HealthyLiving">
-                            <p style="font-weight: 700">Healthy Living</p>
+                            <i class="fa-solid fa-spa"></i>         
+                            <p class="notranslate english" style="font-weight: 700">Healthy Living</p>
+                            <p class="notranslate spanish" style="font-weight: 700">Hábitos saludables</p>
+                            <p class="groupings-description">Improving the quality-of-life, wellbeing, or increasing longevity</p>
                         </label>
                     </div>
                     <div class="card">
                         <input type="checkbox" id="PreventionScreening" name="PreventionScreening" value="PreventionScreening">
                         <label for="PreventionScreening">
-                            <p style="font-weight: 700">Cancer Prevention & Screening</p>
+                            <i class="fa-solid fa-stethoscope"></i>
+                            <p class="notranslate english" style="font-weight: 700">Prevention & Screening</p>
+                            <p class="notranslate spanish" style="font-weight: 700">Prevención y detección</p>
+                            <p class="groupings-description">Testing new methods for preventing conditions and diseases</p>
                         </label>
                     </div>
                     <div class="card">
                         <input type="checkbox" id="Treatment" name="Treatment" value="Treatment">
                         <label for="Treatment">
-                            <p style="font-weight: 700">Treatment</p>
+                            <i class="fa-solid fa-capsules"></i>
+                            <p class="notranslate english" style="font-weight: 700">Treatment</p>
+                            <p class="notranslate spanish" style="font-weight: 700">Opciones de Tratamiento</p>
+                            <p class="groupings-description">Testing a drug, device, or another therapeutic approach</p>
                         </label>
                     </div>
                     <div class="card">
                         <input type="checkbox" id="Survivorship" name="Survivorship" value="Survivorship">
                         <label for="Survivorship">
-                            <p style="font-weight: 700">Survivorship</p>
+                            <i class="fa-solid fa-ribbon"></i>
+                            <p class="notranslate english" style="font-weight: 700">Survivorship</p>
+                            <p class="notranslate spanish" style="font-weight: 700">Seguimiento y Cuidado</p>
+                            <p class="groupings-description">Long-term monitoring & improving the quality-of-life</p>
                         </label>
                     </div>
                     <div class="card">
                         <input type="checkbox" id="Other" name="Other" value="Other">
                         <label for="Other">
-                            <p style="font-weight: 700">Other</p>
+                            <i class="fa-solid fa-notes-medical"></i>
+                            <p class="notranslate english" style="font-weight: 700">Other</p>
+                            <p class="notranslate spanish" style="font-weight: 700">Otros</p>
+                            <p class="groupings-description">Studies that do not fit into the other specified categories.</p>
                         </label>
                     </div>
                 </div>
@@ -89,8 +111,10 @@
             <br/>
         </div>
         <div class="next-back-button-area">
-            <a id="back-link" href="/StudySearch/"><button class="back">Back</button></a>
-            <button class="green" onclick="sendFormData(`groupings-info`)">Next</button>
+            <a class="notranslate english" id="back-link" href="/StudySearch/"><button class="back">Back</button></a>
+            <a class="notranslate spanish" id="back-link" href="/StudySearch/"><button class="back">Regresar</button></a>
+            <button class="green notranslate english" onclick="sendFormData(`groupings-info`)">Next</button>
+            <button class="green notranslate spanish" onclick="sendFormData(`groupings-info`)">Continuar</button>
         </div>
         <div class="nav-link-text-area">
             <p id="link-text" onclick="sendFormData(`groupings-info`)">Skip</p>
