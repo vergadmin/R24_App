@@ -16,6 +16,19 @@ var openModalEmail;
 var openModalTitle;
 var openModalNctId;
 var openModalMessage;
+
+var htmlText;
+const alexInfoText = `NOTE TO STUDY COORDINATOR:
+  You are receiving this email from The ALEX Research Referral Portal. The ALEX (Agents Leveraging Empathy for Exams) Portal was developed through the support of the R24AG074867 grant from the National Institute on Aging, part of the National Institute of Health. The ALEX portal is a web-based tool for patients, caregivers, and healthcare professionals to increase referral of patients to clinical trials. ALEX helps a user learn about and search for potential study opportunities based on their sex, age, location, and health condition(s). It translates complex study information that can be a barrier for many patients and their caregivers to a 6th grade reading level, and pre-generates this email to contact you. Please follow up with the individual listed above about the study for which you are the contact. If you have questions about why you are receiving this email, or to learn more about the ALEX portal, please reach out to the ALEX Research team at ETCH@mayo.edu`
+
+const htmlAlexInfoText = `
+  <hr>
+  <p>NOTE TO STUDY COORDINATOR:</p>
+  <p>
+    You are receiving this email from The ALEX Research Referral Portal. The ALEX (Agents Leveraging Empathy for Exams) Portal was developed through the support of the R24AG074867 grant from the National Institute on Aging, part of the National Institute of Health. The ALEX portal is a web-based tool for patients, caregivers, and healthcare professionals to increase referral of patients to clinical trials. ALEX helps a user learn about and search for potential study opportunities based on their sex, age, location, and health condition(s).  It translates complex study information that can be a barrier for many patients and their caregivers to a 6th grade reading level, and pre-generates this email to contact you. <strong><u>Please follow up with the individual listed above about the study for which you are the contact</u></strong>. If you have questions about why you are receiving this email, or to learn more about the ALEX portal, please reach out to the ALEX Research team at <a href="mailto:ETCH@mayo.edu">ETCH@mayo.edu</a>.
+  </p>
+`;
+// When the user clicks the button, open the email modal 
 // When the user clicks the button, open the email modal 
 function openEmailModal(role, contactName, contactEmail, studyTitle, briefSummary, nctID) {
   console.log("here!")
@@ -23,34 +36,28 @@ function openEmailModal(role, contactName, contactEmail, studyTitle, briefSummar
   openModalTitle = studyTitle;
   openModalNctId = nctID;
   emailModal.style.display = "flex";
-  let alexInfoText = `What is ALEX?\nThe ALEX portal and associated research was developed through the support of the U01CA274970 grant from the National Cancer Institute, part of the National Institute of Health. The ALEX portal is a web-based tool for patients, caregivers, and providers which aims to increase referral of patients to research studies. ALEX helps a user search for and learn about potential study opportunities and understand the complex language that can be a barrier for many patients and their caregivers. If you have questions about why you are receiving this email, or to learn more about the ALEX portal, please reach out to the ALEX Research team at ETCH@mayo.edu.`
-  let patientText= `Hello, \n\nI saw the following research study on the ALEX website. I am interested in participating and would like more information about the study and how to enroll.\n\nTitle: ${studyTitle}\nNCT ID: ${nctID}\nLink To Study: https://clinicaltrials.gov/study${nctID}\n\nAI-Summarized Description I Read from ALEX: ${briefSummary}`
-  let caregiverText= `Hello,\n\nI saw the following research study on the ALEX website. I am the caregiver of someone who is interested in participating and would like more information about the study and how to enroll them.\n\nTitle: ${studyTitle}\nNCT ID: ${nctID}\nLink To Study: https://clinicaltrials.gov/study${nctID}\n\nAI-Summarized Description I Read from ALEX: ${briefSummary}`
-
-  var text
-  if (role === 'Patient') {
-    text = patientText
-  } else {
-    text = caregiverText
-  }
+  var text;
+  const { message, html } = generateEmailTemplate(role, studyTitle, nctID, briefSummary);
+  htmlText = html;
+  text = message;
   text = text + '\n\n' + alexInfoText
-    document.getElementById("message").value = text;
-    openModalMessage =text;
+  document.getElementById("message").value = text;
+  openModalMessage = text;
 
-    if (contactName && contactEmail !== null) {
-      document.getElementById("coordinator-contact").innerHTML = contactName + ": " + contactEmail + " "
-    } else {
-      document.getElementById("coordinator-contact").style.display = none;
-    }
+  if (contactName && contactEmail !== null) {
+    document.getElementById("coordinator-contact").innerHTML = contactName + ": " + contactEmail + " "
+  } else {
+    document.getElementById("coordinator-contact").style.display = none;
+  }
 }
 
 // When the user clicks on <span> (x), close the email modal
-emailCloseBtn.onclick = function() {
+emailCloseBtn.onclick = function () {
   emailModal.style.display = "none";
 }
 
 // When the user clicks on <span> (x), close the email modal
-sentEmailCloseBtn.onclick = function() {
+sentEmailCloseBtn.onclick = function () {
   document.getElementById("email-form").style.display = ''
   document.getElementById("close").style.display = ''
   document.getElementById("email-sending-loading").style.display = 'none'
@@ -58,7 +65,7 @@ sentEmailCloseBtn.onclick = function() {
 }
 
 // When the user clicks anywhere outside of the email modal, close it
-window.onclick = function(event) {
+window.onclick = function (event) {
   if (event.target == emailModal) {
     emailModal.style.display = "none";
   }
@@ -77,24 +84,28 @@ async function emailPatient() {
   }
 
   let title = openModalTitle <= 25 ? openModalTitle : openModalTitle.substring(0, 25) + "...";
+  const htmlMessage = htmlText
+    .replace("[Patient Name]", patientName || "[Patient Name]")
+    .replace("[Patient Email]", patientEmail || "[Patient Email]");
+  const subject = `[ACTION NEEDED] Requesting Study Info: ${title}`
 
-  const subject = `[ACTION REQUESTED] Potential Participant Requesting Information about ${title}`
-
-  let url =`/StudySearch/SendEmailPatient`;
+  let url = `/StudySearch/SendEmailPatient`;
   let data = {
-    message: openModalMessage,
     subject: subject,
+    message: openModalMessage,
+    htmlMessage: htmlMessage,
+    htmlCoordinator: htmlAlexInfoText,
     studyContact: openModalEmail,
     patientEmail: patientEmail,
     nctId: openModalNctId
   }
   console.log(data);
   let res = await fetch(url, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
   });
 
   console.log("HERE!")
@@ -113,20 +124,21 @@ async function emailPatient() {
 }
 
 
-  function showMore(button, moreCount) {
-      var moreItems = button.nextElementSibling;
-      if (moreItems.style.display === "none") {
-          moreItems.style.display = "block";
-          button.textContent = "Show Less Conditions";
-      } else {
-          moreItems.style.display = "none";
-          button.textContent = `...More (${moreCount})`;
-      }
-  }
 
-function openSurvey () {
+function showMore(button, moreCount) {
+  var moreItems = button.nextElementSibling;
+  if (moreItems.style.display === "none") {
+    moreItems.style.display = "block";
+    button.textContent = "Show Less Conditions";
+  } else {
+    moreItems.style.display = "none";
+    button.textContent = `...More (${moreCount})`;
+  }
+}
+
+function openSurvey() {
   let id = sessionStorage.getItem("id") || "tempId";
-  const url =  `https://ufl.qualtrics.com/jfe/form/SV_9vgBcKlzQbikpqC?ID=${id}`;
+  const url = `https://ufl.qualtrics.com/jfe/form/SV_9vgBcKlzQbikpqC?ID=${id}`;
   window.open(url, '_blank');
 }
 
@@ -149,16 +161,24 @@ async function emailCaregiver() {
     caregiverEmail = document.getElementById("caregiverEmail").value;
   }
 
+  const htmlMessage = htmlText
+  .replace("[Patient Name]", patientName || "[Patient Name]")
+  .replace("[Patient Email]", patientEmail || "[Patient Email]")
+  .replace("[Caregiver Name]", caregiverName || "[Caregiver Name]")
+  .replace("[Caregiver Email]", caregiverEmail || "[Caregiver Email]")
+
   let title = openModalTitle <= 25 ? openModalTitle : openModalTitle.substring(0, 25) + "...";
 
-  const subject = `[ACTION REQUESTED] Potential Participant Requesting Information about ${title}`
+  const subject = `[ACTION NEEDED] Requesting Study Info: ${title}`
 
-  let url =`/StudySearch/SendEmailCaregiver`;
+  let url = `/StudySearch/SendEmailCaregiver`;
 
   let data = {
-    message: openModalMessage,
     subject: subject,
+    message: openModalMessage,
     studyContact: openModalEmail,
+    htmlMessage: htmlMessage,
+    htmlCoordinator: htmlAlexInfoText,
     patientEmail: patientEmail,
     caregiverEmail: caregiverEmail,
     nctId: openModalNctId
@@ -166,13 +186,13 @@ async function emailCaregiver() {
   console.log(data);
 
   let res = await fetch(url, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
   });
-  
+
   if (res.ok) {
     let ret = await res.json();
     console.log(ret);
@@ -185,18 +205,118 @@ async function emailCaregiver() {
 
 }
 
-// Handle submission of email
-/*
-var submitEmailButton = document.getElementById("submitEmailButton");
-submitEmailButton.onclick = function() {
-  if (contactName && contactEmail !== null) {
-    document.getElementById("coordinator-contact").innerHTML = contactName + ": " + contactEmail + " "
-  } else {
-    document.getElementById("coordinator-contact").style.display = none;
+
+function generateEmailTemplate(role, studyTitle, nctID, briefSummary) {
+  let message;
+  let html; 
+  if (role === "Patient") {
+    message = `Hello,
+  
+    I saw the following research study on the ALEX website. I am interested in participating and would like more information about the study and how to enroll.
+  
+    Title: ${studyTitle}
+    NCT ID: ${nctID}
+    Link To Study: https://clinicaltrials.gov/study/${nctID}
+  
+    Please follow up with me to discuss the study, using the following information:
+    
+    AI-Summarized Description I Read from ALEX:
+    ${briefSummary}
+    
+    Please follow up with me to discuss the study, using the following information:
+  
+    Name: [Patient Name]
+    Email: [Patient Email]
+    
+    Thank you, and I look forward to hearing from you!`;
+
+
+    html = `
+    <p>Hello,</p>
+
+    <p>
+      I saw the following research study on the ALEX website. I am interested in participating and would like more information about the study and how to enroll.
+    </p>
+
+    <p>
+      Title: ${studyTitle}<br>
+      NCT ID: ${nctID}<br>
+     Link To Study: <a href="https://clinicaltrials.gov/study/${nctID}">https://clinicaltrials.gov/study/${nctID}</a>
+    </p>
+
+    <p>
+      AI-Summarized Description I Read from ALEX:<br>
+      ${briefSummary}
+    </p>
+
+    <p>
+      <strong><u>Please follow up with me to discuss the study, using the following information</u></strong>:
+    </p>
+
+    <p>
+      Name: [Patient Name]<br>
+      Email: [Patient Email]
+    </p>
+
+    <p>Thank you, and I look forward to hearing from you!</p>
+`;
+
   }
-  // Perform any action with the entered email here, such as sending it to a server
-  console.log("Submitted email:", emailInput);
-  // Close the email modal after submission
-  emailModal.style.display = "none";
+
+  else {
+    message = `Hello,
+  
+    I saw the following research study on the ALEX website. I am the caregiver of someone who is interested in participating and would like more information about the study and how to enroll them.
+    
+    Title: ${studyTitle}
+    NCT ID: ${nctID}
+    Link To Study: https://clinicaltrials.gov/study/${nctID}
+    
+    AI-Summarized Description I Read from ALEX: ${briefSummary}
+    
+    Please follow up with us to discuss the study, using the following information: 
+  
+    Patient Name: [Patient Name]
+    Patient Email: [Patient Email]
+  
+    Caregiver Name: [Caregiver Name]
+    Caregiver Email: [Caregiver Email]
+  
+    Thank you, and we look forward to hearing from you!`;
+
+    html = `
+    <p>Hello,</p>
+  
+    <p>
+      I saw the following research study on the ALEX website. I am the caregiver of someone who is interested in participating and would like more information about the study and how to enroll them.
+    </p>
+  
+    <p>
+      Title: ${studyTitle}<br>
+      NCT ID: ${nctID}<br>
+     Link To Study: <a href="https://clinicaltrials.gov/study/${nctID}">https://clinicaltrials.gov/study/${nctID}</a>
+    </p>
+  
+    <p>
+      AI-Summarized Description I Read from ALEX:<br>
+      ${briefSummary}
+    </p>
+  
+    <p>
+      <strong><u>Please follow up with me to discuss the study, using the following information</u></strong>:
+    </p>
+  
+    <p>
+      Patient Name: [Patient Name]<br>
+      Patient Email: [Patient Email]<br>
+      Caregiver Name: [Caregiver Name]<br>
+      Caregiver Email: [Caregiver Email]
+    </p>
+  
+    <p>Thank you, and I look forward to hearing from you!</p>
+  `;
+  }
+
+  return { message, html };
+
 }
-  */

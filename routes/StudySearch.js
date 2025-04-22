@@ -17,12 +17,6 @@ const client = new OpenAI({
 
 // SUMMARY_PROMPT, MAX_TOKENS, & TEMPERATURE can be modified as needed.
 // TODO: Move Summary Prompts into .env -- don't want any chance for user's to see prompt.
-const COMPLETIONS_MODEL = process.env.COMPLETIONS_MODEL;
-const SUMMARY_PROMPT = process.env.SUMMARY_PROMPT;
-const TITLE_PROMPT = process.env.TITLE_PROMPT;
-const MAX_TOKENS = 300
-const MAX_TITLE_TOKENS = 50
-const TEMPERATURE = 0;
 const studySearchRequestURL = "http://studysearch.us-east-1.elasticbeanstalk.com/Patient/Results";
 const emailPatientURL = "http://studysearch.us-east-1.elasticbeanstalk.com/PatientEmail/SendEmailPatient";
 const emailCaregiverURL = "http://studysearch.us-east-1.elasticbeanstalk.com/PatientEmail/SendEmailCaregiver";
@@ -48,7 +42,7 @@ const sponsoredList = [
     "Categories": ["Healthy Living"],
     "Summary": "Adults between 45 -- 73 years old may be eligible to participate in in a University of Florida study to test messages about nutrition risk factors and colorectal cancer prevention in a one-time, web-based, interaction with a virtual health assistant.",
     "ContactName": "Dr. Melissa Vilaro",
-    "ContactEMail": "mgraveley@ufl.edu",
+    "ContactEmail": "mgraveley@ufl.edu",
     "Info": "https://research-studies-with-alex.s3.amazonaws.com/SponsoredStudies/STAMPEDNutrition_Module_CRC_Flyer_12.5.19.pdf",
     "Link": "https://research-studies-with-alex.s3.amazonaws.com/SponsoredStudies/STAMPEDNutrition_Module_CRC_Flyer_12.5.19.pdf"
   }
@@ -174,8 +168,7 @@ router.get('/Results', logResults, (req, res) => {
 router.post('/SendEmailPatient', logStudyContact, async (req, res) => {
   // Uncomment when we're done with F&F
   // const response = await axios.post(emailPatientURL, req);
-
-  const response = await axios.post(emailFriendsAndFamilyURL, req.body);
+  const response = await axios.post(emailPatientURL, req.body);
   console.log(response.data);
   res.send(response.data);
 });
@@ -183,7 +176,8 @@ router.post('/SendEmailPatient', logStudyContact, async (req, res) => {
 router.post('/SendEmailCaregiver', logStudyContact, async (req, res) => {
   // Uncomment when we're done with F&F
   // const response = await axios.post(emailCaregiverURL, req);
-  const response = await axios.post(emailFriendsAndFamilyURL, req.body);
+  console.log(req.body);
+  const response = await axios.post(emailCaregiverURL, req.body);
   console.log(response.data);
   res.send(response.data);
 });
