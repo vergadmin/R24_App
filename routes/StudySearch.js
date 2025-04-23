@@ -17,9 +17,11 @@ const client = new OpenAI({
 
 // SUMMARY_PROMPT, MAX_TOKENS, & TEMPERATURE can be modified as needed.
 // TODO: Move Summary Prompts into .env -- don't want any chance for user's to see prompt.
-const studySearchRequestURL = "http://studysearch.us-east-1.elasticbeanstalk.com/Patient/Results";
-const emailPatientURL = "http://studysearch.us-east-1.elasticbeanstalk.com/PatientEmail/SendEmailPatient";
-const emailCaregiverURL = "http://studysearch.us-east-1.elasticbeanstalk.com/PatientEmail/SendEmailCaregiver";
+// const baseURL = "http://studysearch.us-east-1.elasticbeanstalk.com"
+const baseURL = "https://studysearch.cise.ufl.edu"
+const studySearchRequestURL = baseURL + "/Patient/Results";
+const emailPatientURL =  baseURL + "/PatientEmail/SendEmailPatient";
+const emailCaregiverURL =  baseURL + "/PatientEmail/SendEmailCaregiver";
 const emailFriendsAndFamilyURL = "http://studysearch.us-east-1.elasticbeanstalk.com/PatientEmail/SendEmailFFLaunch";
 // const studySearchRequestURL = "http://localhost:3000/Patient/Results";
 // const emailFriendsAndFamilyURL = "http://localhost:3000/PatientEmail/SendEmailFFLaunch";
