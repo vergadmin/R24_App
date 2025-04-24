@@ -138,7 +138,7 @@ function showMore(button, moreCount) {
 
 function openSurvey() {
   let id = sessionStorage.getItem("id") || "tempId";
-  const url = `https://ufl.qualtrics.com/jfe/form/SV_9vgBcKlzQbikpqC?ID=${id}`;
+  const url = `https://ufl.qualtrics.com/jfe/form/SV_1B4qIsmRrAJirl4?ID=${id}`;
   window.open(url, '_blank');
 }
 
