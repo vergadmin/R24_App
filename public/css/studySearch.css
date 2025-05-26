@@ -223,7 +223,49 @@ li {
     margin: 15px;
 }
 
-ul#cities-list {
+#diagnosis-description {
+    margin-bottom: 0px;
+}
+
+.diagnosis-examples {
+    display: flex;
+    flex-direction: row;
+}
+
+.tooltip-container {
+    position: relative;
+    cursor: help;
+    transition: .2s ease-in-out;
+}
+
+.tooltip-container .tooltip-text {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    padding: 5px 8px;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* position above the item */
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip-container:hover {
+    color: #FA4616;
+    font-weight: 700;
+}
+
+.tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+ul#cities-list, ul#conditions-list1, ul#conditions-list2, ul#conditions-list3  {
     padding-inline-start: 0px
 }
 
@@ -234,6 +276,7 @@ ul#cities-list {
 
 .cities-list, .conditions-list  li {
     list-style: none;
+    text-align: center;
 }
 
 .cities-list li:hover, .conditions-list  li:hover {

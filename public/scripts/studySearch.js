@@ -265,11 +265,8 @@ async function sendFormData(id) {
             if (pref === 'Search') {
                 window.location.href = `/StudySearch/Diagnosis`
             }
-            else if (pref === 'Browse') {
-                window.location.href = `/StudySearch/Groupings`
-            }
             else {
-                window.location.href = `/StudySearch/Diagnosis`
+                window.location.href = `/StudySearch/Browse`
             }
         }
         else if (id === "groupings-info") {
