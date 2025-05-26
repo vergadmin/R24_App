@@ -47,7 +47,7 @@ const buttons = [
     }
 ]
 
-router.get('/Introduction', validateSession, updateDatabase, (req, res) => {
+router.get('/Introduction', validateSession, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;
@@ -55,7 +55,7 @@ router.get('/Introduction', validateSession, updateDatabase, (req, res) => {
     res.render("pages/interventionType/EducationalComponent/introduction", {id: id, vCHE: vCHE, interventionType: interventionType, buttons: buttons, url: 'Introduction', language: language})
 })
 
-router.get('/1', validateSession, updateDatabase, (req, res) => {
+router.get('/1', validateSession, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;
@@ -63,7 +63,7 @@ router.get('/1', validateSession, updateDatabase, (req, res) => {
     res.render("pages/interventionType/EducationalComponent/1", {id: id, vCHE: vCHE, interventionType: interventionType, buttons: buttons, url: '1', language: language})
 })
 
-router.get('/2', validateSession, updateDatabase, (req, res) => {
+router.get('/2', validateSession, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;
@@ -71,7 +71,7 @@ router.get('/2', validateSession, updateDatabase, (req, res) => {
     res.render("pages/interventionType/EducationalComponent/2", {id: id, vCHE: vCHE, interventionType: interventionType, buttons: buttons, url: '2', language: language})
 })
 
-router.get('/3', validateSession, updateDatabase, (req, res) => {
+router.get('/3', validateSession, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;
@@ -79,7 +79,7 @@ router.get('/3', validateSession, updateDatabase, (req, res) => {
     res.render("pages/interventionType/EducationalComponent/3", { id: id, vCHE: vCHE, interventionType: interventionType, buttons: buttons, url: '3', language: language})
 })
 
-router.get('/4', validateSession, updateDatabase, (req, res) => {
+router.get('/4', validateSession, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;
@@ -94,61 +94,67 @@ function validateSession(req, res, next) {
     if (!req.session.params) {
         req.session.params = {};
     }
-    if (!req.session.params.videosWatched) {
-        req.session.params.videosWatched = {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "Introduction": []
+    if (!req.session.params.videos) {
+        req.session.params.videos = {
+            "Educational_1": [],
+            "Educational_2": [],
+            "Educational_3": [],
+            "Educational_4": [],
+            "Educational_Introduction": [],
+            "Educational_GeneratingResults": []
         };
     }
     next();
     return;
 }
 
-async function updateDatabase(req, res, next) {
-    const dbEntry = req.url.slice(1);
-    const currentTimeInEST = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
-    const vCHE = req.session?.params?.vCHE || "Error in vCHE"
-    const videoObject = { timestamp: currentTimeInEST, vCHE: vCHE};
-    var currentVideos = req.session?.params?.videosWatched[dbEntry] || [];
-    // currentVideos.push(videoObject);
-    req.session.params.videosWatched[dbEntry] = currentVideos;
-    const videosWatchedString = JSON.stringify(currentVideos);
-    const id = req.session?.params?.id || "Error in ID";
-    const interventionType = req.session?.params?.interventionType || "Error in Intervention Type";
-    const visitNum = req.session?.params?.visitNum || -1;
+// async function updateDatabase(req, res, next) {
+//     const dbEntry = req.url.slice(1);
+//     const currentTimeInEST = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+//     const vCHE = req.session?.params?.vCHE || "Error in vCHE"
+//     const videoObject = { timestamp: currentTimeInEST, vCHE: vCHE};
+//     var currentVideos = req.session?.params?.videosWatched[dbEntry] || [];
+//     // currentVideos.push(videoObject);
+//     req.session.params.videosWatched[dbEntry] = currentVideos;
+//     const videosWatchedString = JSON.stringify(currentVideos);
+//     const id = req.session?.params?.id || "Error in ID";
+//     const interventionType = req.session?.params?.interventionType || "Error in Intervention Type";
+//     const visitNum = req.session?.params?.visitNum || -1;
 
-    // BEGIN DATABSAE STUFF:SENDING VERSION (R24 OR U01) AND ID TO DATABASE
+//     // BEGIN DATABSAE STUFF:SENDING VERSION (R24 OR U01) AND ID TO DATABASE
 
-    try {
-        const request = new sql.Request(); // No need to connect, just use the global pool
-        let queryString = `
-            UPDATE R24
-            SET Educational_${dbEntry} = @videosWatched
-            WHERE ID = @id
-            AND VisitNum = @visitNum
-            AND InterventionType = @interventionType`
+//     try {
+//         const request = new sql.Request(); // No need to connect, just use the global pool
+//         let queryString = `
+//             UPDATE R24
+//             SET Educational_${dbEntry} = @videosWatched
+//             WHERE ID = @id
+//             AND VisitNum = @visitNum
+//             AND InterventionType = @interventionType`
 
-        req.session.params.queryString = queryString;
-        request.input("videosWatched", sql.VarChar, videosWatchedString);
-        request.input("id", sql.VarChar, id);
-        request.input("visitNum", sql.Int, visitNum);
-        request.input("interventionType", sql.VarChar, interventionType);
-        await request.query(queryString); // Await to ensure it 
-        next();
-    } catch (err) {
-        console.error("SQL error:", err);
-        errorProtocol(err, req, res);
-        next(err);
-    }
-}
+//         req.session.params.queryString = queryString;
+//         request.input("videosWatched", sql.VarChar, videosWatchedString);
+//         request.input("id", sql.VarChar, id);
+//         request.input("visitNum", sql.Int, visitNum);
+//         request.input("interventionType", sql.VarChar, interventionType);
+//         await request.query(queryString); // Await to ensure it 
+//         next();
+//     } catch (err) {
+//         console.error("SQL error:", err);
+//         errorProtocol(err, req, res);
+//         next(err);
+//     }
+// }
 
 router.post('/updateVideosInDatabase', async (req, res) => {
-    // console.log("IN UPDATE VIDEOS IN DB", req.session?.params)
-    // console.log("IN UPDATE VIDEOS IN DB", req.body)
-    const videosWatchedString = JSON.stringify(req.body.videoInfo);
+    console.log("REQ SESSION PARAMS VIDEOS", req.session.params.videos)
+    const videoName = req.body.videoColumn;
+    const videoObject = req.body.videoInfo;
+    var updatedArray = req.session?.params?.videos[videoName] || [];
+    updatedArray.push(videoObject);
+    req.session.params.videos[videoName] = updatedArray;
+    console.log("AFTER PUSH REQ SESSION PARAMS VIDEOS", req.session.params.videos)
+    const videosWatchedString = JSON.stringify(updatedArray);
     const id = req.session?.params?.id || "Error in ID";
     const interventionType = req.session?.params?.interventionType || "Error in Intervention Type";
     const visitNum = req.session?.params?.visitNum || -1;
@@ -169,9 +175,12 @@ router.post('/updateVideosInDatabase', async (req, res) => {
         request.input("interventionType", sql.VarChar, interventionType);
         await request.query(queryString); // Await to ensure it 
         console.log("Done! Check database!")
+        res.json("Successfully added videos watched string to database");
     } catch (err) {
         console.error("SQL error:", err);
         errorProtocol(err, req, res);
+        res.status(502).json({ message: "Bad Gateway. Could not fetch results." });
+
     }
 })
 
