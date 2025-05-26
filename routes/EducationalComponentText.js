@@ -47,35 +47,35 @@ const buttons = [
     }
 ]
 
-router.get('/Introduction', validateSession, updateDatabase, (req, res) => {
+router.get('/Introduction', validateSession, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;
     res.render("pages/interventionType/EducationalComponentText/introduction", { id: id, interventionType: interventionType, buttons: buttons, url: 'Introduction', vCHE: vCHE })
 })
 
-router.get('/1', validateSession, updateDatabase, (req, res) => {
+router.get('/1', validateSession, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;
     res.render("pages/interventionType/EducationalComponentText/1", { id: id, interventionType: interventionType, buttons: buttons, url: '1', vCHE: vCHE })
 })
 
-router.get('/2', validateSession, updateDatabase, (req, res) => {
+router.get('/2', validateSession, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;
     res.render("pages/interventionType/EducationalComponentText/2", { id: id, interventionType: interventionType, buttons: buttons, url: '2', vCHE: vCHE })
 })
 
-router.get('/3', validateSession, updateDatabase, (req, res) => {
+router.get('/3', validateSession, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;
     res.render("pages/interventionType/EducationalComponentText/3", { id: id, interventionType: interventionType, buttons: buttons, url: '3', vCHE: vCHE })
 })
 
-router.get('/4', validateSession, updateDatabase, (req, res) => {
+router.get('/4', validateSession, (req, res) => {
     const id = req.session?.params?.id;
     const vCHE = req.session?.params?.vCHE;
     const interventionType = req.session?.params?.interventionType;

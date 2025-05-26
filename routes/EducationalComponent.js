@@ -146,7 +146,7 @@ function validateSession(req, res, next) {
 //     }
 // }
 
-router.post('/updateVideosInDatabase', async (req, res) => {
+router.post('/updateVideosInDatabase', validateSession, async (req, res) => {
     console.log("REQ SESSION PARAMS VIDEOS", req.session.params.videos)
     const videoName = req.body.videoColumn;
     const videoObject = req.body.videoInfo;
