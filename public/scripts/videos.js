@@ -185,6 +185,7 @@ window.addEventListener("beforeunload", (event) => {
         textInfo["pageDurationSeconds"] = timeSpentSeconds
         logVideosToDatabase(textInfo)
     } else {
+        videoInfo["vCHE"] = sessionStorage.getItem("type")
         videoInfo["timeExitPage"] = getLocalTime("exit")
         var iframe = document.getElementById("myvideo");
         console.log(iframe)
