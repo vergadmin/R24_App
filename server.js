@@ -289,12 +289,13 @@ app.post("/RetrieveConditions", (req, res) => {
     // Construct the query to select the disease and all synonym columns
     let queryString = `
     SELECT TOP 300 diseases, ${synonymColumns} FROM Diseases
-    WHERE ${columnNames.map(column => `${column} LIKE '%${searchValue}%'`).join(' OR ')}
+    WHERE ${columnNames.map(column => `${column} LIKE @searchValue`).join(' OR ')}
     `;
 
     req.session.params.queryString = queryString;
     try {
         const request = new sql.Request();
+        request.input('searchValue', sql.VarChar, `%${searchValue}%`);
         request.query(queryString, (err, recordset) => {
             if (err) {
                 errorProtocol(err, req, res);
